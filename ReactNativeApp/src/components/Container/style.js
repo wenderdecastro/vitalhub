@@ -1,75 +1,80 @@
-import styled from 'styled-components/native';
-import { Colors } from '../../utils/Colors';
 
-export const ContainerBox = styled.SafeAreaView`
-	flex: 1;
-	width: 100%;
-	align-items: center;
-	background-color: #fff;
-`;
-export const ContainerContent = styled.View`
-	align-items: center;
-	flex: 1;
-	width: 88%;
-	background-color: #fff;
-`;
+import { LinearGradient } from "expo-linear-gradient"
+import { FlatList } from "react-native"
+import styled from "styled-components"
 
-export const Box = styled.View`
-	flex: 1;
-`;
+export const Container = styled.View`
+flex: 1;
+align-items: center;
+background-color: #ffffff;
+height: 100%;
+`
 
-export const Row = styled.View`
-	flex-direction: row;
-`;
+export const ContentAccount = styled.View`
+flex-direction: row;
+justify-content: center;
+align-items: center;
+margin-top: 80;
+`
 
-export const RowBox = styled(Box)`
-	flex-direction: row;
-	width: 100%;
-	align-items: center;
-`;
+export const ContentVerify = styled.View`
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+width: 88%;
+margin-top: 10px;
+`
 
-export const CardRow = styled.View`
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-`;
+export const ContainerScroll = styled.ScrollView`
+height: 100%;
 
-export const ProfileBox = styled.View`
-	position: absolute;
-	z-index: 50;
-	height: 125px;
-	width: 85%;
-	top: 240px;
-	justify-content: center;
-	text-align: center;
-	background-color: ${Colors.white};
-	elevation: 5;
-	border-radius: 5px;
-`;
+`
 
-export const InputRow = styled.View`
-	flex-direction: row;
-	width: 100%;
-	justify-content: space-between;
-`;
+export const ContainerProfile = styled(Container)`
+height: 100%;
+width: 100%;
+`
 
-export const InputView = styled.View`
-	align-items: center;
-	flex: 1;
-	width: 88%;
-	background-color: #fff;
-`;
+export const ContainerUF = styled.View`
+width: 80%;
+justify-content: space-between;
+flex-direction: row;
+align-items:center ;
+`
 
-export const BlankContainer = styled.View`
-	height: 150px;
-	background-color: ${Colors.white_v1};
-	justify-content: center;
-	vertical-align: baseline;
-	align-items: center;
-	gap: 10px;
-	margin: 10px 0px;
 
-	flex-direction: row;
-	width: 100%;
-	border-radius: 5px;
-`;
+export const ContainerHeader = styled(LinearGradient).attrs({
+  colors: ["#60BFC5", "#496BBA"],
+  start: { x: -0.05, y: 1.08 },
+  end: { x: 1, y: 0 },
+
+})`
+    width: 100%;
+    padding: 20px;
+    padding-bottom: 22px;
+  
+    height: 22%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  
+    border-radius: 0px 0px 15px 15px;
+    box-shadow: 0px 4px 15px #00000014;
+  `;
+
+export const ContentLocal = styled.View`
+width: 100%;
+height: 430px;
+
+`
+
+export const ContentInfo = styled.View`
+width: 100%;
+height: 400px;
+align-items: center;
+justify-content: center;
+position: absolute;
+margin-top: 400px;
+border-radius: 20px;
+background-color: white;
+`

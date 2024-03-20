@@ -1,66 +1,56 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home } from '../commonuser/Home';
-import { ProfileScreen } from '../commonuser/ProfileScreen';
-import { Colors } from '../../utils/Colors';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
-import { ContentIcon, TextIcon } from './style';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { Home } from "../Home/Home"
+import { Profile } from "../Profile/Profile"
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ContentIcon, TextIcon } from "./Style";
+import { FontAwesome5 } from '@expo/vector-icons';
 
-const BottomTab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator()
+
 
 export const Main = () => {
-	return (
-		<BottomTab.Navigator
-			initialRouteName="Home"
-			screenOptions={({ route }) => ({
-				tabBarStyle: {
-					backgroundColor: '#fff',
-					height: 60,
-					paddingBottom: 0,
-				},
-				tabBarActiveBackgroundColor: 'transparent',
-				tabBarShowLabel: false,
-				headerShown: false,
+    return (
+        <BottomTab.Navigator
+            initialRouteName="Home"
 
-				tabBarActiveTintColor: Colors.secondary_v2,
-				tabBarIcon: ({ focused }) => {
-					if (route.name === 'Home') {
-						return (
-							<ContentIcon
-								tabBarActiveBackgroundColor={
-									focused ? '#ECF2FF' : 'transparent'
-								}
-							>
-								<FontAwesome
-									name="calendar"
-									size={18}
-									color={'#4E4B59'}
-								/>
+            screenOptions={({ route }) => ({
+                tabBarStyle: { backgroundColor: "#FFFFFF", height: 80, paddingTop: 10 },
+                tabBarActiveBackgroundColor: 'transparent',
+                tabBarShowLabel: false,
+                headerShown: false,
 
-								{focused && <TextIcon>Agenda</TextIcon>}
-							</ContentIcon>
-						);
-					} else {
-						return (
-							<ContentIcon
-								tabBarActiveBackgroundColor={
-									focused ? '#ECF2FF' : 'transparent'
-								}
-							>
-								<FontAwesome5
-									name="user-circle"
-									size={18}
-									color={'#4E4B59'}
-								/>
+                tabBarIcon: ({ focused }) => {
+                    if (route.name === "Home") {
+                        return (
+                            <ContentIcon
+                            >
+                                {focused ? <MaterialCommunityIcons name="calendar-check" size={24} color="#607EC5" /> : <MaterialCommunityIcons name="calendar-check" size={24} color="4E4B59" />}
+                                <TextIcon textColor={focused ? "#607EC5" : "#4E4B59"}>Agenda</TextIcon>
+                            </ContentIcon>
+                        )
+                    } else if (route.name === "Profile") {
+                        return (
+                            <ContentIcon
+                            >
 
-								{focused && <TextIcon>Perfil</TextIcon>}
-							</ContentIcon>
-						);
-					}
-				},
-			})}
-		>
-			<BottomTab.Screen name="Home" component={Home} />
-			<BottomTab.Screen name="Profile" component={ProfileScreen} />
-		</BottomTab.Navigator>
-	);
-};
+                                {focused ? <FontAwesome5 name="user-circle" size={22} color="#607EC5" /> : <FontAwesome5 name="user-circle" size={22} color="#4E4B59" />}
+                                <TextIcon textColor={focused ? "#607EC5" : "#4E4B59"}>Perfil</TextIcon>
+                            </ContentIcon>
+                        )
+                    }
+                }
+            })}>
+
+
+            <BottomTab.Screen
+                name="Home"
+                component={Home}
+            />
+
+            <BottomTab.Screen
+                name="Profile"
+                component={Profile}
+            />
+        </BottomTab.Navigator>
+    )
+}
