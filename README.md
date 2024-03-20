@@ -1,5 +1,5 @@
 <p align="center">
- <img src="https://github.com/wenderdecastro/vitalhub/tree/main/vitalHub/src/assets/vitalhublogo.png" alt="VitalHub Logo" width="400"/>
+ <img src="https://github.com/wenderdecastro/vitalhub/blob/main/vitalHub/src/assets/vitalhublogo.png" alt="VitalHub Logo" width="400"/>
 </p>
 
 O projeto "VitalHub" é um aplicativo inovador desenvolvido para integrar médicos, pacientes e clínicas de maneira eficiente e intuitiva, visando revolucionar a gestão de consultas médicas. Este aplicativo é destinado a profissionais da saúde, como médicos, e a pacientes, oferecendo uma plataforma que facilita o agendamento de consultas, o acompanhamento de prontuários, o cadastro de resultados de exames e a localização de clínicas por meio do GPS. O objetivo principal é melhorar a experiência de saúde, tornando-a mais conectada e eficiente para todos os envolvidos. Projeto desenvolvido no terceiro semestre do curso de Desenvolvimento de Sistemas no Senai de Informática.
