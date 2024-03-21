@@ -40,7 +40,7 @@ export const CancelModal = ({ visible, setShowModalCancel, ...rest }) => {
 
     }
 
-    onPressHandler = () => {
+    const onPressHandler = () => {
         setShowModalCancel(false)
         handleCallNotification()
     }
