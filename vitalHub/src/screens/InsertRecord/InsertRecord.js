@@ -4,7 +4,7 @@ import { Container, ContainerScroll } from '../../components/Container/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
 import { ButtonEdit } from '../ViewRecord/Style';
-//teste
+//teste coauthor
 export const InsertRecord = ({ navigation }) => {
 	return (
 		<ContainerScroll>
