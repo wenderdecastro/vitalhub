@@ -5,9 +5,10 @@ import { Title, TitleC } from "../../components/Title/Style"
 import { UserPicture } from "../../components/UserPicture/Style"
 import { ButtonTitle } from "../../components/ButtonTitle/Style"
 import { Button, Button2, CloseButton } from "../../components/Button/Style"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CancelAppointment } from "../../components/Links/Style"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { userDecodeToken } from "../../utils/Auth"
 
 export const Profile = ({ navigation }) => {
 
@@ -22,15 +23,31 @@ export const Profile = ({ navigation }) => {
         }
     }
 
+    const [nome,setNome] = useState()
+    const [email,setEmail] = useState()
+
+    async function profileLoad(){
+        const token = await userDecodeToken()
+
+        console.log(token);
+        setNome(token.name)
+        setEmail(token.email)
+    }
+
+    useEffect(() => {
+        profileLoad();
+    }, [])
+    
+
     return (
         <ContainerScroll>
 
             {ProfileEdit ? (
                 <>
-                    <UserPicture source={{ uri: ('https://github.com/GustavoPasqualetti.png') }} />
+                    <UserPicture source={require("../../assets/perfil.jpg")} />
                     <ContainerProfile>
-                        <TitleC>Gustavo Pasqualetti</TitleC>
-                        <TextAdd>gustavopasqualetti@gmail.com</TextAdd>
+                        <TitleC>{nome}</TitleC>
+                        <TextAdd>{email}</TextAdd>
 
                         <BoxInput
                             fieldWidht={80}
