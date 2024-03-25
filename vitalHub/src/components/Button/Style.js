@@ -67,3 +67,12 @@ align-items: center;
 border-radius: 10px;
 `
 
+export const CloseButton = styled.TouchableOpacity`
+width: 50%;
+height: 53px;
+background-color: #ACABB7;
+align-items: center;
+justify-content: center;
+border-radius: 5px;
+`
+

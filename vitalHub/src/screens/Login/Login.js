@@ -8,13 +8,29 @@ import { Button, ButtonGoogle } from "../../components/Button/Style"
 import { ButtonTitle, ButtonTitleGoogle } from "../../components/ButtonTitle/Style"
 import { TextAccount } from "../../components/TextAdd/Style"
 import { AntDesign } from '@expo/vector-icons';
+import { useState } from "react"
 
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
+import api from "../../service/Service"
 
 export const login = ({ navigation }) => {
 
-    function Login() {
-        navigation.replace("Main")
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+
+    async function Login() {
+        const response = await api.post('/Login', {
+            email : email,
+            senha : senha
+        })
+
+        await AsyncStorage.setItem('token', JSON.stringify(response.data))
+        
+       navigation.replace("Main")
+        console.log(email);
+        console.log(senha);
+        
     }
 
     return (
@@ -23,10 +39,17 @@ export const login = ({ navigation }) => {
 
             <Title>Entrar ou criar conta</Title>
 
-            <Input placeholder="Usuário ou E-mail" />
+            <Input
+                placeholder="Usuário ou E-mail"
+                value={email}
+                onChangeText={(email) => setEmail(email)}
+            />
 
-            <Input placeholder="Senha"
-                secureTextEntry='true'
+            <Input
+                placeholder="Senha"
+                secureTextEntry={true}
+                value={senha}
+                onChangeText={(senha) => setSenha(senha)}
             />
 
             <LinkMedium onPress={() => navigation.navigate("Recover")}>Esqueceu sua senha?</LinkMedium>
@@ -35,7 +58,7 @@ export const login = ({ navigation }) => {
                 <ButtonTitle>ENTRAR</ButtonTitle>
             </Button>
 
-            <ButtonGoogle onPress={() => navigation.navigate("Home")}>
+            <ButtonGoogle >
                 <LogoGoogle>
                     <AntDesign name="google" size={20} color="#496BBA" />
                 </LogoGoogle>
