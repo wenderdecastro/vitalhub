@@ -13,17 +13,23 @@ import { TextAccount } from '../../components/TextAdd/Style';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { api } from '../../services/ApiService.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const login = ({ navigation }) => {
-	const [email, setEmail] = useState();
-	const [senha, setSenha] = useState();
+	const [email, setEmail] = useState(
+		'barbarareginaporto@locare-eventos.com.br',
+	);
+	const [senha, setSenha] = useState('12345');
 
 	async function Login() {
 		const response = await api.post('/Login', {
 			email: email,
 			senha: senha,
 		});
-		console.log(response);
+		await AsyncStorage.setItem(
+			'token',
+			JSON.stringify(response.data),
+		);
 	}
 
 	return (
