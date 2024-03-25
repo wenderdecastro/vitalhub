@@ -24,7 +24,7 @@ import { InsertRecord } from './src/screens/InsertRecord/InsertRecord';
 import Camera from './src/screens/Camera/Camera';
 import CameraScreen from './src/screens/Camera/Camera';
 
-// LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs()
 LogBox.ignoreLogs(['Warning: ...'])
 
 export default function App() {

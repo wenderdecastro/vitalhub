@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar"
 import { Container } from "../../components/Container/Style"
 import { Header } from "../../components/Header/Header"
 import { CalendarHome } from "../../components/CalendarHome/CalendarHome"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ButtonTabs } from "../../components/ButtonTabs/ButtonTabs"
 import { ContainerAppointment } from "./Style"
 import { AppointmentCard, QueryCard } from "../../components/AppointmentCard/QueryCard"
@@ -13,6 +13,7 @@ import { MakeAppointment } from "../../components/Button/Style"
 import { FontAwesome } from '@expo/vector-icons';
 import { ScheduleModal } from "../../components/ScheduleModal/SchedyleModal"
 import { LocalModal } from "../../components/LocalModal/LocalModal"
+import { userDecodeToken } from "../../utils/Auth"
 
 const Consultas = [
     { id: 1, nome: "gustavo", age: 18, hour: '14:00', reason: 'Rotina', situacao: "pendente", imagem: { uri: ('https://github.com/GustavoPasqualetti.png') }, email: "gustavopasqualetti@gmail.com" },
@@ -43,10 +44,21 @@ export const Home = ({ navigation }) => {
 
     const [showModalLocal, setShowModalLocal] = useState(false)
 
-    const [userLogin, setUserLogin] = useState("paciente")
+    const [userLogin, setUserLogin] = useState()
+
+    async function profileLoad(){
+        const token = await userDecodeToken()
+
+        console.log(token);
+        setUserLogin(token.role)
+    }
+
+    useEffect(() => {
+        profileLoad();
+    }, [])
 
     return (
-        userLogin == "medico" ? <Container>
+        userLogin == "Medico" ? <Container>
             <StatusBar />
 
             <Header
