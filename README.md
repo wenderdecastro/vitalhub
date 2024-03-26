@@ -6,9 +6,11 @@ O projeto "VitalHub" é um aplicativo inovador desenvolvido para integrar médic
 
 ## Stack utilizada
 
-**Mobile:** React Native, Expo
+**Mobile:** JS com React Native, Expo
 
-**Back-end:** C#
+**Back-end:** C# com ASP.NET Core
+
+**IA:** Azure cognitive services
 
 ## Ferramentas utilizadas
 
