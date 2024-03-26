@@ -25,13 +25,18 @@ export const Profile = ({ navigation }) => {
 
     const [nome,setNome] = useState()
     const [email,setEmail] = useState()
+    const [cep,setCep] = useState()
+    const [logradouro,setLogradouro] = useState()
+    const [numero,setNumero] = useState()
 
     async function profileLoad(){
         const token = await userDecodeToken()
 
-        console.log(token);
         setNome(token.name)
         setEmail(token.email)
+        setCep(token.cep)
+        setLogradouro(token.logradouro)
+        setNumero(token.numero)
     }
 
     useEffect(() => {
@@ -65,14 +70,14 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-                            placeholder='Rua Vicenso Silva, 987'
+                            placeholder={logradouro}
                             fieldHeight={60}
                         />
                         <ContainerUF>
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='CEP'
-                                placeholder='06548-909'
+                                placeholder={cep}
                                 fieldHeight={60}
                             />
                             <BoxInput

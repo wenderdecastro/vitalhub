@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using System.IdentityModel.Tokens.Jwt;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
@@ -35,31 +34,29 @@ namespace WebAPI.Controllers
             return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
         }
 
-
         [HttpPost]
-        public IActionResult Post(MedicoViewModel medicoModel)
+        public IActionResult Post(MedicoViewModel Medico)
         {
             Usuario user = new Usuario();
 
-            user.Nome = medicoModel.Nome;
-            user.Email = medicoModel.Email;
-            user.Senha = medicoModel.Senha;
-            user.Foto = medicoModel.Foto;
+            user.Nome = Medico.Nome;
+            user.Email = Medico.Email;
+            user.Foto = Medico.Foto;
+            user.Senha = Medico.Senha;
+            user.TipoUsuarioId = Medico.IdTipoUsuario;
 
             user.Medico = new Medico();
+            user.Medico.Crm = Medico.Crm;
+            user.Medico.EspecialidadeId = Medico.EspecialidadeId;
+            
 
-            user.Medico.Crm = medicoModel.Crm;
-
-            user.Medico.Especialidade = new Especialidade();
-
-            user.Medico.EspecialidadeId = medicoModel.EspecialidadeId;
 
             _medicoRepository.Cadastrar(user);
 
-            return StatusCode(201, user);
+            return Ok();
         }
 
-
+       
 
 
     }
