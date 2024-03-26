@@ -1,4 +1,4 @@
-import { Text, View } from "react-native"
+
 import { Container, ContentAccount } from "../../components/Container/Style"
 import { Logo, LogoGoogle } from "../../components/Logo/Style"
 import { Title } from "../../components/Title/Style"
@@ -13,24 +13,40 @@ import { useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import api from "../../service/Service"
+import { ActivityIndicator } from "react-native"
 
 export const login = ({ navigation }) => {
 
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
+    const [loading, setLoading] = useState(false)
+
 
     async function Login() {
-        const response = await api.post('/Login', {
-            email : email,
-            senha : senha
-        })
+        try {
+            const response = await api.post('/Login', {
+                email: email,
+                senha: senha
+            })
 
-        await AsyncStorage.setItem('token', JSON.stringify(response.data))
-        
-       navigation.replace("Main")
-        console.log(email);
-        console.log(senha);
-        
+            if (email == "" || senha == "") {
+                return
+            }
+            setLoading(true)
+
+            await AsyncStorage.setItem('token', JSON.stringify(response.data))
+
+            setTimeout(() => {
+                setLoading(false)
+                navigation.replace("Main")
+            }, 2000)
+
+            console.log(email);
+            console.log(senha);
+        } catch (error) {
+            console.error('Erro ao buscar dados de login', error);
+        }
+
     }
 
     return (
@@ -54,8 +70,8 @@ export const login = ({ navigation }) => {
 
             <LinkMedium onPress={() => navigation.navigate("Recover")}>Esqueceu sua senha?</LinkMedium>
 
-            <Button onPress={() => Login()}>
-                <ButtonTitle>ENTRAR</ButtonTitle>
+            <Button onPress={() => Login()} disabled={loading}>
+                <ButtonTitle>{loading ? <ActivityIndicator color="#fff" /> : "ENTRAR"}</ButtonTitle>
             </Button>
 
             <ButtonGoogle >

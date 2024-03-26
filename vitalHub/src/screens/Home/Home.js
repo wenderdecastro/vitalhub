@@ -165,7 +165,7 @@ export const Home = ({ navigation }) => {
 
         <Container>
             <Header name={"Gustavo"}
-                ProfileImage={{ uri: ('https://github.com/GustavoPasqualetti.png') }}
+                ProfileImage={require("../../assets/perfil.jpg")}
                 navigation={navigation}
             />
 
