@@ -4,8 +4,17 @@ import { login } from './src/screens/Login/Login';
 
 const Stack = createNativeStackNavigator();
 
-import { useFonts, MontserratAlternates_600SemiBold, MontserratAlternates_500Medium, MontserratAlternates_700Bold } from "@expo-google-fonts/montserrat-alternates";
-import { Quicksand_500Medium, Quicksand_600SemiBold, Quicksand_400Regular } from '@expo-google-fonts/quicksand';
+import {
+	useFonts,
+	MontserratAlternates_600SemiBold,
+	MontserratAlternates_500Medium,
+	MontserratAlternates_700Bold,
+} from '@expo-google-fonts/montserrat-alternates';
+import {
+	Quicksand_500Medium,
+	Quicksand_600SemiBold,
+	Quicksand_400Regular,
+} from '@expo-google-fonts/quicksand';
 import { Account } from './src/screens/Account/Account';
 import { Recover } from './src/screens/Recover/Recover';
 import { EmailCode } from './src/screens/EmailCode/EmailCode';
@@ -23,128 +32,146 @@ import { ViewRecord } from './src/screens/ViewRecord/ViewRecord';
 import { InsertRecord } from './src/screens/InsertRecord/InsertRecord';
 import Camera from './src/screens/Camera/Camera';
 import CameraScreen from './src/screens/Camera/Camera';
+import Toast from 'react-native-toast-message';
 
-LogBox.ignoreAllLogs()
-LogBox.ignoreLogs(['Warning: ...'])
+// LogBox.ignoreAllLogs();
+// LogBox.ignoreLogs(['Warning: ...']);
 
 export default function App() {
+	const [fontsLoaded, fontsError] = useFonts({
+		MontserratAlternates_600SemiBold,
+		MontserratAlternates_500Medium,
+		MontserratAlternates_700Bold,
+		Quicksand_500Medium,
+		Quicksand_600SemiBold,
+		Quicksand_400Regular,
+	});
 
+	if (!fontsLoaded && !fontsError) {
+		return null;
+	}
 
-  const[fontsLoaded, fontsError] = useFonts({
-    MontserratAlternates_600SemiBold, MontserratAlternates_500Medium, MontserratAlternates_700Bold, Quicksand_500Medium, Quicksand_600SemiBold, Quicksand_400Regular
-  })
+	return (
+		<>
+			<NavigationContainer>
+				<Stack.Navigator
+					screenOptions={{
+						headerShown: false,
+					}}
+				>
+					<Stack.Screen
+						name="Login"
+						component={login}
+						options={{ title: 'Login' }}
+					/>
 
-  if (!fontsLoaded && !fontsError) {
-    return null
-  }
-  
-  return (
- 
-    <NavigationContainer>
+					<Stack.Screen
+						name="Main"
+						component={Main}
+					/>
 
-      <Stack.Navigator screenOptions={{
-        headerShown: false
-      }}>
+					<Stack.Screen
+						name="Account"
+						component={Account}
+						options={{ title: 'Account' }}
+					/>
 
-        
-        <Stack.Screen 
-        name='Login'
-        component={login}
-        options={{ title: 'Login' }}        
-        />
+					<Stack.Screen
+						name="Recover"
+						component={Recover}
+						options={{ title: 'Recover' }}
+					/>
 
-        <Stack.Screen
-        name="Main"
-        component={Main}
-        />
+					<Stack.Screen
+						name="EmailCode"
+						component={EmailCode}
+						options={{ title: 'EmailCode' }}
+					/>
 
+					<Stack.Screen
+						name="Reset"
+						component={Reset}
+						options={{ title: 'Reset' }}
+					/>
 
-        <Stack.Screen 
-        name='Account'
-        component={Account}
-        options={{ title: 'Account' }}        
-        />
+					<Stack.Screen
+						name="Profile"
+						component={Profile}
+						options={{ title: 'Profile' }}
+					/>
 
-        <Stack.Screen 
-        name='Recover'
-        component={Recover}
-        options={{ title: 'Recover' }}        
-        /> 
-        
-        <Stack.Screen 
-        name='EmailCode'
-        component={EmailCode}
-        options={{ title: 'EmailCode' }}        
-        />   
+					<Stack.Screen
+						name="Home"
+						component={Home}
+						options={{ title: 'Home' }}
+					/>
 
-        <Stack.Screen 
-        name='Reset'
-        component={Reset}
-        options={{ title: 'Reset' }}        
-        />  
+					<Stack.Screen
+						name="ViewRecord"
+						component={ViewRecord}
+						options={{
+							title: 'ViewRecord',
+						}}
+					/>
 
-        <Stack.Screen 
-        name='Profile'
-        component={Profile}
-        options={{ title: 'Profile' }}        
-        />  
+					<Stack.Screen
+						name="InsertRecord"
+						component={InsertRecord}
+						options={{
+							title: 'InsertRecord',
+						}}
+					/>
 
-         <Stack.Screen 
-        name='Home'
-        component={Home}
-        options={{ title: 'Home' }}        
-        />     
+					<Stack.Screen
+						name="SelectClinic"
+						component={SelectClinic}
+						options={{
+							title: 'SelectClinic',
+						}}
+					/>
 
-         <Stack.Screen 
-        name='ViewRecord'
-        component={ViewRecord}
-        options={{ title: 'ViewRecord' }}        
-        />  
+					<Stack.Screen
+						name="SelectDoctor"
+						component={SelectDoctor}
+						options={{
+							title: 'SelectDoctor',
+						}}
+					/>
 
-         <Stack.Screen 
-        name='InsertRecord'
-        component={InsertRecord}
-        options={{ title: 'InsertRecord' }}        
-        />  
+					<Stack.Screen
+						name="SelectDate"
+						component={SelectDate}
+						options={{
+							title: 'SelectDate',
+						}}
+					/>
 
-         <Stack.Screen 
-        name='SelectClinic'
-        component={SelectClinic}
-        options={{ title: 'SelectClinic' }}        
-        />   
+					<Stack.Screen
+						name="LocalAppointment"
+						component={LocalAppointment}
+						options={{
+							title: 'LocalAppointment',
+						}}
+					/>
 
-         <Stack.Screen 
-        name='SelectDoctor'
-        component={SelectDoctor}
-        options={{ title: 'SelectDoctor' }}        
-        />   
+					<Stack.Screen
+						name="ViewPrescription"
+						component={ViewPrescription}
+						options={{
+							title: 'ViewPrescription',
+						}}
+					/>
 
-         <Stack.Screen 
-        name='SelectDate'
-        component={SelectDate}
-        options={{ title: 'SelectDate' }}        
-        />   
-
-         <Stack.Screen 
-        name='LocalAppointment'
-        component={LocalAppointment}
-        options={{ title: 'LocalAppointment' }}        
-        />   
-
-         <Stack.Screen 
-        name='ViewPrescription'
-        component={ViewPrescription}
-        options={{ title: 'ViewPrescription' }}        
-        />   
-
-         <Stack.Screen 
-        name='CameraScreen'
-        component={CameraScreen}
-        options={{ title: 'CameraScreen' }}        
-        />   
-      </Stack.Navigator>
-
-    </NavigationContainer>
-  );
+					<Stack.Screen
+						name="CameraScreen"
+						component={CameraScreen}
+						options={{
+							title: 'CameraScreen',
+						}}
+					/>
+				</Stack.Navigator>
+			</NavigationContainer>
+			<Toast />
+		</>
+	);
 }
-
