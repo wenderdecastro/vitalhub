@@ -16,33 +16,42 @@ export const Profile = ({ navigation }) => {
 
     async function logout() {
         try {
-            await AsyncStorage.removeItem('token'); 
-            navigation.replace("Login"); 
+            await AsyncStorage.removeItem('token');
+            navigation.replace("Login");
         } catch (error) {
             console.error("Erro ao fazer logout:", error);
         }
     }
 
-    const [nome,setNome] = useState()
-    const [email,setEmail] = useState()
-    const [cep,setCep] = useState()
-    const [logradouro,setLogradouro] = useState()
-    const [numero,setNumero] = useState()
+    const [nome, setNome] = useState()
+    const [email, setEmail] = useState()
+    const [cep, setCep] = useState()
+    const [logradouro, setLogradouro] = useState()
 
-    async function profileLoad(){
+    const [role, setRole] = useState()
+    const [identificao, setIdentificacao] = useState()
+
+    async function profileLoad() {
         const token = await userDecodeToken()
 
         setNome(token.name)
         setEmail(token.email)
         setCep(token.cep)
         setLogradouro(token.logradouro)
-        setNumero(token.numero)
+        setRole(token.role)
+        setIdentificacao(() => {
+            role == "Paciente" ?
+            token.cpf
+            :
+            token.crm
+        }
+        )
     }
 
     useEffect(() => {
         profileLoad();
     }, [])
-    
+
 
     return (
         <ContainerScroll>
@@ -61,23 +70,34 @@ export const Profile = ({ navigation }) => {
                             fieldHeight={60}
 
                         />
-                        <BoxInput
-                            fieldWidht={80}
-                            textLabel='CPF:'
-                            placeholder='859********'
-                            fieldHeight={60}
-                        />
+                        {
+                            role == "Paciente" ?
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='CPF:'
+                                    value={identificao}
+                                    fieldHeight={60}
+                                />
+                                :
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='CRM:'
+                                    placeholder={identificao}
+                                    fieldHeight={60}
+                                />
+                        }
+
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-                            placeholder={logradouro}
+                            value={logradouro}
                             fieldHeight={60}
                         />
                         <ContainerUF>
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='CEP'
-                                placeholder={cep}
+                                value={cep}
                                 fieldHeight={60}
                             />
                             <BoxInput
@@ -126,7 +146,7 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-                            placeholder='Rua Vicenso Silva, 987'
+                            value={logradouro}
                             fieldHeight={60}
                             editable={true}
                         />
@@ -135,13 +155,13 @@ export const Profile = ({ navigation }) => {
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='CEP'
-                                placeholder='06548-909'
+                                value={cep}
                                 fieldHeight={60}
                             />
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='Cidade'
-                                placeholder='Moema-SP'
+                                placeholder='Sao Paulo'
                                 fieldHeight={60}
                             />
                         </ContainerUF>
