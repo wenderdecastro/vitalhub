@@ -42,7 +42,7 @@ export const login = ({ navigation }) => {
 			return;
 		}
 		try {
-			console.log('teste');
+			
 			const response = await api.post('/Login', {
 				email: email,
 				senha: senha,
