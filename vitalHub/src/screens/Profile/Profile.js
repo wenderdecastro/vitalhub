@@ -27,14 +27,6 @@ export const Profile = ({ navigation }) => {
 
     const [nome, setNome] = useState()
     const [email, setEmail] = useState()
-<<<<<<< HEAD
-    const [cep, setCep] = useState()
-    const [logradouro, setLogradouro] = useState()
-
-    const [role, setRole] = useState()
-    const [identificao, setIdentificacao] = useState()
-
-=======
     const [idUser, setIdUser] = useState()
     const [userData, setUserData] = useState()
     const [cep, setCep] = useState()
@@ -43,7 +35,6 @@ export const Profile = ({ navigation }) => {
     const [cpf, setCpf] = useState()
     const [crm, setCrm] = useState()
 
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
     async function profileLoad() {
         const token = await userDecodeToken()
        
@@ -51,18 +42,6 @@ export const Profile = ({ navigation }) => {
 
         setNome(token.name)
         setEmail(token.email)
-<<<<<<< HEAD
-        setCep(token.cep)
-        setLogradouro(token.logradouro)
-        setRole(token.role)
-        setIdentificacao(() => {
-            role == "Paciente" ?
-            token.cpf
-            :
-            token.crm
-        }
-        )
-=======
         setRole(token.role)
         setIdUser(token.jti)
        
@@ -82,15 +61,12 @@ export const Profile = ({ navigation }) => {
         setCrm(response.data.crm)
        
         
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
     }
 
     useEffect(() => {
         profileLoad();
     }, [])
 
-<<<<<<< HEAD
-=======
     useEffect(() => {
         
         if (idUser) {
@@ -98,7 +74,6 @@ export const Profile = ({ navigation }) => {
         }
     }, [idUser]);
 
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
 
     return (
         <ContainerScroll>
@@ -122,22 +97,14 @@ export const Profile = ({ navigation }) => {
                                 <BoxInput
                                     fieldWidht={80}
                                     textLabel='CPF:'
-<<<<<<< HEAD
-                                    value={identificao}
-=======
                                     fieldValue={cpf}
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                     fieldHeight={60}
                                 />
                                 :
                                 <BoxInput
                                     fieldWidht={80}
                                     textLabel='CRM:'
-<<<<<<< HEAD
-                                    placeholder={identificao}
-=======
                                     placeholder={crm}
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                     fieldHeight={60}
                                 />
                         }
@@ -145,12 +112,8 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-<<<<<<< HEAD
-                            value={logradouro}
-=======
                             placeholder={logradouro}
                             
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                             fieldHeight={60}
                         />
 
@@ -160,7 +123,7 @@ export const Profile = ({ navigation }) => {
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='CEP'
-                                value={cep}
+                                placeholder={cep}
                                 fieldHeight={60}
                             />
                             <BoxInput
@@ -208,10 +171,6 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-<<<<<<< HEAD
-                            value={logradouro}
-=======
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                             fieldHeight={60}
                             editable={true}
                         />
@@ -220,19 +179,11 @@ export const Profile = ({ navigation }) => {
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='CEP'
-<<<<<<< HEAD
-                                value={cep}
-=======
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                 fieldHeight={60}
                             />
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='Cidade'
-<<<<<<< HEAD
-                                placeholder='Sao Paulo'
-=======
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                 fieldHeight={60}
                             />
                         </ContainerUF>

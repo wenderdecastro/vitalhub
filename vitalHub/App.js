@@ -35,11 +35,7 @@ import CameraScreen from './src/screens/Camera/Camera';
 import Toast from 'react-native-toast-message';
 
 // LogBox.ignoreAllLogs();
-<<<<<<< HEAD
-LogBox.ignoreLogs(['Warning: ...']);
-=======
  LogBox.ignoreLogs(['Warning: ...']);
->>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
 
 export default function App() {
 	const [fontsLoaded, fontsError] = useFonts({
