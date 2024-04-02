@@ -9,6 +9,8 @@ import { useEffect, useState } from "react"
 import { CancelAppointment } from "../../components/Links/Style"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { userDecodeToken } from "../../utils/Auth"
+import api from "../../service/Service"
+import { Text } from "react-native"
 
 export const Profile = ({ navigation }) => {
 
@@ -25,17 +27,31 @@ export const Profile = ({ navigation }) => {
 
     const [nome, setNome] = useState()
     const [email, setEmail] = useState()
+<<<<<<< HEAD
     const [cep, setCep] = useState()
     const [logradouro, setLogradouro] = useState()
 
     const [role, setRole] = useState()
     const [identificao, setIdentificacao] = useState()
 
+=======
+    const [idUser, setIdUser] = useState()
+    const [userData, setUserData] = useState()
+    const [cep, setCep] = useState()
+    const [logradouro, setLogradouro] = useState()
+    const [role, setRole] = useState()
+    const [cpf, setCpf] = useState()
+    const [crm, setCrm] = useState()
+
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
     async function profileLoad() {
         const token = await userDecodeToken()
+       
+        console.log(token);
 
         setNome(token.name)
         setEmail(token.email)
+<<<<<<< HEAD
         setCep(token.cep)
         setLogradouro(token.logradouro)
         setRole(token.role)
@@ -46,12 +62,43 @@ export const Profile = ({ navigation }) => {
             token.crm
         }
         )
+=======
+        setRole(token.role)
+        setIdUser(token.jti)
+       
+        await getUser()
+
+    } 
+
+    async function getUser() {
+        
+        const response = await api.get(`/Medicos/BuscarPorId/${idUser}`);
+        setUserData(response.data);
+        console.log(response.data);
+
+        setLogradouro(response.data.endereco.logradouro)
+        setCep(response.data.endereco.cep)
+        setCpf(response.data.cpf)
+        setCrm(response.data.crm)
+       
+        
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
     }
 
     useEffect(() => {
         profileLoad();
     }, [])
 
+<<<<<<< HEAD
+=======
+    useEffect(() => {
+        
+        if (idUser) {
+            getUser(); 
+        }
+    }, [idUser]);
+
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
 
     return (
         <ContainerScroll>
@@ -75,14 +122,22 @@ export const Profile = ({ navigation }) => {
                                 <BoxInput
                                     fieldWidht={80}
                                     textLabel='CPF:'
+<<<<<<< HEAD
                                     value={identificao}
+=======
+                                    fieldValue={cpf}
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                     fieldHeight={60}
                                 />
                                 :
                                 <BoxInput
                                     fieldWidht={80}
                                     textLabel='CRM:'
+<<<<<<< HEAD
                                     placeholder={identificao}
+=======
+                                    placeholder={crm}
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                     fieldHeight={60}
                                 />
                         }
@@ -90,9 +145,17 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
+<<<<<<< HEAD
                             value={logradouro}
+=======
+                            placeholder={logradouro}
+                            
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                             fieldHeight={60}
                         />
+
+                      
+                        
                         <ContainerUF>
                             <BoxInput
                                 fieldWidht={45}
@@ -107,6 +170,7 @@ export const Profile = ({ navigation }) => {
                                 fieldHeight={60}
                             />
                         </ContainerUF>
+                        
 
                         <Button2 onPress={() => setProfileEdit(false)}>
                             <ButtonTitle>EDITAR</ButtonTitle>
@@ -132,21 +196,22 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Data de nascimento:'
-                            placeholder='04/05/1999'
                             fieldHeight={60}
                             editable={true}
                         />
                         <BoxInput
                             fieldWidht={80}
                             textLabel='CPF:'
-                            placeholder='859********'
                             fieldHeight={60}
                             editable={true}
                         />
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
+<<<<<<< HEAD
                             value={logradouro}
+=======
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                             fieldHeight={60}
                             editable={true}
                         />
@@ -155,13 +220,19 @@ export const Profile = ({ navigation }) => {
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='CEP'
+<<<<<<< HEAD
                                 value={cep}
+=======
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                 fieldHeight={60}
                             />
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='Cidade'
+<<<<<<< HEAD
                                 placeholder='Sao Paulo'
+=======
+>>>>>>> 6b1b04f98aed23612aaf5ef73e6c5e4c36a75862
                                 fieldHeight={60}
                             />
                         </ContainerUF>
@@ -171,7 +242,7 @@ export const Profile = ({ navigation }) => {
                         </Button>
 
                         <CancelAppointment
-                            onPress={() => navigation.replace("Main")}
+                            onPress={() => setProfileEdit(true)}
                         >Voltar</CancelAppointment>
 
                     </ContainerProfile>
