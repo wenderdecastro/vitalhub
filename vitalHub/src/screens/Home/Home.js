@@ -101,6 +101,8 @@ const ConsultasUser = [
 ];
 
 export const Home = ({ navigation }) => {
+	const [dataConsulta, setDataConsulta] = useState();
+
 	const [statusList, setStatusList] = useState('pendente');
 
 	const [showModalCancel, setShowModalCancel] = useState(false);
@@ -116,11 +118,13 @@ export const Home = ({ navigation }) => {
 	const [showModalLocal, setShowModalLocal] = useState(false);
 
 	const [userLogin, setUserLogin] = useState();
+	const [profile, setProfile] = useState();
 
 	async function profileLoad() {
 		const token = await userDecodeToken();
 
 		console.log(token);
+		setProfile(token);
 		setUserLogin(token.role);
 	}
 
@@ -132,11 +136,14 @@ export const Home = ({ navigation }) => {
 			console.log(token);
 			if (token) {
 				await api
-					.get('/Consultas', {
-						headers: {
-							Authorization: `Bearer ${token}`,
+					.get(
+						`/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
 						},
-					})
+					)
 					.then((response) => {
 						setListaConsultas(
 							response.data,
@@ -171,7 +178,7 @@ export const Home = ({ navigation }) => {
 				navigation={navigation}
 			/>
 
-			<CalendarHome />
+			<CalendarHome setDataConsulta={setDataConsulta} />
 
 			<ContainerAppointment>
 				<ButtonTabs
@@ -209,6 +216,9 @@ export const Home = ({ navigation }) => {
 					) {
 						return (
 							<AppointmentCard
+								usuarioConsulta={
+									profile
+								}
 								situacao={
 									item.situacao
 								}
