@@ -9,6 +9,8 @@ import { useEffect, useState } from "react"
 import { CancelAppointment } from "../../components/Links/Style"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { userDecodeToken } from "../../utils/Auth"
+import api from "../../service/Service"
+import { Text } from "react-native"
 
 export const Profile = ({ navigation }) => {
 
@@ -16,33 +18,62 @@ export const Profile = ({ navigation }) => {
 
     async function logout() {
         try {
-            await AsyncStorage.removeItem('token'); 
-            navigation.replace("Login"); 
+            await AsyncStorage.removeItem('token');
+            navigation.replace("Login");
         } catch (error) {
             console.error("Erro ao fazer logout:", error);
         }
     }
 
-    const [nome,setNome] = useState()
-    const [email,setEmail] = useState()
-    const [cep,setCep] = useState()
-    const [logradouro,setLogradouro] = useState()
-    const [numero,setNumero] = useState()
+    const [nome, setNome] = useState()
+    const [email, setEmail] = useState()
+    const [idUser, setIdUser] = useState()
+    const [userData, setUserData] = useState()
+    const [cep, setCep] = useState()
+    const [logradouro, setLogradouro] = useState()
+    const [role, setRole] = useState()
+    const [cpf, setCpf] = useState()
+    const [crm, setCrm] = useState()
 
-    async function profileLoad(){
+    async function profileLoad() {
         const token = await userDecodeToken()
+       
+        console.log(token);
 
         setNome(token.name)
         setEmail(token.email)
-        setCep(token.cep)
-        setLogradouro(token.logradouro)
-        setNumero(token.numero)
+        setRole(token.role)
+        setIdUser(token.jti)
+       
+        await getUser()
+
+    } 
+
+    async function getUser() {
+        
+        const response = await api.get(`/Medicos/BuscarPorId/${idUser}`);
+        setUserData(response.data);
+        console.log(response.data);
+
+        setLogradouro(response.data.endereco.logradouro)
+        setCep(response.data.endereco.cep)
+        setCpf(response.data.cpf)
+        setCrm(response.data.crm)
+       
+        
     }
 
     useEffect(() => {
         profileLoad();
     }, [])
-    
+
+    useEffect(() => {
+        
+        if (idUser) {
+            getUser(); 
+        }
+    }, [idUser]);
+
 
     return (
         <ContainerScroll>
@@ -61,18 +92,33 @@ export const Profile = ({ navigation }) => {
                             fieldHeight={60}
 
                         />
-                        <BoxInput
-                            fieldWidht={80}
-                            textLabel='CPF:'
-                            placeholder='859********'
-                            fieldHeight={60}
-                        />
+                        {
+                            role == "Paciente" ?
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='CPF:'
+                                    fieldValue={cpf}
+                                    fieldHeight={60}
+                                />
+                                :
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='CRM:'
+                                    placeholder={crm}
+                                    fieldHeight={60}
+                                />
+                        }
+
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
                             placeholder={logradouro}
+                            
                             fieldHeight={60}
                         />
+
+                      
+                        
                         <ContainerUF>
                             <BoxInput
                                 fieldWidht={45}
@@ -87,6 +133,7 @@ export const Profile = ({ navigation }) => {
                                 fieldHeight={60}
                             />
                         </ContainerUF>
+                        
 
                         <Button2 onPress={() => setProfileEdit(false)}>
                             <ButtonTitle>EDITAR</ButtonTitle>
@@ -112,21 +159,18 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Data de nascimento:'
-                            placeholder='04/05/1999'
                             fieldHeight={60}
                             editable={true}
                         />
                         <BoxInput
                             fieldWidht={80}
                             textLabel='CPF:'
-                            placeholder='859********'
                             fieldHeight={60}
                             editable={true}
                         />
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-                            placeholder='Rua Vicenso Silva, 987'
                             fieldHeight={60}
                             editable={true}
                         />
@@ -135,13 +179,11 @@ export const Profile = ({ navigation }) => {
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='CEP'
-                                placeholder='06548-909'
                                 fieldHeight={60}
                             />
                             <BoxInput
                                 fieldWidht={45}
                                 textLabel='Cidade'
-                                placeholder='Moema-SP'
                                 fieldHeight={60}
                             />
                         </ContainerUF>
@@ -151,7 +193,7 @@ export const Profile = ({ navigation }) => {
                         </Button>
 
                         <CancelAppointment
-                            onPress={() => navigation.replace("Main")}
+                            onPress={() => setProfileEdit(true)}
                         >Voltar</CancelAppointment>
 
                     </ContainerProfile>
