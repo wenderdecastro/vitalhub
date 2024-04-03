@@ -95,5 +95,7 @@ namespace WebAPI.Controllers
         {
             return Ok(pacienteRepository.BuscarPorData(data,id));
         }
+
+
     }
 }

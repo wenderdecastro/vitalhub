@@ -42,7 +42,6 @@ export const login = ({ navigation }) => {
 			return;
 		}
 		try {
-			
 			const response = await api.post('/Login', {
 				email: email,
 				senha: senha,

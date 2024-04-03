@@ -27,7 +27,7 @@ const Consultas = [
 		age: 18,
 		hour: '14:00',
 		reason: 'Rotina',
-		situacao: 'pendente',
+		situacao: 'Pendente',
 		imagem: { uri: 'https://github.com/GustavoPasqualetti.png' },
 		email: 'gustavopasqualetti@gmail.com',
 	},
@@ -62,7 +62,7 @@ const ConsultasUser = [
 		age: 52,
 		hour: '10:00',
 		reason: 'Rotina',
-		situacao: 'pendente',
+		situacao: 'Pendente',
 		imagem: require('../../assets/medico1.jpg'),
 	},
 	{
@@ -95,13 +95,15 @@ const ConsultasUser = [
 		age: 52,
 		hour: '10:00',
 		reason: 'Rotina',
-		situacao: 'pendente',
+		situacao: 'Pendente',
 		imagem: require('../../assets/medico4.jpg'),
 	},
 ];
 
 export const Home = ({ navigation }) => {
-	const [statusList, setStatusList] = useState('pendente');
+	const [dataConsulta, setDataConsulta] = useState();
+
+	const [statusList, setStatusList] = useState('Pendente');
 
 	const [showModalCancel, setShowModalCancel] = useState(false);
 
@@ -116,11 +118,13 @@ export const Home = ({ navigation }) => {
 	const [showModalLocal, setShowModalLocal] = useState(false);
 
 	const [userLogin, setUserLogin] = useState();
+	const [profile, setProfile] = useState();
 
 	async function profileLoad() {
 		const token = await userDecodeToken();
 
 		console.log(token);
+		setProfile(token);
 		setUserLogin(token.role);
 	}
 
@@ -130,13 +134,17 @@ export const Home = ({ navigation }) => {
 				await AsyncStorage.getItem('token'),
 			).token;
 			console.log(token);
+			console.log(profile.jti);
 			if (token) {
 				await api
-					.get('/Consultas', {
-						headers: {
-							Authorization: `Bearer ${token}`,
+					.get(
+						`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
 						},
-					})
+					)
 					.then((response) => {
 						setListaConsultas(
 							response.data,
@@ -161,6 +169,12 @@ export const Home = ({ navigation }) => {
 		profileLoad();
 	}, []);
 
+	useEffect(() => {
+		if (dataConsulta != '') {
+			ListarConsulta();
+		}
+	}, [dataConsulta]);
+
 	return userLogin == 'Medico' ? (
 		<Container>
 			<StatusBar />
@@ -171,14 +185,14 @@ export const Home = ({ navigation }) => {
 				navigation={navigation}
 			/>
 
-			<CalendarHome />
+			<CalendarHome setDataConsulta={setDataConsulta} />
 
 			<ContainerAppointment>
 				<ButtonTabs
 					textButton={'Pendentes'}
-					clickButton={statusList === 'pendente'}
+					clickButton={statusList === 'Pendente'}
 					onPress={() =>
-						setStatusList('pendente')
+						setStatusList('Pendente')
 					}
 				/>
 
@@ -204,32 +218,64 @@ export const Home = ({ navigation }) => {
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
 					if (
-						statusList === 'pendente' &&
-						item.situacao === 'pendente'
+						statusList === 'Pendente' &&
+						item.situacao === 'Pendente'
 					) {
 						return (
 							<AppointmentCard
+								usuarioConsulta={
+									profile
+								}
 								situacao={
-									item.situacao
+									item
+										.situacao
+										.situacao
 								}
 								onPressCancel={() =>
 									setShowModalCancel(
 										true,
 									)
 								}
-								name={item.nome}
+								name={
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
+								}
 								especialidade={
-									item.especialidade
+									item
+										.medicoClinica
+										.medico
+										.especialidade
+										.especialidade1
 								}
 								imagem={
-									item.imagem
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.foto
 								}
-								crm={item.crm}
-								age={item.age}
+								crm={
+									item
+										.medicoClinica
+										.medico
+										.crm
+								}
+								age={
+									item
+										.paciente
+										.dataNascimento
+								}
 								reason={
-									item.reason
+									item
+										.prioridade
+										.prioridade
 								}
-								hour={item.hour}
+								hour={
+									item.dataConsulta
+								}
 							/>
 						);
 					}
@@ -240,7 +286,9 @@ export const Home = ({ navigation }) => {
 						return (
 							<AppointmentCard
 								situacao={
-									item.situacao
+									item
+										.situacao
+										.situacao
 								}
 								onPressLocal={() => {
 									setSelectedAppointment(
@@ -255,44 +303,104 @@ export const Home = ({ navigation }) => {
 										'ViewPrescription',
 									)
 								}
-								name={item.nome}
+								name={
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
+								}
 								especialidade={
-									item.especialidade
+									item
+										.medicoClinica
+										.medico
+										.especialidade
+										.especialidade1
 								}
 								imagem={
-									item.imagem
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.foto
 								}
-								crm={item.crm}
-								age={item.age}
+								crm={
+									item
+										.medicoClinica
+										.medico
+										.crm
+								}
+								age={
+									item
+										.paciente
+										.dataNascimento
+								}
 								reason={
-									item.reason
+									item
+										.prioridade
+										.prioridade
 								}
-								hour={item.hour}
+								hour={
+									item.dataConsulta
+								}
 							/>
 						);
 					}
 					if (
 						statusList === 'cancelada' &&
-						item.situacao === 'cancelada'
+						item.situacao.situacao ===
+							'cancelada'
 					) {
 						return (
 							<AppointmentCard
-								situacao={
-									item.situacao
+								usuarioConsulta={
+									profile
 								}
-								name={item.nome}
+								situacao={
+									item
+										.situacao
+										.situacao
+								}
+								name={
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
+								}
 								especialidade={
-									item.especialidade
+									item
+										.medicoClinica
+										.medico
+										.especialidade
+										.especialidade1
 								}
 								imagem={
-									item.imagem
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.foto
 								}
-								crm={item.crm}
-								age={item.age}
+								crm={
+									item
+										.medicoClinica
+										.medico
+										.crm
+								}
+								age={
+									item
+										.paciente
+										.dataNascimento
+								}
 								reason={
-									item.reason
+									item
+										.prioridade
+										.prioridade
 								}
-								hour={item.hour}
+								hour={
+									item.dataConsulta
+								}
 							/>
 						);
 					}
@@ -320,14 +428,14 @@ export const Home = ({ navigation }) => {
 				navigation={navigation}
 			/>
 
-			<CalendarHome />
+			<CalendarHome setDataConsulta={setDataConsulta} />
 
 			<ContainerAppointment>
 				<ButtonTabs
 					textButton={'Pendentes'}
-					clickButton={statusList === 'pendente'}
+					clickButton={statusList === 'Pendente'}
 					onPress={() =>
-						setStatusList('pendente')
+						setStatusList('Pendente')
 					}
 				/>
 
@@ -353,13 +461,19 @@ export const Home = ({ navigation }) => {
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
 					if (
-						statusList === 'pendente' &&
-						item.situacao === 'pendente'
+						statusList === 'Pendente' &&
+						item.situacao.situacao ===
+							'Pendente'
 					) {
 						return (
 							<AppointmentCard
+								usuarioConsulta={
+									profile
+								}
 								situacao={
-									item.situacao
+									item
+										.situacao
+										.situacao
 								}
 								onPressAppointment={() =>
 									setShowModalAppointment(
@@ -379,19 +493,46 @@ export const Home = ({ navigation }) => {
 										item,
 									);
 								}}
-								name={item.nome}
+								name={
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
+								}
 								especialidade={
-									item.especialidade
+									item
+										.medicoClinica
+										.medico
+										.especialidade
+										.especialidade1
 								}
 								imagem={
-									item.imagem
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.foto
 								}
-								crm={item.crm}
-								age={item.age}
+								crm={
+									item
+										.medicoClinica
+										.medico
+										.crm
+								}
+								age={
+									item
+										.paciente
+										.dataNascimento
+								}
 								reason={
-									item.reason
+									item
+										.prioridade
+										.prioridade
 								}
-								hour={item.hour}
+								hour={
+									item.dataConsulta
+								}
 							/>
 						);
 					}
@@ -401,27 +542,59 @@ export const Home = ({ navigation }) => {
 					) {
 						return (
 							<AppointmentCard
+								usuarioConsulta={
+									profile
+								}
 								situacao={
-									item.situacao
+									item
+										.situacao
+										.situacao
 								}
 								onPressLocal={() =>
 									navigation.navigate(
 										'ViewRecord',
 									)
 								}
-								name={item.nome}
+								name={
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
+								}
 								especialidade={
-									item.especialidade
+									item
+										.medicoClinica
+										.medico
+										.especialidade
+										.especialidade1
 								}
 								imagem={
-									item.imagem
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.foto
 								}
-								crm={item.crm}
-								age={item.age}
+								crm={
+									item
+										.medicoClinica
+										.medico
+										.crm
+								}
+								age={
+									item
+										.paciente
+										.dataNascimento
+								}
 								reason={
-									item.reason
+									item
+										.prioridade
+										.prioridade
 								}
-								hour={item.hour}
+								hour={
+									item.dataConsulta
+								}
 							/>
 						);
 					}
@@ -432,21 +605,50 @@ export const Home = ({ navigation }) => {
 						return (
 							<AppointmentCard
 								situacao={
-									item.situacao
+									item
+										.situacao
+										.situacao
 								}
-								name={item.nome}
+								name={
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
+								}
 								especialidade={
-									item.especialidade
+									item
+										.medicoClinica
+										.medico
+										.especialidade
+										.especialidade1
 								}
 								imagem={
-									item.imagem
+									item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.foto
 								}
-								crm={item.crm}
-								age={item.age}
+								crm={
+									item
+										.medicoClinica
+										.medico
+										.crm
+								}
+								age={
+									item
+										.paciente
+										.dataNascimento
+								}
 								reason={
-									item.reason
+									item
+										.prioridade
+										.prioridade
 								}
-								hour={item.hour}
+								hour={
+									item.dataConsulta
+								}
 							/>
 						);
 					}

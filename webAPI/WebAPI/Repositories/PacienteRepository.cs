@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
@@ -50,6 +51,10 @@ namespace WebAPI.Repositories
         {
             return ctx.Consultas
                  .Include(x => x.Situacao)
+                 .Include(x => x.Prioridade)
+                 .Include(x => x.Paciente!.IdNavigation)
+                 .Include(x => x.MedicoClinica!.Medico!.Especialidade)
+                 .Include(x=> x.MedicoClinica!.Medico!.IdNavigation)
                  .Where(x => x.PacienteId == idPaciente && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)
                  .ToList();
         }
@@ -77,5 +82,8 @@ namespace WebAPI.Repositories
             ctx.Usuarios.Add(user);
             ctx.SaveChanges();
         }
+
+
+
     }
 }
