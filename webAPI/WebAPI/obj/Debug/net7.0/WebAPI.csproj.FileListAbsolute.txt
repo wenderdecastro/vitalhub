@@ -404,9 +404,9 @@ C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\stati
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.WebAPI.props
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\staticwebassets.pack.json
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\scopedcss\bundle\WebAPI.styles.css
-C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.csproj.CopyComplete
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.dll
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\refint\WebAPI.dll
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.pdb
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.genruntimeconfig.cache
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\ref\WebAPI.dll
+C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.csproj.Up2Date

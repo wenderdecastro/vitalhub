@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Elipse } from '../UserPicture/Style';
 import {
 	ButtonCard,
@@ -15,18 +16,19 @@ import {
 } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import moment from 'moment';
 
 export const AppointmentCard = ({
-	situacao = 'pendente',
+	situacao = 'Pendente',
 	onPressAppointment,
 	onPressCancel,
 	onPressLocal,
-	name,
-	age,
 	reason,
+	name,
 	hour,
 	imagem,
-	usuarioConsulta,
+	age,
+	DadosConsulta,
 }) => {
 	return (
 		<ContainerCard onPress={onPressLocal}>
@@ -34,21 +36,14 @@ export const AppointmentCard = ({
 
 			<ContentCard>
 				<DateProfileCard>
-					<ProfileName>
-						{
-							usuarioConsulta
-								.idNavigation
-								.nome
-						}
-					</ProfileName>
+					<ProfileName>{name}</ProfileName>
 
 					<ProfileData>
 						<TextAge>
-							{
-								usuarioConsulta
-									.idNavigation
-									.idade
-							}
+							{moment(age)
+								.fromNow(true)
+								.charAt(0)}{' '}
+							anos
 						</TextAge>
 						<FontAwesome
 							name="circle"
