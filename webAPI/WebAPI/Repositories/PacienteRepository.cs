@@ -56,11 +56,15 @@ namespace WebAPI.Repositories
 
         public Paciente BuscarPorId(Guid Id)
         {
-            return ctx.Pacientes
-                .Include(x => x.Endereco)
-                .Include(x => x.IdNavigation)
-                .FirstOrDefault(x => x.Id == Id);
+            Paciente pacienteBuscado = ctx.Pacientes.
+                Include(m => m.IdNavigation).
+                Include(m => m.Endereco).
+                FirstOrDefault(m => m.Id == Id)!;
+
+
+            return pacienteBuscado;
         }
+
 
         public List<Consulta> BuscarRealizadas(Guid Id)
         {

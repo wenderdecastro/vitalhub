@@ -34,24 +34,32 @@ export const Profile = ({ navigation }) => {
     const [role, setRole] = useState()
     const [cpf, setCpf] = useState()
     const [crm, setCrm] = useState()
+    const [dtNasc, setDtNasc] = useState()
+    const [especialidade, setEspecialidade] = useState()
 
     async function profileLoad() {
         const token = await userDecodeToken()
-       
+
         console.log(token);
 
         setNome(token.name)
         setEmail(token.email)
         setRole(token.role)
         setIdUser(token.jti)
-       
+
         await getUser()
 
-    } 
+    }
 
     async function getUser() {
-        
-        const response = await api.get(`/Medicos/BuscarPorId/${idUser}`);
+
+        const response = await api.get(
+
+            role == "Paciente" ?
+                `/Pacientes/BuscarPorId/${idUser}`
+                :
+                `/Medicos/BuscarPorId/${idUser}`
+        );
         setUserData(response.data);
         console.log(response.data);
 
@@ -59,8 +67,9 @@ export const Profile = ({ navigation }) => {
         setCep(response.data.endereco.cep)
         setCpf(response.data.cpf)
         setCrm(response.data.crm)
-       
-        
+        setDtNasc(response.data.dataNascimento)
+        setEspecialidade(response.data.especialidade.especialidade1)
+
     }
 
     useEffect(() => {
@@ -68,11 +77,17 @@ export const Profile = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        
+
         if (idUser) {
-            getUser(); 
+            getUser();
         }
     }, [idUser]);
+
+    function formatarData(data) {
+        if (!data) return "";
+        const dataFormatada = new Date(data);
+        return dataFormatada.toLocaleDateString('pt-BR');
+    }
 
 
     return (
@@ -85,19 +100,31 @@ export const Profile = ({ navigation }) => {
                         <TitleC>{nome}</TitleC>
                         <TextAdd>{email}</TextAdd>
 
-                        <BoxInput
-                            fieldWidht={80}
-                            textLabel='Data de nascimento:'
-                            placeholder='04/05/1999'
-                            fieldHeight={60}
+                        {
+                            role == "Paciente" ?
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='Data de nascimento:'
+                                    placeholder={formatarData(dtNasc)}
+                                    fieldHeight={60}
 
-                        />
+                                />
+                                :
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='Especialidade:'
+                                    placeholder={especialidade}
+                                    fieldHeight={60}
+
+                                />
+                        }
+
                         {
                             role == "Paciente" ?
                                 <BoxInput
                                     fieldWidht={80}
                                     textLabel='CPF:'
-                                    fieldValue={cpf}
+                                    placeholder={cpf}
                                     fieldHeight={60}
                                 />
                                 :
@@ -113,27 +140,22 @@ export const Profile = ({ navigation }) => {
                             fieldWidht={80}
                             textLabel='Endereço'
                             placeholder={logradouro}
-                            
+
                             fieldHeight={60}
                         />
 
-                      
-                        
+
+
                         <ContainerUF>
                             <BoxInput
-                                fieldWidht={45}
+                                fieldWidht={100}
                                 textLabel='CEP'
                                 placeholder={cep}
                                 fieldHeight={60}
                             />
-                            <BoxInput
-                                fieldWidht={45}
-                                textLabel='Cidade'
-                                placeholder='Moema-SP'
-                                fieldHeight={60}
-                            />
+
                         </ContainerUF>
-                        
+
 
                         <Button2 onPress={() => setProfileEdit(false)}>
                             <ButtonTitle>EDITAR</ButtonTitle>
@@ -151,41 +173,63 @@ export const Profile = ({ navigation }) => {
                 </>
             ) : (
                 <>
-                    <UserPicture source={{ uri: ('https://github.com/GustavoPasqualetti.png') }} />
+                   <UserPicture source={require("../../assets/perfil.jpg")} />
                     <ContainerProfile>
-                        <TitleC>Gustavo Pasqualetti</TitleC>
-                        <TextAdd>gustavopasqualetti@gmail.com</TextAdd>
+                    <TitleC>{nome}</TitleC>
+                        <TextAdd>{email}</TextAdd>
 
-                        <BoxInput
-                            fieldWidht={80}
-                            textLabel='Data de nascimento:'
-                            fieldHeight={60}
-                            editable={true}
-                        />
-                        <BoxInput
-                            fieldWidht={80}
-                            textLabel='CPF:'
-                            fieldHeight={60}
-                            editable={true}
-                        />
+                        {
+                            role == "Paciente" ?
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='Data de nascimento:'
+                                    fieldHeight={60}
+                                    editable={true}
+                                />
+                                :
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='Especialidade:'
+                                    editable={true}
+                                    fieldHeight={60}
+
+                                />
+                        }
+
+                        {
+                            role == "Paciente" ?
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='CPF:'
+                                    editable={true}
+                                    fieldHeight={60}
+                                />
+                                :
+                                <BoxInput
+                                    fieldWidht={80}
+                                    textLabel='CRM:'
+                                    editable={true}
+                                    fieldHeight={60}
+                                />
+                        }
+
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-                            fieldHeight={60}
                             editable={true}
+                            fieldHeight={60}
                         />
+
+
 
                         <ContainerUF>
                             <BoxInput
-                                fieldWidht={45}
+                                fieldWidht={100}
                                 textLabel='CEP'
+                                editable={true}
                                 fieldHeight={60}
                             />
-                            <BoxInput
-                                fieldWidht={45}
-                                textLabel='Cidade'
-                                fieldHeight={60}
-                            />
+
                         </ContainerUF>
 
                         <Button onPress={() => setProfileEdit(true)}>
