@@ -19,8 +19,8 @@ import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 export const login = ({ navigation }) => {
-	const [email, setEmail] = useState('marcos@gmail.com');
-	const [senha, setSenha] = useState('marcos');
+	const [email, setEmail] = useState('string');
+	const [senha, setSenha] = useState('string');
 	const [loading, setLoading] = useState(false);
 
 	async function Login() {
@@ -49,8 +49,6 @@ export const login = ({ navigation }) => {
 			console.log(response);
 
 			setLoading(true);
-			console.log(response);
-			console.log(response.status);
 
 			await AsyncStorage.setItem(
 				'token',
@@ -61,9 +59,6 @@ export const login = ({ navigation }) => {
 				setLoading(false);
 				navigation.replace('Main');
 			}, 2000);
-
-			console.log(email);
-			console.log(senha);
 		} catch (error) {
 			Toast.show({
 				type: 'error',
