@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Elipse } from '../UserPicture/Style';
 import {
 	ButtonCard,
@@ -15,75 +16,119 @@ import {
 } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import moment from 'moment';
 
 export const AppointmentCard = ({
-	situacao = 'pendente',
+	situacao = 'Pendente',
 	onPressAppointment,
 	onPressCancel,
 	onPressLocal,
-	name,
-	age,
-	reason,
-	hour,
-	imagem,
-	usuarioConsulta,
+	role,
+	dados,
 }) => {
 	return (
 		<ContainerCard onPress={onPressLocal}>
-			<ImageCard source={imagem} />
+			<ImageCard
+				source={
+					role === 'Paciente'
+						? dados.medicoClinica.medico
+								.idNavigation
+								.foto
+						: dados.paciente.idNavigation
+								.foto
+				}
+			/>
 
 			<ContentCard>
 				<DateProfileCard>
 					<ProfileName>
-						{
-							usuarioConsulta
-								.idNavigation
-								.nome
-						}
+						{role === 'Paciente'
+							? dados.medicoClinica
+									.medico
+									.idNavigation
+									.nome
+							: dados.paciente
+									.idNavigation
+									.nome}
 					</ProfileName>
 
 					<ProfileData>
 						<TextAge>
-							{
-								usuarioConsulta
-									.idNavigation
-									.idade
-							}
+							{role === 'Paciente'
+								? moment(
+										dados
+											.paciente
+											.dataNascimento,
+								  )
+										.fromNow(
+											true,
+										)
+										.charAt(
+											0,
+										) +
+								  ' Anos'
+								: dados
+										.medicoClinica
+										.medico
+										.crm}
 						</TextAge>
 						<FontAwesome
 							name="circle"
 							size={6}
 							color="#D9D9D9"
 						/>
-						<TextBold>{reason}</TextBold>
+						<TextBold>
+							{dados.prioridade
+								.prioridade ===
+							1
+								? 'Urgência'
+								: prioridade ===
+								  2
+								? 'Consulta'
+								: 'Rotina'}
+						</TextBold>
 					</ProfileData>
 				</DateProfileCard>
 
 				<ViewRow>
-					<ClockCard situacao={situacao}>
+					<ClockCard
+						situacao={
+							dados.situacao.situacao
+						}
+					>
 						<AntDesign
 							name="clockcircle"
 							size={14}
 							color={
 								situacao ==
-								'pendente'
+								'Pendente'
 									? '#49B3BA'
 									: '4E4B59'
 							}
 						/>
-						<TextBold situacao={situacao}>
-							{hour}
+						<TextBold
+							situacao={
+								situacao
+									.situacao
+									.situacao
+							}
+						>
+							{dados.dataConsulta}
 						</TextBold>
 					</ClockCard>
-					{situacao == 'cancelada' ? (
+					{situacao.situacao.situacao ==
+					'Cancelada' ? (
 						<></>
-					) : situacao == 'pendente' ? (
+					) : situacao.situacao.situacao ==
+					  'Pendente' ? (
 						<ButtonCard
 							onPress={onPressCancel}
 						>
 							<ButtonText
 								situacao={
 									situacao
+										.situacao
+										.situacao
 								}
 							>
 								Cancelar
@@ -98,6 +143,8 @@ export const AppointmentCard = ({
 							<ButtonText
 								situacao={
 									situacao
+										.situacao
+										.situacao
 								}
 							>
 								Ver Prontuario

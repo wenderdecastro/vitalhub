@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { login } from './src/screens/Login/Login';
+import { Login } from './src/screens/Login/Login';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +35,7 @@ import CameraScreen from './src/screens/Camera/Camera';
 import Toast from 'react-native-toast-message';
 
 // LogBox.ignoreAllLogs();
-// LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreLogs(['Warning: ...']);
 
 export default function App() {
 	const [fontsLoaded, fontsError] = useFonts({
@@ -47,7 +47,7 @@ export default function App() {
 		Quicksand_400Regular,
 	});
 
-	if (!fontsLoaded && !fontsError) {
+	if (!fontsLoaded || !fontsError) {
 		return null;
 	}
 
@@ -61,7 +61,7 @@ export default function App() {
 				>
 					<Stack.Screen
 						name="Login"
-						component={login}
+						component={Login}
 						options={{ title: 'Login' }}
 					/>
 

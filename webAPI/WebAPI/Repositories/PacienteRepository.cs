@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
@@ -48,15 +49,22 @@ namespace WebAPI.Repositories
 
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idPaciente)
         {
-           return ctx.Consultas
-                .Include(x => x.Situacao)
-                .Where(x  => x.PacienteId == idPaciente && x.DataConsulta == dataConsulta)
-                .ToList();
+            return ctx.Consultas
+                 .Include(x => x.Situacao)
+                 .Include(x => x.Prioridade)
+                 .Include(x => x.Paciente!.IdNavigation)
+                 .Include(x => x.MedicoClinica!.Medico!.Especialidade)
+                 .Include(x=> x.MedicoClinica!.Medico!.IdNavigation)
+                 .Where(x => x.PacienteId == idPaciente && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)
+                 .ToList();
         }
 
         public Paciente BuscarPorId(Guid Id)
         {
-            return ctx.Pacientes.FirstOrDefault(x => x.Id == Id);
+            return ctx.Pacientes
+                .Include(x => x.Endereco)
+                .Include(x => x.IdNavigation)
+                .FirstOrDefault(x => x.Id == Id);
         }
 
         public List<Consulta> BuscarRealizadas(Guid Id)
@@ -70,5 +78,8 @@ namespace WebAPI.Repositories
             ctx.Usuarios.Add(user);
             ctx.SaveChanges();
         }
+
+
+
     }
 }

@@ -18,12 +18,12 @@ import api from '../../service/Service';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-export const login = ({ navigation }) => {
+export const Login = ({ navigation }) => {
 	const [email, setEmail] = useState('string');
 	const [senha, setSenha] = useState('string');
 	const [loading, setLoading] = useState(false);
 
-	async function Login() {
+	async function validadeLogin() {
 		if (email === '' || senha === '') {
 			Toast.show({
 				type: 'error',
@@ -42,7 +42,6 @@ export const login = ({ navigation }) => {
 			return;
 		}
 		try {
-			console.log('teste');
 			const response = await api.post('/Login', {
 				email: email,
 				senha: senha,
@@ -52,11 +51,9 @@ export const login = ({ navigation }) => {
 			setLoading(true);
 			console.log(response);
 			console.log(response.status);
+			console.log(response.data);
 
-			await AsyncStorage.setItem(
-				'token',
-				JSON.stringify(response.data),
-			);
+			await AsyncStorage.setItem('token', response.data);
 
 			setTimeout(() => {
 				setLoading(false);
@@ -81,7 +78,7 @@ export const login = ({ navigation }) => {
 				},
 			});
 			setLoading(false);
-			console.error('Erro ao buscar dados de login', error);
+			console.error('Erro ao buscar dados de Login', error);
 			return;
 		}
 	}
@@ -111,7 +108,10 @@ export const login = ({ navigation }) => {
 				Esqueceu sua senha?
 			</LinkMedium>
 
-			<Button onPress={() => Login()} disabled={loading}>
+			<Button
+				onPress={() => validadeLogin()}
+				disabled={loading}
+			>
 				<ButtonTitle>
 					{loading ? (
 						<ActivityIndicator color="#fff" />
