@@ -31,9 +31,7 @@ export const AppointmentCard = ({
 	profile,
 }) => {
 	return (
-		<ContainerCard
-			onPress={situacao === 'Pendente' ? onPressLocal : null}
-		>
+		<ContainerCard onPress={onPressLocal}>
 			<ImageCard source={imagem} />
 
 			<ContentCard>
@@ -65,7 +63,7 @@ export const AppointmentCard = ({
 								situacao ==
 								'Pendente'
 									? '#49B3BA'
-									: '4E4B59'
+									: '#4E4B59'
 							}
 						/>
 						<TextBold situacao={situacao}>

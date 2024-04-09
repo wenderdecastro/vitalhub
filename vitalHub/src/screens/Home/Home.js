@@ -19,9 +19,10 @@ import { LocalModal } from '../../components/LocalModal/LocalModal';
 import { userDecodeToken } from '../../utils/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../service/Service';
+import moment from 'moment';
 
 export const Home = ({ navigation }) => {
-	const [dataConsulta, setDataConsulta] = useState();
+	const [dataConsulta, setDataConsulta] = useState('');
 
 	const [statusList, setStatusList] = useState('Pendente');
 
@@ -42,67 +43,55 @@ export const Home = ({ navigation }) => {
 
 	async function profileLoad() {
 		const token = await userDecodeToken();
-
-		console.log(token);
 		setProfile(token);
 		setUserLogin(token.role);
+
+		setDataConsulta(moment().format('YYYY-MM-DD'));
 	}
 
 	async function ListarConsulta() {
 		try {
-			const token = JSON.parse(
-				await AsyncStorage.getItem('token'),
-			).token;
-			console.log(token);
-			console.log(profile.jti);
-			if (token) {
-				if (profile.role === 'Paciente') {
-					await api
-						.get(
-							`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
-							{
-								headers: {
-									Authorization: `Bearer ${token}`,
-								},
-							},
-						)
-						.then((response) => {
-							setListaConsultas(
-								response.data,
-							);
-							console.log(
-								response.data,
-							);
-						})
-						.catch((error) => {
-							console.log(error);
-						});
-				} else {
-					await api
-						.get(
-							`/Medicos/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
-							{
-								headers: {
-									Authorization: `Bearer ${token}`,
-								},
-							},
-						)
-						.then((response) => {
-							setListaConsultas(
-								response.data,
-							);
-							console.log(
-								response.data,
-							);
-						})
-						.catch((error) => {
-							console.log(error);
-						});
-				}
-			} else {
+			if (profile.role === 'Paciente') {
 				console.log(
-					'Token de autorizacao nao encontrado',
+					`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
 				);
+				await api
+					.get(
+						`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
+						{
+							headers: {
+								Authorization: `Bearer ${profile.token}`,
+							},
+						},
+					)
+					.then((response) => {
+						setListaConsultas(
+							response.data,
+						);
+						console.log(response.data);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			} else {
+				await api
+					.get(
+						`/Medicos/BuscarPorData?data=${dataConsulta}&id=${userToken.jti}`,
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
+						},
+					)
+					.then((response) => {
+						setListaConsultas(
+							response.data,
+						);
+						console.log(response.data);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
 			}
 		} catch (error) {
 			console.log(error);
@@ -111,7 +100,6 @@ export const Home = ({ navigation }) => {
 
 	useEffect(() => {
 		profileLoad();
-		ListarConsulta();
 	}, []);
 
 	useEffect(() => {
@@ -170,10 +158,17 @@ export const Home = ({ navigation }) => {
 							onPressAppointment={
 								profile.role ===
 								'Paciente'
-									? () =>
+									? () => {
+											setSelectedAppointment(
+												item,
+											);
 											setShowModalAppointment(
 												true,
-											)
+											);
+											console.log(
+												selectedAppointment,
+											);
+									  }
 									: null
 							}
 							onPressCancel={() =>
@@ -185,11 +180,14 @@ export const Home = ({ navigation }) => {
 								profile.role ===
 								'Paciente'
 									? () => {
+											setSelectedAppointment(
+												item,
+											);
 											setShowModalLocal(
 												true,
 											);
-											setSelectedAppointment(
-												item,
+											console.log(
+												selectedAppointment,
 											);
 									  }
 									: navigation.navigate(
@@ -229,8 +227,7 @@ export const Home = ({ navigation }) => {
 								'Paciente'
 									? item
 											.paciente
-											.dataNascimento +
-									  ' anos'
+											.dataNascimento
 									: item
 											.medicoClinica
 											.medico
@@ -269,12 +266,14 @@ export const Home = ({ navigation }) => {
 				setShowModalCancel={setShowModalCancel}
 			/>
 			<AppointmentModal
+				appointmentData={selectedAppointment}
 				visible={showModalAppointment}
 				setShowModalAppointment={
 					setShowModalAppointment
 				}
 			/>
 			<ScheduleModal
+				// data={selectedAppointment}
 				visible={showModalSchedule}
 				navigation={navigation}
 				setShowModalSchedule={setShowModalSchedule}

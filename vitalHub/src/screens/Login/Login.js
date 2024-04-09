@@ -18,12 +18,12 @@ import api from '../../service/Service';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-export const login = ({ navigation }) => {
+export const Login = ({ navigation }) => {
 	const [email, setEmail] = useState('string');
 	const [senha, setSenha] = useState('string');
 	const [loading, setLoading] = useState(false);
 
-	async function Login() {
+	async function LoginFunc() {
 		if (email === '' || senha === '') {
 			Toast.show({
 				type: 'error',
@@ -75,7 +75,7 @@ export const login = ({ navigation }) => {
 				},
 			});
 			setLoading(false);
-			console.error('Erro ao buscar dados de login', error);
+			console.error('Erro ao buscar dados de Login', error);
 			return;
 		}
 	}
@@ -105,7 +105,7 @@ export const login = ({ navigation }) => {
 				Esqueceu sua senha?
 			</LinkMedium>
 
-			<Button onPress={() => Login()} disabled={loading}>
+			<Button onPress={() => LoginFunc()} disabled={loading}>
 				<ButtonTitle>
 					{loading ? (
 						<ActivityIndicator color="#fff" />
