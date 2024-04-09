@@ -13,6 +13,8 @@ public partial class Endereco
 
     public int? Numero { get; set; }
 
+    public string? Cidade { get; set; }
+
     public decimal? Longitude { get; set; }
 
     public decimal? Latitude { get; set; }

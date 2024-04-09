@@ -12,7 +12,7 @@ import { userDecodeToken } from "../../utils/Auth"
 import api from "../../service/Service"
 import { Text } from "react-native"
 
-export const Profile = ({ navigation }) => {
+export const Profile = ({ navigation, }) => {
 
     const [ProfileEdit, setProfileEdit] = useState(true)
 
@@ -25,12 +25,16 @@ export const Profile = ({ navigation }) => {
         }
     }
 
+    const [token, setToken] = useState()
+
     const [nome, setNome] = useState()
     const [email, setEmail] = useState()
     const [idUser, setIdUser] = useState()
     const [userData, setUserData] = useState()
     const [cep, setCep] = useState()
     const [logradouro, setLogradouro] = useState()
+    const [cidade, setCidade] = useState()
+    const [numero, setNumero] = useState()
     const [role, setRole] = useState()
     const [cpf, setCpf] = useState()
     const [crm, setCrm] = useState()
@@ -40,7 +44,6 @@ export const Profile = ({ navigation }) => {
     async function profileLoad() {
         const token = await userDecodeToken()
 
-        console.log(token);
 
         setNome(token.name)
         setEmail(token.email)
@@ -65,11 +68,33 @@ export const Profile = ({ navigation }) => {
 
         setLogradouro(response.data.endereco.logradouro)
         setCep(response.data.endereco.cep)
+        setCidade(response.data.endereco.cidade)
+        setNumero(response.data.endereco.numero)
         setCpf(response.data.cpf)
         setCrm(response.data.crm)
         setDtNasc(response.data.dataNascimento)
         setEspecialidade(response.data.especialidade.especialidade1)
+    }
 
+    async function updatePatient() {
+        const token = JSON.parse(await AsyncStorage.getItem('token')).token;
+        console.log(token);
+
+        try {
+
+            await api.put("Pacientes", {
+
+                Cpf: cpf,
+                DataNascimento: dtNasc,
+                Cep: cep,
+                Logradouro: logradouro,
+
+            }, { headers: { Authorization: `Bearer ${token}` } })
+            setProfileEdit(true)
+
+        } catch (error) {
+            console.log(error + " erro para atualizar paciente");
+        }
     }
 
     useEffect(() => {
@@ -92,13 +117,13 @@ export const Profile = ({ navigation }) => {
 
     return (
         <ContainerScroll>
+            <UserPicture source={require("../../assets/perfil.jpg")} />
+            <ContainerProfile>
+                <TitleC>{nome}</TitleC>
+                <TextAdd>{email}</TextAdd>
 
-            {ProfileEdit ? (
-                <>
-                    <UserPicture source={require("../../assets/perfil.jpg")} />
-                    <ContainerProfile>
-                        <TitleC>{nome}</TitleC>
-                        <TextAdd>{email}</TextAdd>
+                {ProfileEdit ? (
+                    <>
 
                         {
                             role == "Paciente" ?
@@ -139,18 +164,22 @@ export const Profile = ({ navigation }) => {
                         <BoxInput
                             fieldWidht={80}
                             textLabel='Endereço'
-                            placeholder={logradouro}
-
+                            placeholder={`${logradouro} , ${numero}`}
                             fieldHeight={60}
                         />
 
-
-
                         <ContainerUF>
                             <BoxInput
-                                fieldWidht={100}
+                                fieldWidht={46}
                                 textLabel='CEP'
                                 placeholder={cep}
+                                fieldHeight={60}
+                            />
+
+                            <BoxInput
+                                fieldWidht={46}
+                                textLabel='Cidade'
+                                placeholder={cidade}
                                 fieldHeight={60}
                             />
 
@@ -168,16 +197,9 @@ export const Profile = ({ navigation }) => {
                         <CancelAppointment
                             onPress={() => navigation.replace("Main")}
                         >Voltar</CancelAppointment>
-
-                    </ContainerProfile>
-                </>
-            ) : (
-                <>
-                   <UserPicture source={require("../../assets/perfil.jpg")} />
-                    <ContainerProfile>
-                    <TitleC>{nome}</TitleC>
-                        <TextAdd>{email}</TextAdd>
-
+                    </>
+                ) : (
+                    <>
                         {
                             role == "Paciente" ?
                                 <BoxInput
@@ -185,6 +207,7 @@ export const Profile = ({ navigation }) => {
                                     textLabel='Data de nascimento:'
                                     fieldHeight={60}
                                     editable={true}
+                                    onChangeText={setDtNasc}
                                 />
                                 :
                                 <BoxInput
@@ -192,7 +215,7 @@ export const Profile = ({ navigation }) => {
                                     textLabel='Especialidade:'
                                     editable={true}
                                     fieldHeight={60}
-
+                                    onChangeText={setEspecialidade}
                                 />
                         }
 
@@ -203,6 +226,7 @@ export const Profile = ({ navigation }) => {
                                     textLabel='CPF:'
                                     editable={true}
                                     fieldHeight={60}
+                                    onChangeText={setCpf}
                                 />
                                 :
                                 <BoxInput
@@ -210,6 +234,7 @@ export const Profile = ({ navigation }) => {
                                     textLabel='CRM:'
                                     editable={true}
                                     fieldHeight={60}
+                                    onChangeText={setCrm}
                                 />
                         }
 
@@ -218,21 +243,29 @@ export const Profile = ({ navigation }) => {
                             textLabel='Endereço'
                             editable={true}
                             fieldHeight={60}
+                            onChangeText={setLogradouro}
                         />
-
-
 
                         <ContainerUF>
                             <BoxInput
-                                fieldWidht={100}
+                                fieldWidht={46}
                                 textLabel='CEP'
                                 editable={true}
                                 fieldHeight={60}
+                                onChangeText={setCep}
+                            />
+
+                            <BoxInput
+                                fieldWidht={46}
+                                textLabel='Cidade'
+                                editable={true}
+                                fieldHeight={60}
+                                onChangeText={setCidade}
                             />
 
                         </ContainerUF>
 
-                        <Button onPress={() => setProfileEdit(true)}>
+                        <Button onPress={() => updatePatient()}>
                             <ButtonTitle>SALVAR</ButtonTitle>
                         </Button>
 
@@ -240,10 +273,10 @@ export const Profile = ({ navigation }) => {
                             onPress={() => setProfileEdit(true)}
                         >Voltar</CancelAppointment>
 
-                    </ContainerProfile>
-                </>
-            )}
+                    </>
+                )}
 
+            </ContainerProfile>
 
         </ContainerScroll>
     )
