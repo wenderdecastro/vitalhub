@@ -18,12 +18,12 @@ import api from '../../service/Service';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-export const login = ({ navigation }) => {
-	const [email, setEmail] = useState('marcos@gmail.com');
-	const [senha, setSenha] = useState('marcos');
+export const Login = ({ navigation }) => {
+	const [email, setEmail] = useState('string');
+	const [senha, setSenha] = useState('string');
 	const [loading, setLoading] = useState(false);
 
-	async function Login() {
+	async function LoginFunc() {
 		if (email === '' || senha === '') {
 			Toast.show({
 				type: 'error',
@@ -49,8 +49,6 @@ export const login = ({ navigation }) => {
 			console.log(response);
 
 			setLoading(true);
-			console.log(response);
-			console.log(response.status);
 
 			await AsyncStorage.setItem(
 				'token',
@@ -61,9 +59,6 @@ export const login = ({ navigation }) => {
 				setLoading(false);
 				navigation.replace('Main');
 			}, 2000);
-
-			console.log(email);
-			console.log(senha);
 		} catch (error) {
 			Toast.show({
 				type: 'error',
@@ -80,7 +75,7 @@ export const login = ({ navigation }) => {
 				},
 			});
 			setLoading(false);
-			console.error('Erro ao buscar dados de login', error);
+			console.error('Erro ao buscar dados de Login', error);
 			return;
 		}
 	}
@@ -110,7 +105,7 @@ export const login = ({ navigation }) => {
 				Esqueceu sua senha?
 			</LinkMedium>
 
-			<Button onPress={() => Login()} disabled={loading}>
+			<Button onPress={() => LoginFunc()} disabled={loading}>
 				<ButtonTitle>
 					{loading ? (
 						<ActivityIndicator color="#fff" />

@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\49802004863\\Desktop\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "C:\\Users\\49802004863\\Desktop\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\49802004863\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\49802004863\\Desktop\\vitalhub\\webAPI\\WebAPI\\obj\\",
+=======
+    "C:\\Users\\57267874800\\Desktop\\github\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\57267874800\\Desktop\\github\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\57267874800\\Desktop\\github\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj",
+        "projectName": "WebAPI",
+        "projectPath": "C:\\Users\\57267874800\\Desktop\\github\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj",
+        "packagesPath": "C:\\Users\\57267874800\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\57267874800\\Desktop\\github\\vitalhub\\webAPI\\WebAPI\\obj\\",
+>>>>>>> 0277bbe205ec0eb8567f1faa0f50252ef9ff8ebb
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\49802004863\\AppData\\Roaming\\NuGet\\NuGet.Config",

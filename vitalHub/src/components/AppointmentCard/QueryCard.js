@@ -28,7 +28,7 @@ export const AppointmentCard = ({
 	hour,
 	imagem,
 	age,
-	DadosConsulta,
+	profile,
 }) => {
 	return (
 		<ContainerCard onPress={onPressLocal}>
@@ -61,18 +61,18 @@ export const AppointmentCard = ({
 							size={14}
 							color={
 								situacao ==
-								'pendente'
+								'Pendente'
 									? '#49B3BA'
-									: '4E4B59'
+									: '#4E4B59'
 							}
 						/>
 						<TextBold situacao={situacao}>
 							{hour}
 						</TextBold>
 					</ClockCard>
-					{situacao == 'cancelada' ? (
+					{situacao == 'Cancelada' ? (
 						<></>
-					) : situacao == 'pendente' ? (
+					) : situacao == 'Pendente' ? (
 						<ButtonCard
 							onPress={onPressCancel}
 						>
@@ -95,7 +95,10 @@ export const AppointmentCard = ({
 									situacao
 								}
 							>
-								Ver Prontuario
+								{profile ==
+								'Patient'
+									? 'Ver local da consulta'
+									: 'Ver Prontuário'}
 							</ButtonText>
 						</ButtonCard>
 					)}
