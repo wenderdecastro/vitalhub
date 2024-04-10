@@ -22,23 +22,44 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_medicoRepository.ListarTodos());
+            try
+            {
+                return Ok(_medicoRepository.ListarTodos());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("BuscarPorId/{id}")]
+        [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {
-           
-            return Ok(_medicoRepository.BuscarPorId(id)); ;
+            try
+            {
+                return Ok(_medicoRepository.BuscarPorId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPut]
-        public IActionResult AtualizarPerfil(MedicoViewModel medico)
+        public IActionResult UpdateProfile(MedicoViewModel medico)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -66,17 +87,34 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("BuscarPorIDClinica")]
+        [HttpGet("BuscarPorIdClinica")]
         public IActionResult GetByIdClinica(Guid id)
         {
+            try
+            {
+                return Ok(_medicoRepository.ListarPorClinica(id)); ;
 
-            return Ok(_medicoRepository.ListarPorClinica(id)); ;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("BuscarPorData")]
-        public IActionResult BuscarPorData(Guid idmedico, DateTime data)
+        public IActionResult GetByDate(DateTime data, Guid id)
         {
-            return Ok(_medicoRepository.BuscarPorData(data, idmedico));
+            try
+            {
+                return Ok(_medicoRepository.BuscarPorData(data, id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
+        
     }
+
 }

@@ -37,5 +37,12 @@ namespace WebAPI.Repositories
                 })
                 .ToList();
         }
+
+        public IList<Clinica> ListarPorCidade(string cidade)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }
