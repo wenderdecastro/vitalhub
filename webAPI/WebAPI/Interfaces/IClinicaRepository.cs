@@ -1,4 +1,6 @@
-﻿using WebAPI.Domains;
+﻿using System;
+using System.Collections.Generic;
+using WebAPI.Domains;
 
 namespace WebAPI.Interfaces
 {
@@ -9,5 +11,7 @@ namespace WebAPI.Interfaces
         public List<Clinica> Listar();
 
         public Clinica BuscarPorId(Guid id);
+
+        public IList<Clinica> ListarPorCidade(string cidade);
     }
 }

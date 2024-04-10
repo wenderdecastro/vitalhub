@@ -20,42 +20,7 @@ namespace WebAPI.Controllers
             pacienteRepository = new PacienteRepository();
         }
 
-        [Authorize]
-        [HttpGet("ConsultasAgendadas")]
-        public IActionResult BuscarAgendadas()
-        {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(pacienteRepository.BuscarAgendadas(idUsuario));
-        }
-
-        [Authorize]
-        [HttpGet("ConsultasRealizadas")]
-        public IActionResult BuscarRealizadas()
-        {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
-        }
-
-        [Authorize]
-        [HttpPut]
-        public IActionResult AtualizarPerfil(PacienteViewModel paciente)
-        {
-
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(pacienteRepository.AtualizarPerfil(idUsuario, paciente));
-        }
-
-        [Authorize]
-        [HttpGet("ConsultasCanceladas")]
-        public IActionResult BuscarCanceladas()
-        {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
-        }
+     
 
         [HttpGet("PerfilLogado")]
         public IActionResult BuscarLogado()

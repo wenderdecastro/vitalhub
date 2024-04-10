@@ -16,11 +16,10 @@ namespace WebAPI.ViewModels
 
         public int? Numero { get; set; }
 
-        public string? Cidade { get; set; }
-
         public string? Nome { get; set; }
 
         public string? Email { get; set; }
+        public string? Cidade { get; set; }
 
         public string? Senha { get; set; }
 
