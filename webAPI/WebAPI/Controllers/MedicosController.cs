@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("BuscarPorId")]
+        [HttpGet("BuscarPorId/{id}")]
         public IActionResult GetById(Guid id)
         {
             try

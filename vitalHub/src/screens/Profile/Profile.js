@@ -81,16 +81,34 @@ export const Profile = ({ navigation, }) => {
         console.log(token);
 
         try {
+            {
+                role == "Paciente" ?
+                    await api.put("Pacientes", {
 
-            await api.put("Pacientes", {
+                        Cpf: cpf,
+                        DataNascimento: dtNasc,
+                        Cep: cep,
+                        Logradouro: logradouro,
+                        Cidade: cidade,
+                        Numero: numero
 
-                Cpf: cpf,
-                DataNascimento: dtNasc,
-                Cep: cep,
-                Logradouro: logradouro,
+                    }, { headers: { Authorization: `Bearer ${token}` } })
+                    :
+                    await api.put("Medicos", {
 
-            }, { headers: { Authorization: `Bearer ${token}` } })
+                        Crm: crm,
+                        Especialidade: especialidade,
+                        Cep: cep,
+                        Logradouro: logradouro,
+                        Cidade: cidade,
+                        Numero: numero
+
+                    }, { headers: { Authorization: `Bearer ${token}` } })
+
+            }
+
             setProfileEdit(true)
+            console.log(token);
 
         } catch (error) {
             console.log(error + " erro para atualizar paciente");
@@ -152,6 +170,7 @@ export const Profile = ({ navigation, }) => {
                                     placeholder={cpf}
                                     fieldHeight={60}
                                 />
+
                                 :
                                 <BoxInput
                                     fieldWidht={80}
@@ -161,12 +180,23 @@ export const Profile = ({ navigation, }) => {
                                 />
                         }
 
-                        <BoxInput
-                            fieldWidht={80}
-                            textLabel='Endereço'
-                            placeholder={`${logradouro} , ${numero}`}
-                            fieldHeight={60}
-                        />
+                        <ContainerUF>
+                            <BoxInput
+                                fieldWidht={75}
+                                textLabel='Endereço'
+                                placeholder={logradouro}
+                                fieldHeight={60}
+                            />
+
+                            <BoxInput
+                                fieldWidht={20}
+                                textLabel='Numero'
+                                placeholder={` ${numero}`}
+                                fieldHeight={60}
+                            />
+
+                        </ContainerUF>
+
 
                         <ContainerUF>
                             <BoxInput
@@ -213,9 +243,8 @@ export const Profile = ({ navigation, }) => {
                                 <BoxInput
                                     fieldWidht={80}
                                     textLabel='Especialidade:'
-                                    editable={true}
-                                    fieldHeight={60}
-                                    onChangeText={setEspecialidade}
+                                    placeholder={especialidade}
+                                    fieldHeight={60}                              
                                 />
                         }
 
@@ -238,13 +267,25 @@ export const Profile = ({ navigation, }) => {
                                 />
                         }
 
-                        <BoxInput
-                            fieldWidht={80}
-                            textLabel='Endereço'
-                            editable={true}
-                            fieldHeight={60}
-                            onChangeText={setLogradouro}
-                        />
+
+                        <ContainerUF>
+                            <BoxInput
+                                fieldWidht={75}
+                                textLabel='Endereço'
+                                fieldHeight={60}
+                                editable={true}
+                                onChangeText={setLogradouro}
+                            />
+
+                            <BoxInput
+                                fieldWidht={20}
+                                textLabel='Numero'
+                                fieldHeight={60}
+                                editable={true}
+                                onChangeText={setNumero}
+                            />
+
+                        </ContainerUF>
 
                         <ContainerUF>
                             <BoxInput
