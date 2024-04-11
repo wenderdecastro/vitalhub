@@ -31,6 +31,7 @@ export const userDecodeToken = async () => {
 		logradouro: decoded.logradouro,
 		numero: decoded.numero,
 		cidade: decoded.cidade,
-		numero: decoded.numero
+		numero: decoded.numero,
+		token: token,
 	};
 };
