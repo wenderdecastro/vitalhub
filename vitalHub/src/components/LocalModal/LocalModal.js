@@ -1,50 +1,94 @@
-import { Modal } from "react-native"
-import { ContentModal, ViewModal } from "../CancelModal/style"
-import { TextModal } from "../TextAdd/Style"
-import { Button } from "../Button/Style"
-import { ButtonTitle } from "../ButtonTitle/Style"
-import { LinkModal } from "../Links/Style"
-import { ModalImage } from "../UserPicture/Style"
-import { Title } from "../Title/Style"
+import { Modal } from 'react-native';
+import { ContentModal, ViewModal } from '../CancelModal/style';
+import { TextModal } from '../TextAdd/Style';
+import { Button } from '../Button/Style';
+import { ButtonTitle } from '../ButtonTitle/Style';
+import { LinkModal } from '../Links/Style';
+import { ModalImage } from '../UserPicture/Style';
+import { Title } from '../Title/Style';
 
-export const LocalModal = ({ navigation, appointmentData, visible, setShowModalLocal, ...rest }) => {
+export const LocalModal = ({
+	navigation,
+	appointmentData = null,
+	visible,
+	setShowModalLocal,
+	...rest
+}) => {
+	onPressHandler = () => {
+		navigation.navigate('Home');
+		setShowModalLocal(false);
+	};
 
-    const { nome, crm, imagem, especialidade } = appointmentData || {};
+	onPressContinue = () => {
+		navigation.navigate('LocalAppointment', appointmentData);
+		setShowModalLocal(false);
+	};
 
-    onPressHandler = () => {
-        navigation.navigate("HomeUser")
-        setShowModalLocal(false)
-    }
+	return appointmentData !== null ? (
+		<Modal
+			{...rest}
+			visible={visible}
+			transparent={true}
+			animationType="fade"
+		>
+			<ViewModal>
+				<ContentModal>
+					<ModalImage
+						source={
+							appointmentData
+								.medicoClinica
+								.medico
+								.idNavigation
+								.foto
+						}
+					/>
 
-    onPressContinue = () => {
-        navigation.navigate("LocalAppointment")
-        setShowModalLocal(false)
-    }
+					<Title>
+						{
+							appointmentData
+								.medicoClinica
+								.medico
+								.idNavigation
+								.nome
+						}
+					</Title>
 
-    return (
-        <Modal  {...rest} visible={visible} transparent={true} animationType="fade">
-            <ViewModal>
-                <ContentModal>
+					<TextModal>
+						{
+							appointmentData
+								.medicoClinica
+								.medico
+								.especialidade
+								.especialidade1
+						}{' '}
+						{
+							appointmentData
+								.medicoClinica
+								.medico.crm
+						}
+					</TextModal>
 
-                    <ModalImage
-                        source={imagem}
-                    />
+					<Button
+						onPress={() => {
+							onPressContinue();
+						}}
+					>
+						<ButtonTitle>
+							Ver local da consulta
+						</ButtonTitle>
+					</Button>
 
-                    <Title>{nome}</Title>
-
-                    <TextModal>{especialidade}    {crm}</TextModal>
-
-                    <Button onPress={() => {onPressContinue()}}>
-                        <ButtonTitle>Ver local da consulta</ButtonTitle>
-                    </Button>
-
-                    <LinkModal onPress={() => { onPressHandler() }}>
-                        Cancelar
-                    </LinkModal>
-
-
-                </ContentModal>
-            </ViewModal>
-        </Modal>
-    )
-}
+					<LinkModal
+						onPress={() => {
+							onPressHandler();
+						}}
+					>
+						Cancelar
+					</LinkModal>
+				</ContentModal>
+			</ViewModal>
+		</Modal>
+	) : (
+		<></>
+	);
+};
