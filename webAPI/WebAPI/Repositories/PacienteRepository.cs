@@ -14,13 +14,16 @@ namespace WebAPI.Repositories
 
         public Paciente AtualizarPerfil(Guid Id, PacienteViewModel paciente)
         {
-            Paciente pacienteBuscado = ctx.Pacientes.FirstOrDefault(x => x.Id == Id);
+            Paciente pacienteBuscado = ctx.Pacientes.Include(x => x.Endereco).FirstOrDefault(x => x.Id == Id);
 
             if (paciente.DataNascimento != null)
                 pacienteBuscado.DataNascimento = paciente.DataNascimento;
 
             if (paciente.Senha != null)
                 pacienteBuscado.IdNavigation.Senha = paciente.Senha;
+
+            if (paciente.Cpf != null)
+                pacienteBuscado.Cpf = paciente.Cpf;
 
             if (paciente.Cep != null)
                 pacienteBuscado.Endereco.Cep = paciente.Cep;
@@ -30,6 +33,9 @@ namespace WebAPI.Repositories
 
             if (paciente.Numero != null)
                 pacienteBuscado.Endereco.Numero = paciente.Numero;
+
+            if (paciente.Cidade != null)
+                pacienteBuscado.Endereco.Cidade = paciente.Cidade;
 
             ctx.Pacientes.Update(pacienteBuscado);
             ctx.SaveChanges();

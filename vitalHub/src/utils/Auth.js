@@ -30,5 +30,7 @@ export const userDecodeToken = async () => {
 		cep: decoded.cep,
 		logradouro: decoded.logradouro,
 		numero: decoded.numero,
+		cidade: decoded.cidade,
+		numero: decoded.numero
 	};
 };
