@@ -22,7 +22,7 @@ O projeto "VitalHub" é um aplicativo inovador desenvolvido para integrar médic
 - **Agendamento de Consultas**: Os pacientes podem agendar consultas com médicos por especialidade ou clínica, enquanto os médicos têm visibilidade e controle sobre suas consultas agendadas.
 - **Edição de Prontuários**: Facilita o acompanhamento das consultas, permitindo aos médicos editar o prontuário do paciente.
 - **Cadastro de Resultados de Exames**: Os pacientes podem cadastrar resultados de exames médicos diretamente pelo aplicativo, utilizando a câmera do celular.
-- **Notificações e Lembretes**: Assegura que nenhum compromisso seja esquecido, com notificações para consultas agendadas, canceladas ou realizadas.
+- **Notificações e Lembretes**: Assegura que nenhum compromisso seja esquecido, com notificações para consultas agendadas, Canceladas ou Realizadas.
 - **Mapa de Localização da Clínica**: Permite aos pacientes encontrar facilmente o local de suas consultas por meio do GPS.
 
 ## Screenshots

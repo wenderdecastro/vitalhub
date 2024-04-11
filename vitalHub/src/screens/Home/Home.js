@@ -20,86 +20,6 @@ import { userDecodeToken } from '../../utils/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../service/Service';
 
-const Consultas = [
-	{
-		id: 1,
-		nome: 'gustavo',
-		age: 18,
-		hour: '14:00',
-		reason: 'Rotina',
-		situacao: 'Pendente',
-		imagem: { uri: 'https://github.com/GustavoPasqualetti.png' },
-		email: 'gustavopasqualetti@gmail.com',
-	},
-	{
-		id: 2,
-		nome: 'Joao Vitor',
-		age: 20,
-		hour: '15:00',
-		reason: 'Rotina',
-		situacao: 'realizada',
-		imagem: { uri: 'https://github.com/zAlves31.png' },
-		email: 'joaovitoralves@gmail.com',
-	},
-	{
-		id: 3,
-		nome: 'eduardo',
-		age: 18,
-		hour: '16:00',
-		reason: 'Rotina',
-		situacao: 'cancelada',
-		imagem: { uri: 'https://github.com/EduardoPasqualetti.png' },
-		email: 'eduardopasqualetti@gmail.com',
-	},
-];
-
-const ConsultasUser = [
-	{
-		id: 1,
-		nome: 'DrClaudio',
-		crm: '13456',
-		especialidade: 'Clinico Geral',
-		age: 52,
-		hour: '10:00',
-		reason: 'Rotina',
-		situacao: 'Pendente',
-		imagem: require('../../assets/medico1.jpg'),
-	},
-	{
-		id: 2,
-		nome: 'DrCesar',
-		crm: '12690',
-		especialidade: 'Ortopedista',
-		age: 35,
-		hour: '14:00',
-		reason: 'Rotina',
-		situacao: 'realizada',
-		imagem: require('../../assets/medico2.jpg'),
-	},
-	{
-		id: 3,
-		nome: 'DrMarcio',
-		crm: '26647',
-		especialidade: 'Cardiologista',
-		age: 43,
-		hour: '17:00',
-		reason: 'Rotina',
-		situacao: 'cancelada',
-		imagem: require('../../assets/medico3.webp'),
-	},
-	{
-		id: 4,
-		nome: 'DrAndre',
-		crm: '21589',
-		especialidade: 'Clinico Geral',
-		age: 52,
-		hour: '10:00',
-		reason: 'Rotina',
-		situacao: 'Pendente',
-		imagem: require('../../assets/medico4.jpg'),
-	},
-];
-
 export const Home = ({ navigation }) => {
 	const [dataConsulta, setDataConsulta] = useState();
 
@@ -198,17 +118,17 @@ export const Home = ({ navigation }) => {
 
 				<ButtonTabs
 					textButton={'Realizadas'}
-					clickButton={statusList === 'realizada'}
+					clickButton={statusList === 'Realizada'}
 					onPress={() =>
-						setStatusList('realizada')
+						setStatusList('Realizada')
 					}
 				/>
 
 				<ButtonTabs
 					textButton={'Canceladas'}
-					clickButton={statusList === 'cancelada'}
+					clickButton={statusList === 'Cancelada'}
 					onPress={() =>
-						setStatusList('cancelada')
+						setStatusList('Cancelada')
 					}
 				/>
 			</ContainerAppointment>
@@ -226,6 +146,8 @@ export const Home = ({ navigation }) => {
 								usuarioConsulta={
 									profile
 								}
+								role={userLogin}
+								dados={item}
 								situacao={
 									item
 										.situacao
@@ -236,55 +158,60 @@ export const Home = ({ navigation }) => {
 										true,
 									)
 								}
-								name={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.nome
-								}
-								especialidade={
-									item
-										.medicoClinica
-										.medico
-										.especialidade
-										.especialidade1
-								}
-								imagem={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.foto
-								}
-								crm={
-									item
-										.medicoClinica
-										.medico
-										.crm
-								}
-								age={
-									item
-										.paciente
-										.dataNascimento
-								}
-								reason={
-									item
-										.prioridade
-										.prioridade
-								}
-								hour={
-									item.dataConsulta
-								}
+								// name={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.nome
+								// }
+								// especialidade={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.especialidade
+								// 		.especialidade1
+								// }
+								// imagem={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.foto
+								// }
+								// crm={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.crm
+								// }
+								// age={
+								// 	item
+								// 		.paciente
+								// 		.dataNascimento
+								// }
+								// reason={
+								// 	item
+								// 		.prioridade
+								// 		.prioridade
+								// }
+								// hour={
+								// 	item.dataConsulta
+								// }
 							/>
 						);
 					}
 					if (
-						statusList === 'realizada' &&
-						item.situacao === 'realizada'
+						statusList === 'Realizada' &&
+						item.situacao === 'Realizada'
 					) {
 						return (
 							<AppointmentCard
+								usuarioConsulta={
+									profile
+								}
+								role={userLogin}
+								dados={item}
 								situacao={
 									item
 										.situacao
@@ -303,104 +230,106 @@ export const Home = ({ navigation }) => {
 										'ViewPrescription',
 									)
 								}
-								name={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.nome
-								}
-								especialidade={
-									item
-										.medicoClinica
-										.medico
-										.especialidade
-										.especialidade1
-								}
-								imagem={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.foto
-								}
-								crm={
-									item
-										.medicoClinica
-										.medico
-										.crm
-								}
-								age={
-									item
-										.paciente
-										.dataNascimento
-								}
-								reason={
-									item
-										.prioridade
-										.prioridade
-								}
-								hour={
-									item.dataConsulta
-								}
+								// name={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.nome
+								// }
+								// especialidade={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.especialidade
+								// 		.especialidade1
+								// }
+								// imagem={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.foto
+								// }
+								// crm={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.crm
+								// }
+								// age={
+								// 	item
+								// 		.paciente
+								// 		.dataNascimento
+								// }
+								// reason={
+								// 	item
+								// 		.prioridade
+								// 		.prioridade
+								// }
+								// hour={
+								// 	item.dataConsulta
+								// }
 							/>
 						);
 					}
 					if (
-						statusList === 'cancelada' &&
+						statusList === 'Cancelada' &&
 						item.situacao.situacao ===
-							'cancelada'
+							'Cancelada'
 					) {
 						return (
 							<AppointmentCard
 								usuarioConsulta={
 									profile
 								}
+								role={userLogin}
+								dados={item}
 								situacao={
 									item
 										.situacao
 										.situacao
 								}
-								name={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.nome
-								}
-								especialidade={
-									item
-										.medicoClinica
-										.medico
-										.especialidade
-										.especialidade1
-								}
-								imagem={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.foto
-								}
-								crm={
-									item
-										.medicoClinica
-										.medico
-										.crm
-								}
-								age={
-									item
-										.paciente
-										.dataNascimento
-								}
-								reason={
-									item
-										.prioridade
-										.prioridade
-								}
-								hour={
-									item.dataConsulta
-								}
+								// name={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.nome
+								// }
+								// especialidade={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.especialidade
+								// 		.especialidade1
+								// }
+								// imagem={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.foto
+								// }
+								// crm={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.crm
+								// }
+								// age={
+								// 	item
+								// 		.paciente
+								// 		.dataNascimento
+								// }
+								// reason={
+								// 	item
+								// 		.prioridade
+								// 		.prioridade
+								// }
+								// hour={
+								// 	item.dataConsulta
+								// }
 							/>
 						);
 					}
@@ -441,17 +370,17 @@ export const Home = ({ navigation }) => {
 
 				<ButtonTabs
 					textButton={'Realizadas'}
-					clickButton={statusList === 'realizada'}
+					clickButton={statusList === 'Realizada'}
 					onPress={() =>
-						setStatusList('realizada')
+						setStatusList('Realizada')
 					}
 				/>
 
 				<ButtonTabs
 					textButton={'Canceladas'}
-					clickButton={statusList === 'cancelada'}
+					clickButton={statusList === 'Cancelada'}
 					onPress={() =>
-						setStatusList('cancelada')
+						setStatusList('Cancelada')
 					}
 				/>
 			</ContainerAppointment>
@@ -470,6 +399,8 @@ export const Home = ({ navigation }) => {
 								usuarioConsulta={
 									profile
 								}
+								role={userLogin}
+								dados={item}
 								situacao={
 									item
 										.situacao
@@ -493,58 +424,60 @@ export const Home = ({ navigation }) => {
 										item,
 									);
 								}}
-								name={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.nome
-								}
-								especialidade={
-									item
-										.medicoClinica
-										.medico
-										.especialidade
-										.especialidade1
-								}
-								imagem={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.foto
-								}
-								crm={
-									item
-										.medicoClinica
-										.medico
-										.crm
-								}
-								age={
-									item
-										.paciente
-										.dataNascimento
-								}
-								reason={
-									item
-										.prioridade
-										.prioridade
-								}
-								hour={
-									item.dataConsulta
-								}
+								// name={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.nome
+								// }
+								// especialidade={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.especialidade
+								// 		.especialidade1
+								// }
+								// imagem={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.foto
+								// }
+								// crm={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.crm
+								// }
+								// age={
+								// 	item
+								// 		.paciente
+								// 		.dataNascimento
+								// }
+								// reason={
+								// 	item
+								// 		.prioridade
+								// 		.prioridade
+								// }
+								// hour={
+								// 	item.dataConsulta
+								// }
 							/>
 						);
 					}
 					if (
-						statusList === 'realizada' &&
-						item.situacao === 'realizada'
+						statusList === 'Realizada' &&
+						item.situacao === 'Realizada'
 					) {
 						return (
 							<AppointmentCard
 								usuarioConsulta={
 									profile
 								}
+								role={userLogin}
+								dados={item}
 								situacao={
 									item
 										.situacao
@@ -555,100 +488,105 @@ export const Home = ({ navigation }) => {
 										'ViewRecord',
 									)
 								}
-								name={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.nome
-								}
-								especialidade={
-									item
-										.medicoClinica
-										.medico
-										.especialidade
-										.especialidade1
-								}
-								imagem={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.foto
-								}
-								crm={
-									item
-										.medicoClinica
-										.medico
-										.crm
-								}
-								age={
-									item
-										.paciente
-										.dataNascimento
-								}
-								reason={
-									item
-										.prioridade
-										.prioridade
-								}
-								hour={
-									item.dataConsulta
-								}
+								// name={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.nome
+								// }
+								// especialidade={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.especialidade
+								// 		.especialidade1
+								// }
+								// imagem={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.foto
+								// }
+								// crm={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.crm
+								// }
+								// age={
+								// 	item
+								// 		.paciente
+								// 		.dataNascimento
+								// }
+								// reason={
+								// 	item
+								// 		.prioridade
+								// 		.prioridade
+								// }
+								// hour={
+								// 	item.dataConsulta
+								// }
 							/>
 						);
 					}
 					if (
-						statusList === 'cancelada' &&
-						item.situacao === 'cancelada'
+						statusList === 'Cancelada' &&
+						item.situacao === 'Cancelada'
 					) {
 						return (
 							<AppointmentCard
+								usuarioConsulta={
+									profile
+								}
+								role={userLogin}
+								dados={item}
 								situacao={
 									item
 										.situacao
 										.situacao
 								}
-								name={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.nome
-								}
-								especialidade={
-									item
-										.medicoClinica
-										.medico
-										.especialidade
-										.especialidade1
-								}
-								imagem={
-									item
-										.medicoClinica
-										.medico
-										.idNavigation
-										.foto
-								}
-								crm={
-									item
-										.medicoClinica
-										.medico
-										.crm
-								}
-								age={
-									item
-										.paciente
-										.dataNascimento
-								}
-								reason={
-									item
-										.prioridade
-										.prioridade
-								}
-								hour={
-									item.dataConsulta
-								}
+								// name={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.nome
+								// }
+								// especialidade={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.especialidade
+								// 		.especialidade1
+								// }
+								// imagem={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.idNavigation
+								// 		.foto
+								// }
+								// crm={
+								// 	item
+								// 		.medicoClinica
+								// 		.medico
+								// 		.crm
+								// }
+								// age={
+								// 	item
+								// 		.paciente
+								// 		.dataNascimento
+								// }
+								// reason={
+								// 	item
+								// 		.prioridade
+								// 		.prioridade
+								// }
+								// hour={
+								// 	item.dataConsulta
+								// }
 							/>
 						);
 					}

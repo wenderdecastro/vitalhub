@@ -20,32 +20,7 @@ namespace WebAPI.Controllers
             pacienteRepository = new PacienteRepository();
         }
 
-        [Authorize]
-        [HttpGet("ConsultasAgendadas")]
-        public IActionResult BuscarAgendadas()
-        {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(pacienteRepository.BuscarAgendadas(idUsuario));
-        }
-
-        [Authorize]
-        [HttpGet("ConsultasRealizadas")]
-        public IActionResult BuscarRealizadas()
-        {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
-        }
-
-        [Authorize]
-        [HttpGet("ConsultasCanceladas")]
-        public IActionResult BuscarCanceladas()
-        {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
-        }
+     
 
         [HttpGet("PerfilLogado")]
         public IActionResult BuscarLogado()
@@ -56,7 +31,7 @@ namespace WebAPI.Controllers
         }
 
         //[Authorize]
-        [HttpGet("BuscarPorID")]
+        [HttpGet("BuscarPorID/{id}")]
         public IActionResult BuscarPorID(Guid id)
         {
             return Ok(pacienteRepository.BuscarPorId(id));

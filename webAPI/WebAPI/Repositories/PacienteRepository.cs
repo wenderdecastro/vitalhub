@@ -37,15 +37,6 @@ namespace WebAPI.Repositories
             return pacienteBuscado;
         }
 
-        public List<Consulta> BuscarAgendadas(Guid Id)
-        {
-            return ctx.Consultas.Include(x => x.Situacao).Where(x => x.PacienteId == Id && x.Situacao.Situacao == "Agendada").ToList();
-        }
-
-        public List<Consulta> BuscarCanceladas(Guid Id)
-        {
-            return ctx.Consultas.Include(x => x.Situacao).Where(x => x.PacienteId == Id && x.Situacao.Situacao == "Cancelada").ToList();
-        }
 
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idPaciente)
         {
@@ -59,25 +50,38 @@ namespace WebAPI.Repositories
                  .ToList();
         }
 
+
         public Paciente BuscarPorId(Guid Id)
         {
-            return ctx.Pacientes
-                .Include(x => x.Endereco)
+            try
+            {
+                return ctx.Pacientes
                 .Include(x => x.IdNavigation)
-                .FirstOrDefault(x => x.Id == Id);
-        }
-
-        public List<Consulta> BuscarRealizadas(Guid Id)
-        {
-            return ctx.Consultas.Include(x => x.Situacao).Where(x => x.PacienteId == Id && x.Situacao.Situacao == "Realizada").ToList();
+                .Include(x => x.Endereco)
+                .FirstOrDefault(x => x.Id == Id)!;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public void Cadastrar(Usuario user)
         {
-            user.Senha = Criptografia.GerarHash(user.Senha!);
-            ctx.Usuarios.Add(user);
-            ctx.SaveChanges();
+            try
+            {
+                user.Senha = Criptografia.GerarHash(user.Senha!);
+                ctx.Usuarios.Add(user);
+                ctx.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
+
+
 
 
 
