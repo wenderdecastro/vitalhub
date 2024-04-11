@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { decode, encode } from 'base-64';
 import { jwtDecode } from 'jwt-decode';
 

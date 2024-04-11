@@ -23,7 +23,7 @@ export const Login = ({ navigation }) => {
 	const [senha, setSenha] = useState('string');
 	const [loading, setLoading] = useState(false);
 
-	async function validadeLogin() {
+	async function LoginFunc() {
 		if (email === '' || senha === '') {
 			Toast.show({
 				type: 'error',
@@ -49,19 +49,16 @@ export const Login = ({ navigation }) => {
 			console.log(response);
 
 			setLoading(true);
-			console.log(response);
-			console.log(response.status);
-			console.log(response.data);
 
-			await AsyncStorage.setItem('token', response.data);
+			await AsyncStorage.setItem(
+				'token',
+				JSON.stringify(response.data),
+			);
 
 			setTimeout(() => {
 				setLoading(false);
 				navigation.replace('Main');
 			}, 2000);
-
-			console.log(email);
-			console.log(senha);
 		} catch (error) {
 			Toast.show({
 				type: 'error',
@@ -108,10 +105,7 @@ export const Login = ({ navigation }) => {
 				Esqueceu sua senha?
 			</LinkMedium>
 
-			<Button
-				onPress={() => validadeLogin()}
-				disabled={loading}
-			>
+			<Button onPress={() => LoginFunc()} disabled={loading}>
 				<ButtonTitle>
 					{loading ? (
 						<ActivityIndicator color="#fff" />

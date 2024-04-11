@@ -47,7 +47,7 @@ export default function App() {
 		Quicksand_400Regular,
 	});
 
-	if (!fontsLoaded || !fontsError) {
+	if (!fontsLoaded && !fontsError) {
 		return null;
 	}
 
