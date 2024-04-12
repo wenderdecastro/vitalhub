@@ -73,7 +73,7 @@ namespace WebAPI.Controllers
                 user.Email = medicoModel.Email;
                 user.TipoUsuarioId = medicoModel.IdTipoUsuario;
 
-                var connectionstring = "DefaultEndpointsProtocol=https;AccountName=storagevitalhub;AccountKey=C4pv3AAVT/V5MmA2OQM6JvL9WKHkGVl7WBaK3NXWDcPZldBqCce/ZQ9kGHRU4IHEdElnKajF/HOi+AStM7KcYQ==;EndpointSuffix=core.windows.net";
+                var connectionstring = "";
                 var containername = "blobvitalhub";
 
                 user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo!, connectionstring, containername);
