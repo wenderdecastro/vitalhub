@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendMail(string endereco, string subject, string userName)
+        public async Task<IActionResult> SendMail(string endereco, string userName)
         {
             try
             {
