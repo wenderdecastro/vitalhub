@@ -25,6 +25,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                //teste
                 usuarioRepository.AlterarSenha(email, senha.SenhaNova!);
 
                 return Ok("Senha alterada com sucesso !");
