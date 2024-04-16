@@ -12,7 +12,7 @@ if (!global.btoa) {
 
 export const userDecodeToken = async () => {
 	//capturarando o token
-	const token = await AsyncStorage.getItem('token');
+	const token = JSON.parse(await AsyncStorage.getItem('token')).token;
 
 	if (token === null) {
 		return null;
@@ -30,6 +30,7 @@ export const userDecodeToken = async () => {
 		logradouro: decoded.logradouro,
 		numero: decoded.numero,
 		cidade: decoded.cidade,
-		numero: decoded.numero
+		numero: decoded.numero,
+		token: token,
 	};
 };

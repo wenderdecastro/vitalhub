@@ -1,8 +1,8 @@
-import { FlatList } from "react-native";
-import styled from "styled-components";
+import { FlatList } from 'react-native';
+import styled from 'styled-components';
 
 export const ListComponent = styled(FlatList)`
-width: 100%;
-margin-top: 20px;
-
-`
+	width: 100%;
+	margin-top: 20px;
+	height: 95%;
+`;
