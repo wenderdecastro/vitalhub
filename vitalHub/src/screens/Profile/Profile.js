@@ -1,18 +1,18 @@
 import { BoxInput } from "../../components/BoxInput"
-import { ContainerProfile, ContainerScroll, ContainerUF } from "../../components/Container/Style"
+import { ContainerImage, ContainerProfile, ContainerScroll, ContainerUF } from "../../components/Container/Style"
 import { TextAdd } from "../../components/TextAdd/Style"
 import { Title, TitleC } from "../../components/Title/Style"
 import { UserPicture } from "../../components/UserPicture/Style"
 import { ButtonTitle } from "../../components/ButtonTitle/Style"
-import { Button, Button2, CloseButton } from "../../components/Button/Style"
+import { Button, Button2, ButtonCamera, CloseButton } from "../../components/Button/Style"
 import { useEffect, useState } from "react"
 import { CancelAppointment } from "../../components/Links/Style"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { userDecodeToken } from "../../utils/Auth"
 import api from "../../service/Service"
-import { Text } from "react-native"
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export const Profile = ({ navigation, }) => {
+export const Profile = ({ navigation }) => {
 
     const [ProfileEdit, setProfileEdit] = useState(true)
 
@@ -135,7 +135,14 @@ export const Profile = ({ navigation, }) => {
 
     return (
         <ContainerScroll>
-            <UserPicture source={require("../../assets/perfil.jpg")} />
+            <ContainerImage>
+                <UserPicture source={require("../../assets/perfil.jpg")} />
+
+                <ButtonCamera onPress={() => navigation.navigate("CameraScreen")}>
+                    <MaterialCommunityIcons name="camera-plus" size={24} color="white" />
+                </ButtonCamera>
+            </ContainerImage>
+
             <ContainerProfile>
                 <TitleC>{nome}</TitleC>
                 <TextAdd>{email}</TextAdd>
@@ -244,7 +251,7 @@ export const Profile = ({ navigation, }) => {
                                     fieldWidht={80}
                                     textLabel='Especialidade:'
                                     placeholder={especialidade}
-                                    fieldHeight={60}                              
+                                    fieldHeight={60}
                                 />
                         }
 
