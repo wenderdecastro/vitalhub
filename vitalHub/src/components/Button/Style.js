@@ -75,3 +75,14 @@ export const CloseButton = styled.TouchableOpacity`
 	justify-content: center;
 	border-radius: 5px;
 `;
+
+export const ButtonCamera = styled.TouchableOpacity`
+	padding: 12px;
+	border-radius: 10px;
+	background-color: #496bba;
+	border: 1px solid #fbfbfb;
+
+	bottom: -20px;
+	right: 15px;
+	position: absolute;
+`

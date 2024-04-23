@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Container, ContainerScroll } from '../../components/Container/Style';
+import { Container, ContainerImage, ContainerScroll } from '../../components/Container/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
 import { BoxInput } from '../../components/BoxInput';
 import { Button, Button2 } from '../../components/Button/Style';
@@ -18,11 +18,14 @@ export const ViewRecord = ({ navigation }) => {
 			{RecordEdit ? (
 				<>
 					<Container>
-						<UserPicture
+						<ContainerImage>
+							<UserPicture
 							source={{
 								uri: 'https://github.com/zAlves31.png',
 							}}
 						/>
+						</ContainerImage>
+						
 
 						<TitleC>Joao</TitleC>
 						<TextAdd>
