@@ -1,5 +1,6 @@
 import { BoxInput } from '../../components/BoxInput';
 import {
+	ContainerImage,
 	ContainerProfile,
 	ContainerScroll,
 	ContainerUF,
@@ -90,9 +91,12 @@ export const Profile = ({ navigation }) => {
 		<ContainerScroll>
 			{ProfileEdit ? (
 				<>
-					<UserPicture
-						source={require('../../assets/perfil.jpg')}
-					/>
+					<ContainerImage>
+						<UserPicture
+							source={require('../../assets/perfil.jpg')}
+						/>
+					</ContainerImage>
+
 					<ContainerProfile>
 						<TitleC>{nome}</TitleC>
 						<TextAdd>{email}</TextAdd>

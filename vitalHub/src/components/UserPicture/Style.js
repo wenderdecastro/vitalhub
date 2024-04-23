@@ -17,3 +17,12 @@ export const Elipse = styled.Image`
 	height: 4px;
 	padding-top: 2px;
 `;
+
+export const ContainerImage = styled.view`
+	width: 100%;
+	height: 280px;
+	margin-bottom: 20px;
+	position: relative;
+	align-items: center;
+	justify-content: flex-start;
+`;

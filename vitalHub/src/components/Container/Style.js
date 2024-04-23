@@ -63,6 +63,15 @@ export const ContentLocal = styled.View`
 	height: 430px;
 `;
 
+export const ContainerImage = styled.view`
+	width: 100%;
+	height: 280px;
+	margin-bottom: 20px;
+	position: relative;
+	align-items: center;
+	justify-content: flex-start;
+`;
+
 export const ContentInfo = styled.View`
 	width: 100%;
 	height: 400px;
