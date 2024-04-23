@@ -76,10 +76,10 @@ export const Home = ({ navigation }) => {
 			} else {
 				await api
 					.get(
-						`/Medicos/BuscarPorData?data=${dataConsulta}&id=${userToken.jti}`,
+						`/Medicos/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
 						{
 							headers: {
-								Authorization: `Bearer ${token}`,
+								Authorization: `Bearer ${profile.token}`,
 							},
 						},
 					)
@@ -213,7 +213,6 @@ export const Home = ({ navigation }) => {
 									.medicoClinica
 									.medico
 									.especialidade
-									.especialidade1
 							}
 							imagem={
 								item

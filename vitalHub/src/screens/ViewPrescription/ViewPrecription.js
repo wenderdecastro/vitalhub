@@ -3,7 +3,7 @@ import { BoxImage } from '../../components/BoxImage/BoxImage';
 import { BoxInput } from '../../components/BoxInput';
 import { InputText } from '../../components/BoxInput/style';
 import { Button } from '../../components/Button/Style';
-import { Container, ContainerScroll } from '../../components/Container/Style';
+import { Container, ContainerImage, ContainerScroll } from '../../components/Container/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 import { SubTitle, TitleC } from '../../components/Title/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
@@ -41,9 +41,12 @@ export const ViewPrescription = ({ navigation, route }) => {
 	return (
 		<ContainerScroll>
 			<Container>
-				<UserPicture
+				<ContainerImage>
+					<UserPicture
 					source={require('../../assets/medico1.jpg')}
 				/>
+				</ContainerImage>
+				
 				<TitleC>Dr Claudio</TitleC>
 
 				<ContainerSubTitle>

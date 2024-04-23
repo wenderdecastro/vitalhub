@@ -199,6 +199,7 @@ namespace WebAPI.Repositories
                      .Include(x => x.Situacao)
                      .Include(x => x.Prioridade)
                      .Include(x => x.MedicoClinica)
+                     .Include(x => x.MedicoClinica.Medico.IdNavigation)
                      .Include(x => x.Paciente!.IdNavigation)
 
                      // diferença em dias entre a Data da Consulta e a dataConsulta é igual a 0.
