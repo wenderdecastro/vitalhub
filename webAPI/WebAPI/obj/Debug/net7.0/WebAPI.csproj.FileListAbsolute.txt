@@ -440,6 +440,8 @@ C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Syste
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Microsoft.Rest.ClientRuntime.dll
 C:\Users\57267874800\Desktop\clone\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Microsoft.Rest.ClientRuntime.Azure.dll
+<<<<<<< HEAD
+=======
 C:\Users\49802004863\Desktop\gugu\webAPI\WebAPI\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\49802004863\Desktop\gugu\webAPI\WebAPI\bin\Debug\net7.0\appsettings.json
 C:\Users\49802004863\Desktop\gugu\webAPI\WebAPI\bin\Debug\net7.0\WebAPI.exe
@@ -639,3 +641,4 @@ C:\Users\49802004863\Desktop\gugu\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\refint
 C:\Users\49802004863\Desktop\gugu\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.pdb
 C:\Users\49802004863\Desktop\gugu\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.genruntimeconfig.cache
 C:\Users\49802004863\Desktop\gugu\vitalhub\webAPI\WebAPI\obj\Debug\net7.0\ref\WebAPI.dll
+>>>>>>> 6adf997ba16997048674c0687e8ff2cbae18a212
