@@ -536,3 +536,9 @@ C:\Users\49802004863\Desktop\gugu\webAPI\WebAPI\obj\Debug\net7.0\refint\WebAPI.d
 C:\Users\49802004863\Desktop\gugu\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.pdb
 C:\Users\49802004863\Desktop\gugu\webAPI\WebAPI\obj\Debug\net7.0\WebAPI.genruntimeconfig.cache
 C:\Users\49802004863\Desktop\gugu\webAPI\WebAPI\obj\Debug\net7.0\ref\WebAPI.dll
+C:\Users\49802004863\Desktop\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Azure.Storage.Blobs.dll
+C:\Users\49802004863\Desktop\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Azure.Storage.Common.dll
+C:\Users\49802004863\Desktop\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll
+C:\Users\49802004863\Desktop\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Microsoft.Rest.ClientRuntime.dll
+C:\Users\49802004863\Desktop\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\Microsoft.Rest.ClientRuntime.Azure.dll
+C:\Users\49802004863\Desktop\vitalhub\webAPI\WebAPI\bin\Debug\net7.0\System.IO.Hashing.dll
