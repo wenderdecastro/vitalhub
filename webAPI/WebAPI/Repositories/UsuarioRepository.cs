@@ -97,8 +97,11 @@ namespace WebAPI.Repositories
         {
             try
             {
+                Guid.TryParse("3476524F-93BD-4BF1-BA8C-78BA239AEE1D", out var guid);
+                usuario.TipoUsuarioId = guid;
                 usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
                 ctx.Add(usuario);
+
                 ctx.SaveChanges();
             }
             catch (Exception)
@@ -106,6 +109,8 @@ namespace WebAPI.Repositories
                 throw;
             }
         }
+
+
     }
 }
 

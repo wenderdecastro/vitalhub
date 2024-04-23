@@ -14,6 +14,6 @@ namespace WebAPI.Interfaces
 
         public void AtualizarFoto(Guid id, string novaUrlFoto);
 
-   
+
     }
 }

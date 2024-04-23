@@ -43,7 +43,9 @@ namespace WebAPI.Repositories
             try
             {
                 Medico medicoBuscado = ctx.Medicos
+                    .Include(x => x.IdNavigation)
                     .Include(x => x.Endereco)
+                    .Include(x => x.Especialidade)
                     .FirstOrDefault(x => x.Id == Id)!;
 
 
@@ -103,6 +105,7 @@ namespace WebAPI.Repositories
                 Medico medicoBuscado = ctx.Medicos
                     .Include(m => m.IdNavigation)
                     .Include(m => m.Endereco)
+                    .Include(m => m.Especialidade)
                     .FirstOrDefault(m => m.Id == Id)!;
 
                 return medicoBuscado;
