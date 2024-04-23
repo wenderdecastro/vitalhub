@@ -8,8 +8,40 @@ import {
 import { SubTitle, Title } from '../../components/Title/Style';
 import { ContainerAddress, ContainerLocal, LocalImage } from './Style';
 import { StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
 
-export const LocalAppointment = () => {
+export const LocalAppointment = ({route}) => {
+
+	const [clinica, setClinica] = useState('')
+	const [idClinica, setIdClinica] = useState('')
+    const [logradouro, setLogradouro] = useState('')
+    const [numero, setNumero] = useState('')
+    const [cidade, setCidade] = useState('')
+    const [nome, setNome] = useState('')
+
+	useEffect(() => {
+        setIdClinica(route.params.clinicaid)
+    }, [route.params])
+
+
+	async function BuscarClinica() {
+        try {
+            const response = await api.get(`/Clinica/BuscarPorId?id=${idClinica}`)
+			console.log(response);
+            setClinica(response.data)
+            setFinalPosition({
+                latitude: response.data.endereco.longitude,
+                longitude: response.data.endereco.latitude
+            })
+            setLogradouro(response.data.endereco.logradouro)
+            setNumero(response.data.endereco.numero.toString())
+            setCidade(response.data.endereco.cidade)
+            setNome(response.data.nomeFantasia)
+        } catch (error) {
+            console.log(error);
+        }
+        console.log(clinica);
+    }
 	return (
 		<Container>
 			<ContentLocal>
@@ -44,19 +76,19 @@ export const LocalAppointment = () => {
 				</ContainerLocal>
 
 				<BoxInput
-					fieldWidth={80}
+					fieldWidht={80}
 					textLabel="Endereco"
 					placeholder="Rua Vicenso Silva, 987"
 				/>
 				<ContainerAddress>
 					<BoxInput
-						fieldWidth={35}
+						fieldWidht={40}
 						textLabel="Número"
 						placeholder="578"
 					/>
 
 					<BoxInput
-						fieldWidth={35}
+						fieldWidht={40}
 						textLabel="Bairro"
 						placeholder="Moema-SP"
 					/>

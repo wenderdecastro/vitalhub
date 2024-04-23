@@ -2,6 +2,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System.Reflection;
+<<<<<<< HEAD
+=======
+using WebAPI.Contexts;
+>>>>>>> 6adf997ba16997048674c0687e8ff2cbae18a212
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
 using WebAPI.Utils.Mail;
@@ -104,15 +108,27 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+<<<<<<< HEAD
+=======
+// Configure EmailSettings
+builder.Services.AddDbContext<VitalContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlDataBase")));
+
+>>>>>>> 6adf997ba16997048674c0687e8ff2cbae18a212
 // Configure EmailSettings
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
 
 // Registrando o serviço de e-mail como uma instância transitória, que é criada cada vez que é solicitada
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-
 builder.Services.AddScoped<EmailSendingService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<OcrService>();
+=======
+
+builder.Services.AddScoped<OcrService>();
+
+>>>>>>> 6adf997ba16997048674c0687e8ff2cbae18a212
 builder.Services.AddScoped<IExameRepository, ExameRepository>();
 // CORS
 builder.Services.AddCors(options =>
