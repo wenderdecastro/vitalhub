@@ -18,7 +18,13 @@ import { Button } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 
-export default function CameraScreen({ navigation }) {
+export default function CameraScreen({
+	navigation,
+	setShowCameraModal,
+	setUriCameraCapture,
+	getMediaLibrary = false,
+	...rest
+}) {
 	const cameraRef = useRef(null);
 	const [photo, setPhoto] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
