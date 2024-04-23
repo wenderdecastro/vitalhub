@@ -8187,11 +8187,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\49802004863\\Desktop\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\49802004863\\Desktop\\gugu\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "C:\\Users\\49802004863\\Desktop\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj",
+      "projectPath": "C:\\Users\\49802004863\\Desktop\\gugu\\vitalhub\\webAPI\\WebAPI\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\49802004863\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\49802004863\\Desktop\\vitalhub\\webAPI\\WebAPI\\obj\\",
+      "outputPath": "C:\\Users\\49802004863\\Desktop\\gugu\\vitalhub\\webAPI\\WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\49802004863\\AppData\\Roaming\\NuGet\\NuGet.Config",
