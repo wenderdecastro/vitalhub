@@ -190,7 +190,7 @@ export const Home = ({ navigation }) => {
 												selectedAppointment,
 											);
 									  }
-									: navigation.navigate(
+									:() => navigation.navigate(
 											'ViewRecord',
 											item,
 									  )
