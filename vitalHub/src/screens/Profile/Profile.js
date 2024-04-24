@@ -55,6 +55,27 @@ export const Profile = ({ navigation, route }) => {
 
     }
 
+    async function AlterarFotoDePerfil(){
+        const formData = new FormData()
+        formData.append("Arquivo", {
+            uri: uriCameraCapture,
+            name: `image.${uriCameraCapture.split(".")[1]}`,
+            type: `image/${uriCameraCapture.split(".")[1]}`
+        })
+
+        await api.put(`/Usuario/AlterarFotoDePerfil?id=${idUser}`, formData, {
+            headers:{
+                "Content-Type" : "multipart/form-data"
+            }
+        }).then(async response => {
+            await setProfileUpdate({
+
+            })
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
     async function getUser() {
 
         const response = await api.get(
