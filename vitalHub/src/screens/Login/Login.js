@@ -114,6 +114,11 @@ export const Login = ({ navigation }) => {
 					)}
 				</ButtonTitle>
 			</Button>
+			<Button onPress={() => navigation.navigate("ViewPrescription")} >
+				<ButtonTitle>
+					aaa
+				</ButtonTitle>
+			</Button>
 
 			<ButtonGoogle>
 				<LogoGoogle>

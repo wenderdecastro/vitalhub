@@ -12,7 +12,7 @@ import { userDecodeToken } from "../../utils/Auth"
 import api from "../../service/Service"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export const Profile = ({ navigation }) => {
+export const Profile = ({ navigation, route }) => {
 
     const [ProfileEdit, setProfileEdit] = useState(true)
 
@@ -40,6 +40,7 @@ export const Profile = ({ navigation }) => {
     const [crm, setCrm] = useState()
     const [dtNasc, setDtNasc] = useState()
     const [especialidade, setEspecialidade] = useState()
+    const { photoUri } = route.params || {}
 
     async function profileLoad() {
         const token = await userDecodeToken()
@@ -73,7 +74,9 @@ export const Profile = ({ navigation }) => {
         setCpf(response.data.cpf)
         setCrm(response.data.crm)
         setDtNasc(response.data.dataNascimento)
-        setEspecialidade(response.data.especialidade.especialidade1)
+        role == "Paciente" ?
+            null :
+            setEspecialidade(response.data.especialidade.especialidade1)
     }
 
     async function updatePatient() {
@@ -136,10 +139,10 @@ export const Profile = ({ navigation }) => {
     return (
         <ContainerScroll>
             <ContainerImage>
-                <UserPicture source={require("../../assets/perfil.jpg")} />
+                <UserPicture source={{ uri: photoUri }} />
 
-                <ButtonCamera onPress={() => navigation.navigate("CameraScreen")}>
-                    <MaterialCommunityIcons name="camera-plus" size={24} color="white" />
+                <ButtonCamera onPress={() => navigation.navigate("CameraScreen", { isProfile: true })}>
+                    <MaterialCommunityIcons name="camera-plus" size={30} color="white" />
                 </ButtonCamera>
             </ContainerImage>
 

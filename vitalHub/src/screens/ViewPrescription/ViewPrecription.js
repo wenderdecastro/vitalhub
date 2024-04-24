@@ -30,7 +30,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 	const [isPhoto, setIsPhoto] = useState(true);
 
 	function onPressPhoto() {
-		navigation.navigate('CameraScreen');
+		navigation.navigate('CameraScreen', {isProfile: false});
 		setIsPhoto(true);
 	}
 
@@ -86,11 +86,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 					<PrescriptionImage
 						source={{ uri: photoUri }}
 						style={{
-							transform: [
-								{
-									rotate: '180deg',
-								},
-							],
+							
 						}}
 					/>
 				) : (
