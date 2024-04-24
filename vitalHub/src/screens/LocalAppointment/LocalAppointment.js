@@ -9,39 +9,54 @@ import { SubTitle, Title } from '../../components/Title/Style';
 import { ContainerAddress, ContainerLocal, LocalImage } from './Style';
 import { StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
+import api from "../../service/Service"
 
-export const LocalAppointment = ({route}) => {
+export const LocalAppointment = ({ route }) => {
 
 	const [clinica, setClinica] = useState('')
 	const [idClinica, setIdClinica] = useState('')
-    const [logradouro, setLogradouro] = useState('')
-    const [numero, setNumero] = useState('')
-    const [cidade, setCidade] = useState('')
-    const [nome, setNome] = useState('')
+	const [logradouro, setLogradouro] = useState('')
+	const [numero, setNumero] = useState('')
+	const [cidade, setCidade] = useState('')
+	const [nome, setNome] = useState('')
+	const [latitude, setLatitude] = useState('')
+	const [longitude, setLongitude] = useState('')
 
 	useEffect(() => {
-        setIdClinica(route.params.clinicaid)
-    }, [route.params])
+		setIdClinica(route.params)
+		console.log(route.params);
+		console.log("route");
+			BuscarClinica(route.params)
+		
+	}, [route.params])
+
+	// useEffect(() => {
+		
+	// }, [])
+
+	async function BuscarClinica(clinica) {
+		try {
+			console.log("id da clinica:");
+			console.log(idClinica);
+			const response = await api.get(`/Clinica/BuscarPorId?id=${clinica}`)
+			console.log(response.data);
+			setClinica(response.data)
+			setLatitude(response.data.endereco.longitude)
+			setLongitude(response.data.endereco.latitude)
+			console.log(latitude);
+			console.log(longitude);
+
+			setLogradouro(response.data.endereco.logradouro)
+			setNumero(response.data.endereco.numero.toString())
+			setCidade(response.data.endereco.cidade)
+			setNome(response.data.nomeFantasia)
+		} catch (error) {
+			console.log(error);
+		}
+		
+	}
 
 
-	async function BuscarClinica() {
-        try {
-            const response = await api.get(`/Clinica/BuscarPorId?id=${idClinica}`)
-			console.log(response);
-            setClinica(response.data)
-            setFinalPosition({
-                latitude: response.data.endereco.longitude,
-                longitude: response.data.endereco.latitude
-            })
-            setLogradouro(response.data.endereco.logradouro)
-            setNumero(response.data.endereco.numero.toString())
-            setCidade(response.data.endereco.cidade)
-            setNome(response.data.nomeFantasia)
-        } catch (error) {
-            console.log(error);
-        }
-        console.log(clinica);
-    }
 	return (
 		<Container>
 			<ContentLocal>
@@ -50,47 +65,47 @@ export const LocalAppointment = ({route}) => {
 					customMapStyle={grayMapStyle}
 					provider={PROVIDER_GOOGLE}
 					initialRegion={{
-						latitude: -23.615,
-						longitude: -46.5707,
+						latitude: latitude,
+						longitude: longitude,
 						latitudeDelta: 0.005,
 						longitudeDelta: 0.005,
 					}}
 				>
 					<Marker
 						coordinate={{
-							latitude: -23.615,
-							longitude: -46.5707,
+							latitude: latitude,
+							longitude: longitude,
 							latitudeDelta: 0.005,
 							longitudeDelta: 0.005,
 						}}
-						title="Destino"
-						description="Rua Roseira"
+						title=""
+						description=""
 						pinColor={'red'}
 					/>
 				</MapView>
 			</ContentLocal>
 			<ContentInfo>
 				<ContainerLocal>
-					<Title>Clínica Natureh</Title>
-					<SubTitle>São Paulo, SP</SubTitle>
+					<Title>{nome}</Title>
+					<SubTitle>{cidade}</SubTitle>
 				</ContainerLocal>
 
 				<BoxInput
 					fieldWidht={80}
 					textLabel="Endereco"
-					placeholder="Rua Vicenso Silva, 987"
+					placeholder={logradouro}
 				/>
 				<ContainerAddress>
 					<BoxInput
-						fieldWidht={40}
+						fieldWidht={35}
 						textLabel="Número"
-						placeholder="578"
+						placeholder={numero}
 					/>
 
 					<BoxInput
-						fieldWidht={40}
+						fieldWidht={35}
 						textLabel="Bairro"
-						placeholder="Moema-SP"
+						placeholder="Palmares"
 					/>
 				</ContainerAddress>
 			</ContentInfo>
