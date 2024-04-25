@@ -45,7 +45,7 @@ export default function CameraScreen({ navigation, route }) {
 
 			setOpenModal(true);
 
-			console.log(photo);
+			
 		}
 	}
 
@@ -78,10 +78,6 @@ export default function CameraScreen({ navigation, route }) {
 				await MediaLibrary.requestPermissionsAsync();
 		})();
 	}, []);
-
-	useEffect(() => {
-
-	}, [route.params])
 
 	const openImagePicker = async () => {
 		const { status } =

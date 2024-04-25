@@ -265,8 +265,9 @@ export const Home = ({ navigation }) => {
 				setShowModalCancel={setShowModalCancel}
 			/>
 			<AppointmentModal
-				appointmentData={selectedAppointment}
 				visible={showModalAppointment}
+				navigation={navigation}
+				appointmentData={selectedAppointment}
 				setShowModalAppointment={
 					setShowModalAppointment
 				}

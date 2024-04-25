@@ -82,3 +82,8 @@ export const ContainerImage = styled.View`
 	align-items: center;
 	justify-content: flex-start;
 `;
+
+export const ContainerRecord = styled.View`
+width: 80%;
+height: 100%;
+`
