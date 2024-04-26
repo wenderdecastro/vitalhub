@@ -18,13 +18,7 @@ import { Button } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 
-export default function CameraScreen({
-	navigation,
-	setShowCameraModal,
-	setUriCameraCapture,
-	getMediaLibrary = false,
-	...rest
-}) {
+export default function CameraScreen({ navigation, route }) {
 	const cameraRef = useRef(null);
 	const [photo, setPhoto] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
@@ -35,6 +29,14 @@ export default function CameraScreen({
 		Camera.Constants.FlashMode.off,
 	);
 
+	onPressReturn = () => {
+		route.params.isProfile ?
+			navigation.replace('Profile')
+			:
+			navigation.replace('ViewPrescription')
+
+	}
+
 	async function CapturePhoto() {
 		if (cameraRef) {
 			const photo =
@@ -43,7 +45,7 @@ export default function CameraScreen({
 
 			setOpenModal(true);
 
-			console.log(photo);
+			
 		}
 	}
 
@@ -54,9 +56,16 @@ export default function CameraScreen({
 
 	async function SavePhoto() {
 		if (photo) {
-			navigation.navigate('ViewPrescription', {
-				photoUri: photo,
-			});
+			route.params.isProfile ?
+				navigation.replace('Profile', {
+					photoUri: photo,
+				})
+				:
+				navigation.replace('ViewPrescription', {
+					photoUri: photo,
+				});
+
+			setOpenModal(false)
 		}
 	}
 
@@ -81,14 +90,16 @@ export default function CameraScreen({
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
-			aspect: [4, 3],
 			quality: 1,
 		});
 
-		if (!result.cancelled) {
-			setPhoto(result.uri);
-			setOpenModal(true);
+		if (!result.canceled) {
+			setPhoto(result.assets[0].uri)
+			console.log(result.assets[0].uri);
+			setOpenModal(true)
 		}
+
+
 	};
 
 	return (
@@ -101,10 +112,7 @@ export default function CameraScreen({
 			>
 				<TouchableOpacity
 					style={styles.btnReturn}
-					onPress={() =>
-						navigation.replace(
-							'ViewPrescription',
-						)
+					onPress={() => onPressReturn()
 					}
 				>
 					<Ionicons
@@ -196,14 +204,14 @@ export default function CameraScreen({
 							<Ionicons
 								name={
 									flashMode ===
-									FlashMode.on
+										FlashMode.on
 										? 'flash'
 										: 'flash-off'
 								}
 								size={38}
 								color={
 									flashMode ===
-									FlashMode.on
+										FlashMode.on
 										? 'yellow'
 										: '#49B3BA'
 								}
@@ -231,11 +239,7 @@ export default function CameraScreen({
 								width: '100%',
 								height: 500,
 								borderRadius: 10,
-								transform: [
-									{
-										rotate: '180deg',
-									},
-								],
+
 							}}
 							source={{ uri: photo }}
 						/>

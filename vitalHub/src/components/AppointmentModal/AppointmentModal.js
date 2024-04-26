@@ -16,8 +16,10 @@ export const AppointmentModal = ({
 	...rest
 }) => {
 	onPressHandler = () => {
-		navigation.navigate('InsertRecord');
+		navigation.navigate('InsertRecord', appointmentData);
 		setShowModalAppointment(false);
+		console.log("levando para inserir prontuario");
+		console.log("a");
 	};
 
 	return appointmentData !== null ? (

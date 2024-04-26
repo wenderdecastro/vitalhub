@@ -12,7 +12,7 @@ import { userDecodeToken } from "../../utils/Auth"
 import api from "../../service/Service"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export const Profile = ({ navigation }) => {
+export const Profile = ({ navigation, route }) => {
 
     const [ProfileEdit, setProfileEdit] = useState(true)
 
@@ -40,6 +40,7 @@ export const Profile = ({ navigation }) => {
     const [crm, setCrm] = useState()
     const [dtNasc, setDtNasc] = useState()
     const [especialidade, setEspecialidade] = useState()
+    const [foto,setFoto] = useState()
 
     async function profileLoad() {
         const token = await userDecodeToken()
@@ -50,21 +51,41 @@ export const Profile = ({ navigation }) => {
         setRole(token.role)
         setIdUser(token.jti)
 
-        await getUser()
+        await getUser(token)
 
     }
 
-    async function getUser() {
+    async function AlterarFotoDePerfil(){
+        const formData = new FormData()
+        formData.append("Arquivo", {
+            uri: route.params.photoUri,
+            name: `image.jpg`,
+            type: `image/jpg`
+        })
+
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${idUser}`, formData, {
+            headers:{
+                "Content-Type" : "multipart/form-data"
+            }   
+        }).then(() => {
+            setFoto(route.params.photoUri)
+            console.log(route.params.photoUri);
+        }).catch(error => {
+            console.log("erro no atualizarFotoPerfil()");
+            console.log(error);
+        })
+    }
+
+    async function getUser(tok) {
 
         const response = await api.get(
 
-            role == "Paciente" ?
-                `/Pacientes/BuscarPorId/${idUser}`
+            tok.role == "Paciente" ?
+                `/Pacientes/BuscarPorId/${tok.jti}`
                 :
-                `/Medicos/BuscarPorId/${idUser}`
+                `/Medicos/BuscarPorId/${tok.jti}`
         );
         setUserData(response.data);
-        console.log(response.data);
 
         setLogradouro(response.data.endereco.logradouro)
         setCep(response.data.endereco.cep)
@@ -73,12 +94,14 @@ export const Profile = ({ navigation }) => {
         setCpf(response.data.cpf)
         setCrm(response.data.crm)
         setDtNasc(response.data.dataNascimento)
-        setEspecialidade(response.data.especialidade.especialidade1)
+        setFoto(response.data.idNavigation.foto)
+        tok.role == "Paciente" ?
+            null :
+            setEspecialidade(response.data.especialidade.especialidade1)
     }
 
     async function updatePatient() {
         const token = JSON.parse(await AsyncStorage.getItem('token')).token;
-        console.log(token);
 
         try {
             {
@@ -90,7 +113,8 @@ export const Profile = ({ navigation }) => {
                         Cep: cep,
                         Logradouro: logradouro,
                         Cidade: cidade,
-                        Numero: numero
+                        Numero: numero,
+                        Foto: foto
 
                     }, { headers: { Authorization: `Bearer ${token}` } })
                     :
@@ -101,14 +125,14 @@ export const Profile = ({ navigation }) => {
                         Cep: cep,
                         Logradouro: logradouro,
                         Cidade: cidade,
-                        Numero: numero
+                        Numero: numero,
+                        Foto: foto
 
                     }, { headers: { Authorization: `Bearer ${token}` } })
 
             }
 
             setProfileEdit(true)
-            console.log(token);
 
         } catch (error) {
             console.log(error + " erro para atualizar paciente");
@@ -120,11 +144,11 @@ export const Profile = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-
-        if (idUser) {
-            getUser();
-        }
-    }, [idUser]);
+            if (route.params != null && idUser != null) {
+            AlterarFotoDePerfil()
+            }
+        
+    },[ idUser, route.params])
 
     function formatarData(data) {
         if (!data) return "";
@@ -136,10 +160,10 @@ export const Profile = ({ navigation }) => {
     return (
         <ContainerScroll>
             <ContainerImage>
-                <UserPicture source={require("../../assets/perfil.jpg")} />
-
-                <ButtonCamera onPress={() => navigation.navigate("CameraScreen")}>
-                    <MaterialCommunityIcons name="camera-plus" size={24} color="white" />
+                {/* <UserPicture source={{ uri: photoUri }} /> */}
+                <UserPicture source={{uri: foto}}/>
+                <ButtonCamera onPress={() => navigation.navigate("CameraScreen", { isProfile: true })}>
+                    <MaterialCommunityIcons name="camera-plus" size={30} color="white" />
                 </ButtonCamera>
             </ContainerImage>
 
