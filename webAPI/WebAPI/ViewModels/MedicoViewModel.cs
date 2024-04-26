@@ -1,0 +1,32 @@
+﻿using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebAPI.ViewModels
+{
+    public class MedicoViewModel
+    {
+        public string? Nome { get; set; }
+
+        public string? Email { get; set; }
+
+        public string? Senha { get; set; }
+
+
+        public string? Cep { get; set; }
+
+        public string? Logradouro { get; set; }
+
+        public int? Numero { get; set; }
+
+        public Guid? EspecialidadeId { get; set; }
+
+        public string? Crm { get; set; }
+        public string? Cidade { get; set; }
+
+        public Guid? IdTipoUsuario { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public IFormFile? Arquivo { get; set; }
+    }
+}
