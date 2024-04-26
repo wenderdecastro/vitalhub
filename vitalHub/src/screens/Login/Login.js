@@ -19,8 +19,8 @@ import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 export const Login = ({ navigation }) => {
-	const [email, setEmail] = useState('marcos@gmail.com');
-	const [senha, setSenha] = useState('marcos');
+	const [email, setEmail] = useState('string');
+	const [senha, setSenha] = useState('string');
 	const [loading, setLoading] = useState(false);
 
 	async function LoginFunc() {
@@ -112,11 +112,6 @@ export const Login = ({ navigation }) => {
 					) : (
 						'ENTRAR'
 					)}
-				</ButtonTitle>
-			</Button>
-			<Button onPress={() => navigation.navigate("ViewPrescription")} >
-				<ButtonTitle>
-					aaa
 				</ButtonTitle>
 			</Button>
 

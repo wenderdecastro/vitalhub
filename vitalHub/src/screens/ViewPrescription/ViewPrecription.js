@@ -3,7 +3,13 @@ import { BoxImage } from '../../components/BoxImage/BoxImage';
 import { BoxInput } from '../../components/BoxInput';
 import { InputText } from '../../components/BoxInput/style';
 import { Button } from '../../components/Button/Style';
-import { Container, ContainerImage, ContainerProfile, ContainerRecord, ContainerScroll } from '../../components/Container/Style';
+import {
+	Container,
+	ContainerImage,
+	ContainerProfile,
+	ContainerRecord,
+	ContainerScroll,
+} from '../../components/Container/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 import { SubTitle, TitleC } from '../../components/Title/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
@@ -24,16 +30,50 @@ import {
 } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const ViewPrescription = ({ navigation, route }) => {
-	const { photoUri } = route.params || {};
+	// const { photoUri } = route.params || {};
 	const [isPhoto, setIsPhoto] = useState(true);
+	const [photoUri, setPhotoUri] = useState(route.params);
+	const [descricaoExame, setDescricaoExame] = useState('');
 
 	function onPressPhoto() {
 		navigation.navigate('CameraScreen', { isProfile: false });
 		setIsPhoto(true);
 	}
+	async function InserirExame() {
+		const formData = new FormData();
+		console.log(consulta);
+		formData.append('ConsultaId', route.params.consultaid);
+		formData.append('Imagem', {
+			uri: route.params.photoUri,
+			name: `image.${route.params.photoUri.split('.').pop()}`,
+			type: `image/${route.params.photoUri.split('.').pop()}`,
+		});
+
+		await api
+			.post('/Exame/Cadastrar', formData, {
+				headers: {
+					'Content-Type': 'mulipart/form-data',
+				},
+			})
+			.then((response) => {
+				setDescricaoExame(
+					descricaoExame +
+						'\n' +
+						response.data.descricao,
+				);
+			});
+	}
+
+	useEffect(() => {
+		if (route.params && route.params.photoUri) {
+			setPhotoUri(route.params.photoUri);
+
+			InserirExame();
+		}
+	}, [route.params]);
 
 	function onPressCancel() {
 		setIsPhoto(false);
@@ -58,7 +98,9 @@ export const ViewPrescription = ({ navigation, route }) => {
 				<ContainerRecord>
 					<BoxInput
 						fieldWidth={80}
-						textLabel={'Descrição da consulta'}
+						textLabel={
+							'Descrição da consulta'
+						}
 						placeholder="O paciente possuí uma infecção no
                 ouvido. Necessário repouse de 2 dias
                 e acompanhamento médico constante"
@@ -67,8 +109,12 @@ export const ViewPrescription = ({ navigation, route }) => {
 					/>
 					<BoxInput
 						fieldWidth={80}
-						textLabel={'Diagnóstico do paciente'}
-						placeholder={'Infecção no ouvido'}
+						textLabel={
+							'Diagnóstico do paciente'
+						}
+						placeholder={
+							'Infecção no ouvido'
+						}
 						multiline={true}
 					/>
 					<BoxInput
@@ -87,13 +133,12 @@ export const ViewPrescription = ({ navigation, route }) => {
 					{photoUri && isPhoto ? (
 						<BoxPhoto>
 							<PrescriptionImage
-							source={{ uri: photoUri }}
-							style={{
-								
-							}}
-						/>
+								source={{
+									uri: photoUri,
+								}}
+								style={{}}
+							/>
 						</BoxPhoto>
-						
 					) : (
 						<BoxPrescription>
 							<AntDesign
@@ -102,7 +147,8 @@ export const ViewPrescription = ({ navigation, route }) => {
 								color="#4E4B59"
 							/>
 							<TextBox>
-								Nenhuma foto informada
+								Nenhuma foto
+								informada
 							</TextBox>
 						</BoxPrescription>
 					)}
@@ -118,7 +164,9 @@ export const ViewPrescription = ({ navigation, route }) => {
 								size={22}
 								color="white"
 							/>
-							<TextBox2>Enviar</TextBox2>
+							<TextBox2>
+								Enviar
+							</TextBox2>
 						</ButtonUpload>
 						<ButtonCancel
 							onPress={() => {
@@ -140,8 +188,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 						multiline={true}
 					/>
 				</ContainerRecord>
-
-
 
 				<CancelAppointment
 					onPress={() =>
