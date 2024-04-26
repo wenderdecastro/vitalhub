@@ -3,11 +3,12 @@ import { BoxImage } from '../../components/BoxImage/BoxImage';
 import { BoxInput } from '../../components/BoxInput';
 import { InputText } from '../../components/BoxInput/style';
 import { Button } from '../../components/Button/Style';
-import { Container, ContainerImage, ContainerScroll } from '../../components/Container/Style';
+import { Container, ContainerImage, ContainerProfile, ContainerRecord, ContainerScroll } from '../../components/Container/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 import { SubTitle, TitleC } from '../../components/Title/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
 import {
+	BoxPhoto,
 	BoxPrescription,
 	ButtonCancel,
 	ButtonUpload,
@@ -30,7 +31,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 	const [isPhoto, setIsPhoto] = useState(true);
 
 	function onPressPhoto() {
-		navigation.navigate('CameraScreen');
+		navigation.navigate('CameraScreen', { isProfile: false });
 		setIsPhoto(true);
 	}
 
@@ -43,10 +44,10 @@ export const ViewPrescription = ({ navigation, route }) => {
 			<Container>
 				<ContainerImage>
 					<UserPicture
-					source={require('../../assets/medico1.jpg')}
-				/>
+						source={require('../../assets/medico1.jpg')}
+					/>
 				</ContainerImage>
-				
+
 				<TitleC>Dr Claudio</TitleC>
 
 				<ContainerSubTitle>
@@ -54,90 +55,93 @@ export const ViewPrescription = ({ navigation, route }) => {
 					<SubTitle>CRM-15286</SubTitle>
 				</ContainerSubTitle>
 
-				<BoxInput
-					fieldWidth={80}
-					textLabel={'Descrição da consulta'}
-					placeholder="O paciente possuí uma infecção no
+				<ContainerRecord>
+					<BoxInput
+						fieldWidth={80}
+						textLabel={'Descrição da consulta'}
+						placeholder="O paciente possuí uma infecção no
                 ouvido. Necessário repouse de 2 dias
                 e acompanhamento médico constante"
-					multiline={true}
-					fieldHeight={120}
-				/>
-				<BoxInput
-					fieldWidth={80}
-					textLabel={'Diagnóstico do paciente'}
-					placeholder={'Infecção no ouvido'}
-					multiline={true}
-				/>
-				<BoxInput
-					fieldWidth={80}
-					textLabel={'Prescrição médica'}
-					placeholder="Medicamento: Advil
+						multiline={true}
+						fieldHeight={120}
+					/>
+					<BoxInput
+						fieldWidth={80}
+						textLabel={'Diagnóstico do paciente'}
+						placeholder={'Infecção no ouvido'}
+						multiline={true}
+					/>
+					<BoxInput
+						fieldWidth={80}
+						textLabel={'Prescrição médica'}
+						placeholder="Medicamento: Advil
                 Dosagem: 50 mg
                 Frequência: 3 vezes ao dia
                 Duração: 3 dias"
-					multiline={true}
-					fieldHeight={120}
-				/>
-
-				<TitleBox>Exames médicos</TitleBox>
-
-				{photoUri && isPhoto ? (
-					<PrescriptionImage
-						source={{ uri: photoUri }}
-						style={{
-							transform: [
-								{
-									rotate: '180deg',
-								},
-							],
-						}}
+						multiline={true}
+						fieldHeight={120}
 					/>
-				) : (
-					<BoxPrescription>
-						<AntDesign
-							name="upload"
-							size={20}
-							color="#4E4B59"
+
+					<TitleBox>Exames médicos</TitleBox>
+
+					{photoUri && isPhoto ? (
+						<BoxPhoto>
+							<PrescriptionImage
+							source={{ uri: photoUri }}
+							style={{
+								
+							}}
 						/>
-						<TextBox>
-							Nenhuma foto informada
-						</TextBox>
-					</BoxPrescription>
-				)}
+						</BoxPhoto>
+						
+					) : (
+						<BoxPrescription>
+							<AntDesign
+								name="upload"
+								size={20}
+								color="#4E4B59"
+							/>
+							<TextBox>
+								Nenhuma foto informada
+							</TextBox>
+						</BoxPrescription>
+					)}
 
-				<ContentUpload>
-					<ButtonUpload
-						onPress={() => {
-							onPressPhoto();
-						}}
-					>
-						<MaterialCommunityIcons
-							name="camera-plus-outline"
-							size={22}
-							color="white"
-						/>
-						<TextBox2>Enviar</TextBox2>
-					</ButtonUpload>
-					<ButtonCancel
-						onPress={() => {
-							onPressCancel();
-						}}
-					>
-						<TextCancel>
-							Cancelar
-						</TextCancel>
-					</ButtonCancel>
-				</ContentUpload>
+					<ContentUpload>
+						<ButtonUpload
+							onPress={() => {
+								onPressPhoto();
+							}}
+						>
+							<MaterialCommunityIcons
+								name="camera-plus-outline"
+								size={22}
+								color="white"
+							/>
+							<TextBox2>Enviar</TextBox2>
+						</ButtonUpload>
+						<ButtonCancel
+							onPress={() => {
+								onPressCancel();
+							}}
+						>
+							<TextCancel>
+								Cancelar
+							</TextCancel>
+						</ButtonCancel>
+					</ContentUpload>
 
-				<Line />
+					<Line />
 
-				<InputText
-					fieldWidth={80}
-					fieldHeight={80}
-					placeholder="Resultado do exame de sangue : tudo normal"
-					multiline={true}
-				/>
+					<InputText
+						fieldWidth={80}
+						fieldHeight={80}
+						placeholder="Resultado do exame de sangue : tudo normal"
+						multiline={true}
+					/>
+				</ContainerRecord>
+
+
 
 				<CancelAppointment
 					onPress={() =>

@@ -43,6 +43,8 @@ namespace WebAPI.Repositories
                     usuarioBuscado.Foto = novaUrlFoto;
                 }
 
+                ctx.Update(usuarioBuscado);
+
                 ctx.SaveChanges();
             }
             catch (Exception)

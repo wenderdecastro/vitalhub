@@ -26,7 +26,7 @@ margin-right: 180px ;
 `
 
 export const BoxPrescription = styled.View`
-width: 80%;
+width: 100%;
 height: 120px;
 background-color: #F5F3F3;
 font-size: 14px;
@@ -48,7 +48,7 @@ font-family: MontserratAlternates_700Bold;
 `
 
 export const ButtonUpload = styled.TouchableOpacity`
-width: 150px;
+width: 50%;
 height: 50px;
 background-color: #49B3BA;
 justify-content: center;
@@ -58,7 +58,7 @@ gap: 10px;
 border-radius: 5px;
 `
 export const ButtonCancel = styled.TouchableOpacity`
-width: 150px;
+width: 50%;
 height: 50px;
 border-radius: 5px;
 justify-content: center;
@@ -75,9 +75,15 @@ margin-top: 10px;
 `
 
 export const PrescriptionImage = styled.Image`
-    width: 310px;
-    height: 540px;
+    width: 100%;
+    height: 100%;
     border-radius: 10px;
     rotate: '180deg' ;
+`
+
+export const BoxPhoto = styled.View`
+height: 320px;
+width: 100%;
+border: 2px solid red;
 `
 

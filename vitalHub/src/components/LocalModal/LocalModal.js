@@ -20,7 +20,9 @@ export const LocalModal = ({
 	};
 
 	onPressContinue = () => {
-		navigation.navigate('LocalAppointment', appointmentData);
+		navigation.navigate('LocalAppointment', appointmentData.medicoClinica.clinicaId);
+		console.log(appointmentData.medicoClinica.clinicaId);
+		console.log("ta na modal ainda");
 		setShowModalLocal(false);
 	};
 

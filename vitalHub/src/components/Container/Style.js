@@ -76,9 +76,14 @@ export const ContentInfo = styled.View`
 
 export const ContainerImage = styled.View`
 	width: 100%;
-	height: 280px;
+	height: 320px;
 	margin-bottom: 20px;
 	position: relative;
 	align-items: center;
 	justify-content: flex-start;
 `;
+
+export const ContainerRecord = styled.View`
+width: 80%;
+height: 100%;
+`
