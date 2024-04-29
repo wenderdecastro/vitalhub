@@ -190,10 +190,11 @@ export const Home = ({ navigation }) => {
 												selectedAppointment,
 											);
 									  }
-									:() => navigation.navigate(
-											'ViewRecord',
-											item,
-									  )
+									: () =>
+											navigation.navigate(
+												'ViewPrescription',
+												item,
+											)
 							}
 							name={
 								profile.role ===

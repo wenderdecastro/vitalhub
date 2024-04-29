@@ -9,34 +9,7 @@ import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
 import { useState, useEffect } from 'react';
 import api from '../../service/Service';
 
-const Medicos = [
-	{
-		id: 1,
-		nome: 'DrClaudio',
-		especialidade: 'Clinico Geral',
-		foto: require('../../assets/medico1.jpg'),
-	},
-	{
-		id: 2,
-		nome: 'DrCesar',
-		especialidade: 'Ortopedista',
-		foto: require('../../assets/medico2.jpg'),
-	},
-	{
-		id: 3,
-		nome: 'DrMarcio',
-		especialidade: 'Cardiologista',
-		foto: require('../../assets/medico3.webp'),
-	},
-	{
-		id: 4,
-		nome: 'DrAndre',
-		especialidade: 'Clinico Geral',
-		foto: require('../../assets/medico4.jpg'),
-	},
-];
-
-export const SelectDoctor = ({ navigation }) => {
+export const SelectDoctor = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
 
 	const onPressCancel = () => {
@@ -45,10 +18,13 @@ export const SelectDoctor = ({ navigation }) => {
 	};
 
 	const [medicosLista, setMedicosLista] = useState([]);
+	const [medico, setMedico] = useState();
 
 	async function listarMedicos() {
 		await api
-			.get('/Medicos')
+			.get(
+				`/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`,
+			)
 			.then((response) => {
 				setMedicosLista(response.data);
 			})
@@ -56,6 +32,7 @@ export const SelectDoctor = ({ navigation }) => {
 	}
 
 	useEffect(() => {
+		console.log(route.params.agendamento);
 		listarMedicos();
 	}, []);
 
@@ -67,18 +44,36 @@ export const SelectDoctor = ({ navigation }) => {
 				{medicosLista.map((medico) => (
 					// console.log(medico),
 					<CardDoctor
+						key={medico.id}
 						nome={medico.idNavigation.nome}
 						especialidade={
 							medico.especialidade
 								.especialidade1
 						}
 						foto={medico.idNavigation.foto}
+						onPress={() =>
+							setMedico({
+								medicoClinicaId:
+									medico.id,
+								medicoLabel:
+									medico
+										.idNavigation
+										.nome,
+							})
+						}
 					/>
 				))}
 			</ScrollView>
 
 			<Button
-				onPress={() => navigation.replace('SelectDate')}
+				onPress={() =>
+					navigation.replace('SelectDate', {
+						agendamento: {
+							...route.params,
+							...medico,
+						},
+					})
+				}
 			>
 				<ButtonTitle>CONTINUAR</ButtonTitle>
 			</Button>

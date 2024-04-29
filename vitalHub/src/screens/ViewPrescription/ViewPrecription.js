@@ -45,6 +45,8 @@ export const ViewPrescription = ({ navigation, route }) => {
 	async function InserirExame() {
 		const formData = new FormData();
 		console.log(consulta);
+		console.log('consulta');
+
 		formData.append('ConsultaId', route.params.consultaid);
 		formData.append('Imagem', {
 			uri: route.params.photoUri,

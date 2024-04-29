@@ -127,20 +127,7 @@ namespace WebAPI.Repositories
         }
 
 
-        public List<Clinica> ListarPorCidade(string cidade)
-        {
-            return ctx.Clinicas
-                .Select(c => new Clinica
-                {
-                    Id = c.Id,
-                    NomeFantasia = c.NomeFantasia,
-                    Endereco = c.Endereco
-                })
 
-               .Where(c => c.Endereco!.Cidade == cidade)
-                .ToList();
-        }
-
-        }
     }
+}
  

@@ -38,11 +38,24 @@ namespace WebAPI.Repositories
                 .ToList();
         }
 
-        public IList<Clinica> ListarPorCidade(string cidade)
+        public List<Clinica> ListarPorCidade(string cidade)
         {
-            throw new NotImplementedException();
+            return ctx.Clinicas
+                .Select(c => new Clinica
+                {
+                    Id = c.Id,
+                    NomeFantasia = c.NomeFantasia,
+                    Endereco = c.Endereco
+                })
+
+               .Where(c => c.Endereco!.Cidade == cidade)
+                .ToList();
         }
 
 
+
     }
-}
+
+    }
+
+
