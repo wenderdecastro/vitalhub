@@ -61,20 +61,15 @@ export const SelectClinic = ({ navigation, route }) => {
 			</ScrollView>
 
 			<Button
-				onPress={() => {
-					console.log({
-						...route.params.agendamento,
-						clinica: clinica,
-					});
-
+				onPress={() =>
 					navigation.replace('SelectDoctor', {
 						agendamento: {
 							...route.params
 								.agendamento,
 							...clinica,
 						},
-					});
-				}}
+					})
+				}
 			>
 				<ButtonTitle>CONTINUAR</ButtonTitle>
 			</Button>

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 export const ContainerCardDoctor = styled.TouchableOpacity`
 	width: 300px;

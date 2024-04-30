@@ -7,15 +7,18 @@ import {
 	ImageCardDoctor,
 } from './Style';
 
-export const CardDoctor = ({ nome, especialidade, foto, OnPress }) => {
-	const [clicked, setClicked] = useState(false);
+export const CardDoctor = ({ nome, especialidade, foto, ButtonFn }) => {
+	// const [clicked, setClicked] = useState(false);
 
-	const handleClick = () => {
-		setClicked(!clicked);
-	};
+	// const handleClick = () => {
+	// 	setClicked(!clicked);
+	// };
 
 	return (
-		<ContainerCardDoctor onPress={OnPress} clicked={clicked}>
+		<ContainerCardDoctor
+			onPress={ButtonFn}
+			// clicked={clicked}
+		>
 			<ContentDoctor>
 				<ImageCardDoctor source={foto} />
 

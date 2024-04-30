@@ -23,7 +23,7 @@ export const ScheduleModal = ({
 	...rest
 }) => {
 	const [nivelConsulta, setNivelConsulta] = useState({
-		id: 'ADD341BE-8E85-40F1-BCA3-71C72A1585D3',
+		id: '34065EDC-CB48-4045-82FB-949DAE435DC9',
 		tipo: 'Rotina',
 	});
 	const [agendamento, setAgendamento] = useState({});
@@ -59,7 +59,7 @@ export const ScheduleModal = ({
 								onPress={() =>
 									setNivelConsulta(
 										{
-											id: 'ADD341BE-8E85-40F1-BCA3-71C72A1585D3',
+											id: '34065EDC-CB48-4045-82FB-949DAE435DC9',
 											tipo: 'Rotina',
 										},
 									)
@@ -87,7 +87,7 @@ export const ScheduleModal = ({
 								onPress={() =>
 									setNivelConsulta(
 										{
-											id: '34065EDC-CB48-4045-82FB-949DAE435DC9',
+											id: 'ADD341BE-8E85-40F1-BCA3-71C72A1585D3',
 											tipo: 'Urgente',
 										},
 									)

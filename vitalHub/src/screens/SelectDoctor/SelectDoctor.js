@@ -30,7 +30,14 @@ export const SelectDoctor = ({ navigation, route }) => {
 			})
 			.catch((error) => console.error(error));
 	}
-
+	function handleContinue() {
+		navigation.replace('SelectDate', {
+			agendamento: {
+				...route.params.agendamento,
+				...medico,
+			},
+		});
+	}
 	useEffect(() => {
 		console.log(route.params.agendamento);
 		listarMedicos();
@@ -42,7 +49,6 @@ export const SelectDoctor = ({ navigation, route }) => {
 
 			<ScrollView>
 				{medicosLista.map((medico) => (
-					// console.log(medico),
 					<CardDoctor
 						key={medico.id}
 						nome={medico.idNavigation.nome}
@@ -51,7 +57,7 @@ export const SelectDoctor = ({ navigation, route }) => {
 								.especialidade1
 						}
 						foto={medico.idNavigation.foto}
-						onPress={() =>
+						ButtonFn={() =>
 							setMedico({
 								medicoClinicaId:
 									medico.id,
@@ -65,16 +71,7 @@ export const SelectDoctor = ({ navigation, route }) => {
 				))}
 			</ScrollView>
 
-			<Button
-				onPress={() =>
-					navigation.replace('SelectDate', {
-						agendamento: {
-							...route.params,
-							...medico,
-						},
-					})
-				}
-			>
+			<Button onPress={() => handleContinue()}>
 				<ButtonTitle>CONTINUAR</ButtonTitle>
 			</Button>
 

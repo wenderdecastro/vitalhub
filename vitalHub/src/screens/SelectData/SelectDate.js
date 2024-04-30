@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FullCalender from '../../components/CalendarSelectDate/CalendarSelectDate';
 import { Container } from '../../components/Container/Style';
 import { TitleB } from '../../components/Title/Style';
@@ -10,11 +10,20 @@ import { SummaryScheduleModal } from '../../components/SummaryAppointmentModal/S
 import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
 
 export const SelectDate = ({ navigation, route }) => {
+	const [agendamento, setAgendamento] = useState(null);
 	const [selectedDate, setSelectedDate] = useState();
 	const [selectedTime, setSelectedTime] = useState();
 
 	const [showModalSummary, setShowModalSummary] = useState(false);
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
+
+	useEffect(() => {
+		console.log(selectedDate);
+		setAgendamento({
+			...route.params.agendamento,
+			dataConsulta: `${selectedDate} ${selectedTime}`,
+		});
+	}, [selectedDate]);
 
 	const onPressCancel = () => {
 		setShowModalSchedule(true);
@@ -35,7 +44,15 @@ export const SelectDate = ({ navigation, route }) => {
 				handleSelectedFn={setSelectedTime}
 			/>
 
-			<Button onPress={() => setShowModalSummary(true)}>
+			<Button
+				onPress={() => (
+					setAgendamento({
+						...route.params.agendamento,
+						DataConsulta: `${selectedDate} ${selectedTime}`,
+					}),
+					setShowModalSummary(true)
+				)}
+			>
 				<ButtonTitle>CONFIRMAR</ButtonTitle>
 			</Button>
 
@@ -44,12 +61,15 @@ export const SelectDate = ({ navigation, route }) => {
 			</CancelAppointment>
 
 			<SummaryScheduleModal
+				agendamento={agendamento}
 				visible={showModalSummary}
 				setShowModalSummary={setShowModalSummary}
 				navigation={navigation}
+				route={route}
 			/>
 
 			<ScheduleModal
+				route={route}
 				visible={showModalSchedule}
 				setShowModalSchedule={setShowModalSchedule}
 			/>
