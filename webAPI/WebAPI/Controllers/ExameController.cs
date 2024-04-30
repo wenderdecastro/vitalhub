@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
-using WebAPI.Repositories;
 using WebAPI.Utils.OCR;
 using WebAPI.ViewModels;
 
@@ -86,6 +85,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+
         }
     }
 }

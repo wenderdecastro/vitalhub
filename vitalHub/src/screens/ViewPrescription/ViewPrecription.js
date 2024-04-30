@@ -3,7 +3,13 @@ import { BoxImage } from '../../components/BoxImage/BoxImage';
 import { BoxInput } from '../../components/BoxInput';
 import { InputText } from '../../components/BoxInput/style';
 import { Button } from '../../components/Button/Style';
-import { Container, ContainerImage, ContainerProfile, ContainerRecord, ContainerScroll } from '../../components/Container/Style';
+import {
+	Container,
+	ContainerImage,
+	ContainerProfile,
+	ContainerRecord,
+	ContainerScroll,
+} from '../../components/Container/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 import { SubTitle, TitleC } from '../../components/Title/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
@@ -24,60 +30,140 @@ import {
 } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { userDecodeToken } from '../../utils/Auth';
+import api from '../../service/Service';
 
 export const ViewPrescription = ({ navigation, route }) => {
-	const { photoUri } = route.params || {};
+	const [photoUri, setPhotoUri] = useState();
 	const [isPhoto, setIsPhoto] = useState(true);
+	const [descricaoExame, setDescricaoExame] = useState();
+	const [consultaId, setConsultaId] = useState()
+	const [nome, setNome] = useState()
+	const [crm, setCrm] = useState()
+	const [especialidade, setEspecialidade] = useState()
+	const [foto, setFoto] = useState()
+	const [diagnostico, setDiagnostico] = useState()
+	const [descricao, setDescricao] = useState()
+	const [receita, setReceita] = useState()
 
 	function onPressPhoto() {
-		navigation.navigate('CameraScreen', { isProfile: false });
-		setIsPhoto(true);
+		navigation.navigate('CameraScreen', {
+			isProfile: false,
+			foto: foto,
+			consultaId: consultaId,
+			nome: nome,
+			crm: crm,
+			especialidade: especialidade,
+			diagnostico: diagnostico,
+			descricao: descricao,
+			receita: receita
+		}
+		);
 	}
 
 	function onPressCancel() {
 		setIsPhoto(false);
-		route.params = null;
+		if (photoUri != '') {
+			route.params.photoUri = '';
+		}
 	}
+
+	async function InserirExame() {
+		const formData = new FormData();
+		console.log('id consulta:');
+		console.log(consultaId);
+		formData.append('ConsultaId', consultaId);
+		formData.append('Imagem', {
+			uri: photoUri,
+			name: `image.${photoUri.split('.').pop()}`,
+			type: `image/${photoUri.split('.').pop()}`,
+		});
+
+		await api
+			.post('/Exame/Cadastrar', formData, {
+				headers: {
+					'Content-Type': 'mulipart/form-data',
+				},
+			})
+			.then((response) => {
+				setDescricaoExame(
+					setDescricaoExame(descricaoExame + "\n" + response.data.descricao)
+				);
+			});
+	}
+
+	async function GetExame() {
+		try {
+			console.log('getExame');
+			const response = await api.get(`/Exame/BuscarPorIdConsulta?idConsulta=${consultaId}`)
+			setDescricaoExame(response.data[0].descricao)
+			console.log('descricao:');
+			console.log(descricaoExame);
+
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	useEffect(() => {
+		setFoto(route.params.foto);
+		setConsultaId(route.params.consultaId)
+		setNome(route.params.nome)
+		setCrm(route.params.crm)
+		setEspecialidade(route.params.especialidade)
+		setDiagnostico(route.params.diagnostico)
+		setDescricao(route.params.descricao)
+		setPhotoUri(route.params.photoUri)
+	}, [route.params]);
+
+
+	useEffect(() => {
+		if (photoUri != null) {
+			InserirExame();
+		}
+	}, [photoUri])
+
+	useEffect(() => {
+        if (consultaId) {
+            GetExame()
+        }
+    }, [consultaId])
+
 	return (
 		<ContainerScroll>
 			<Container>
 				<ContainerImage>
 					<UserPicture
-						source={require('../../assets/medico1.jpg')}
+						source={{ uri: foto }}
 					/>
 				</ContainerImage>
 
-				<TitleC>Dr Claudio</TitleC>
+				<TitleC>{nome}</TitleC>
 
 				<ContainerSubTitle>
-					<SubTitle>Cliníco geral</SubTitle>
-					<SubTitle>CRM-15286</SubTitle>
+					<SubTitle>{especialidade}</SubTitle>
+					<SubTitle>{crm}</SubTitle>
 				</ContainerSubTitle>
 
 				<ContainerRecord>
 					<BoxInput
 						fieldWidth={80}
 						textLabel={'Descrição da consulta'}
-						placeholder="O paciente possuí uma infecção no
-                ouvido. Necessário repouse de 2 dias
-                e acompanhamento médico constante"
+						placeholder={descricao}
 						multiline={true}
 						fieldHeight={120}
 					/>
 					<BoxInput
 						fieldWidth={80}
 						textLabel={'Diagnóstico do paciente'}
-						placeholder={'Infecção no ouvido'}
+						placeholder={diagnostico}
 						multiline={true}
 					/>
 					<BoxInput
 						fieldWidth={80}
 						textLabel={'Prescrição médica'}
-						placeholder="Medicamento: Advil
-                Dosagem: 50 mg
-                Frequência: 3 vezes ao dia
-                Duração: 3 dias"
+						placeholder={receita}
 						multiline={true}
 						fieldHeight={120}
 					/>
@@ -87,13 +173,11 @@ export const ViewPrescription = ({ navigation, route }) => {
 					{photoUri && isPhoto ? (
 						<BoxPhoto>
 							<PrescriptionImage
-							source={{ uri: photoUri }}
-							style={{
-								
-							}}
-						/>
+								source={{
+									uri: photoUri,
+								}}
+							/>
 						</BoxPhoto>
-						
 					) : (
 						<BoxPrescription>
 							<AntDesign
@@ -102,7 +186,8 @@ export const ViewPrescription = ({ navigation, route }) => {
 								color="#4E4B59"
 							/>
 							<TextBox>
-								Nenhuma foto informada
+								Nenhuma foto
+								informada
 							</TextBox>
 						</BoxPrescription>
 					)}
@@ -118,7 +203,9 @@ export const ViewPrescription = ({ navigation, route }) => {
 								size={22}
 								color="white"
 							/>
-							<TextBox2>Enviar</TextBox2>
+							<TextBox2>
+								Enviar
+							</TextBox2>
 						</ButtonUpload>
 						<ButtonCancel
 							onPress={() => {
@@ -133,15 +220,14 @@ export const ViewPrescription = ({ navigation, route }) => {
 
 					<Line />
 
-					<InputText
+					<BoxInput
 						fieldWidth={80}
 						fieldHeight={80}
-						placeholder="Resultado do exame de sangue : tudo normal"
+						textLabel={'descicao exame'}
+						placeholder={descricaoExame}
 						multiline={true}
 					/>
 				</ContainerRecord>
-
-
 
 				<CancelAppointment
 					onPress={() =>

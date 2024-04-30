@@ -77,13 +77,10 @@ margin-top: 10px;
 export const PrescriptionImage = styled.Image`
     width: 100%;
     height: 100%;
-    border-radius: 10px;
-    rotate: '180deg' ;
 `
 
 export const BoxPhoto = styled.View`
 height: 320px;
 width: 100%;
-border: 2px solid red;
 `
 

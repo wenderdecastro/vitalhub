@@ -191,9 +191,18 @@ export const Home = ({ navigation }) => {
 											);
 									  }
 									:() => navigation.navigate(
-											'ViewRecord',
-											item,
-									  )
+										'ViewPrescription', {
+										descricao: item.descricao,
+										diagnostico: item.diagnostico,
+										nome: item.medicoClinica.medico.idNavigation.nome,
+										foto: item.medicoClinica.medico.idNavigation.foto,
+										crm: item.medicoClinica.medico.crm,
+										especialidade: item.medicoClinica.medico.especialidade.especialidade1,
+										consultaId: item.id,
+										diagnostico: item.diagnostico,
+										descricao: item.descricao
+									}
+									)
 							}
 							name={
 								profile.role ===

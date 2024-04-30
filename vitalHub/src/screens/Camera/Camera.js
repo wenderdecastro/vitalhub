@@ -18,7 +18,9 @@ import { Button } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 
+
 export default function CameraScreen({ navigation, route }) {
+	const { foto, consultaId, nome, crm, especialidade, diagnostico, descricao, receita } = route.params;
 	const cameraRef = useRef(null);
 	const [photo, setPhoto] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
@@ -34,7 +36,6 @@ export default function CameraScreen({ navigation, route }) {
 			navigation.replace('Profile')
 			:
 			navigation.replace('ViewPrescription')
-
 	}
 
 	async function CapturePhoto() {
@@ -45,7 +46,7 @@ export default function CameraScreen({ navigation, route }) {
 
 			setOpenModal(true);
 
-			
+
 		}
 	}
 
@@ -53,21 +54,19 @@ export default function CameraScreen({ navigation, route }) {
 		setPhoto(null);
 		setOpenModal(false);
 	}
-
 	async function SavePhoto() {
-		if (photo) {
-			route.params.isProfile ?
-				navigation.replace('Profile', {
-					photoUri: photo,
-				})
-				:
-				navigation.replace('ViewPrescription', {
-					photoUri: photo,
-				});
-
-			setOpenModal(false)
-		}
+		setOpenModal(false)
+        route.params.isProfile ? navigation.navigate("Profile", { photoUri: photo }) : navigation.navigate("ViewPrescription", { photoUri: photo, foto: foto, 
+			consultaId: consultaId,
+			nome: nome,
+			crm: crm,
+			especialidade: especialidade,
+			diagnostico: diagnostico,
+			descricao: descricao,
+			receita: receita  })
+        
 	}
+	
 
 	useEffect(() => {
 		(async () => {
