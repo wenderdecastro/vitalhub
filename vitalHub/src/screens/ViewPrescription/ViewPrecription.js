@@ -48,8 +48,8 @@ export const ViewPrescription = ({ navigation, route }) => {
 	const [receita, setReceita] = useState()
 
 	function onPressPhoto() {
+		setIsPhoto(true)
 		navigation.navigate('CameraScreen', {
-			isProfile: false,
 			foto: foto,
 			consultaId: consultaId,
 			nome: nome,
@@ -63,16 +63,15 @@ export const ViewPrescription = ({ navigation, route }) => {
 	}
 
 	function onPressCancel() {
-		setIsPhoto(false);
 		if (photoUri != '') {
 			route.params.photoUri = '';
+			setIsPhoto(false);
+			setDescricaoExame(null)
 		}
 	}
 
 	async function InserirExame() {
 		const formData = new FormData();
-		console.log('id consulta:');
-		console.log(consultaId);
 		formData.append('ConsultaId', consultaId);
 		formData.append('Imagem', {
 			uri: photoUri,
@@ -88,19 +87,16 @@ export const ViewPrescription = ({ navigation, route }) => {
 			})
 			.then((response) => {
 				setDescricaoExame(
-					setDescricaoExame(descricaoExame + "\n" + response.data.descricao)
+					descricaoExame + "\n" + response.data.descricao
 				);
+				console.log(descricaoExame);
 			});
 	}
 
 	async function GetExame() {
 		try {
-			console.log('getExame');
 			const response = await api.get(`/Exame/BuscarPorIdConsulta?idConsulta=${consultaId}`)
 			setDescricaoExame(response.data[0].descricao)
-			console.log('descricao:');
-			console.log(descricaoExame);
-
 		} catch (error) {
 			console.log(error);
 		}
@@ -114,6 +110,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 		setEspecialidade(route.params.especialidade)
 		setDiagnostico(route.params.diagnostico)
 		setDescricao(route.params.descricao)
+		setReceita(route.params.receita)
 		setPhotoUri(route.params.photoUri)
 	}, [route.params]);
 
@@ -125,10 +122,10 @@ export const ViewPrescription = ({ navigation, route }) => {
 	}, [photoUri])
 
 	useEffect(() => {
-        if (consultaId) {
-            GetExame()
-        }
-    }, [consultaId])
+		if (consultaId) {
+			GetExame()
+		}
+	}, [consultaId])
 
 	return (
 		<ContainerScroll>
@@ -222,8 +219,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 
 					<BoxInput
 						fieldWidth={80}
-						fieldHeight={80}
-						textLabel={'descicao exame'}
+						textLabel={'descricao exame'}
 						placeholder={descricaoExame}
 						multiline={true}
 					/>

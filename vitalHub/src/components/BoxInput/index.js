@@ -2,7 +2,7 @@ import { FieldContent, InputLabel, InputText, InputTextModificate } from "./styl
 
 export const BoxInput = ({
     fieldWidht = 100,
-    fieldHeight = 50,
+    fieldHeight = '',
     editable = false,
     textLabel,
     placeholder,

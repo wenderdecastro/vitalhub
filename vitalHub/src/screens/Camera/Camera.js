@@ -45,8 +45,6 @@ export default function CameraScreen({ navigation, route }) {
 			setPhoto(photo.uri);
 
 			setOpenModal(true);
-
-
 		}
 	}
 
@@ -56,14 +54,16 @@ export default function CameraScreen({ navigation, route }) {
 	}
 	async function SavePhoto() {
 		setOpenModal(false)
-        route.params.isProfile ? navigation.navigate("Profile", { photoUri: photo }) : navigation.navigate("ViewPrescription", { photoUri: photo, foto: foto, 
+        route.params.isProfile ? navigation.navigate("Profile", { photoUri: photo }) : 
+		navigation.navigate("ViewPrescription", { photoUri: photo, foto: foto, 
 			consultaId: consultaId,
 			nome: nome,
 			crm: crm,
 			especialidade: especialidade,
 			diagnostico: diagnostico,
 			descricao: descricao,
-			receita: receita  })
+			receita: receita  
+		})
         
 	}
 	

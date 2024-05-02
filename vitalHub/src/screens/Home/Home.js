@@ -194,6 +194,7 @@ export const Home = ({ navigation }) => {
 										'ViewPrescription', {
 										descricao: item.descricao,
 										diagnostico: item.diagnostico,
+										receita: item.receita.medicamento,
 										nome: item.medicoClinica.medico.idNavigation.nome,
 										foto: item.medicoClinica.medico.idNavigation.foto,
 										crm: item.medicoClinica.medico.crm,
