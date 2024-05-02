@@ -17,6 +17,8 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
+import api from '../../service/Service';
+import { userDecodeToken } from '../../utils/Auth';
 
 export const AppointmentCard = ({
 	situacao = 'Pendente',
@@ -26,13 +28,36 @@ export const AppointmentCard = ({
 	reason,
 	name,
 	hour,
-	imagem,
 	age,
 	profile,
 }) => {
+	const [photo, setPhoto] = useState()
+
+	async function profileLoad() {
+		const token = await userDecodeToken();
+
+		if (photo == null) {
+			await GetUser(token.jti)
+		}
+	}
+
+	useEffect(() => {
+		profileLoad();
+	}, []);
+
+	async function GetUser(id) {
+		try {
+			const response = await api.get(`/Usuario/BuscarPorId?id=${id}`)
+			setPhoto(response.data.foto)
+		} catch (error) {
+			console.log(error + 'erro buscar usuario');
+		}
+	}
+
+
 	return (
 		<ContainerCard onPress={onPressLocal}>
-			<ImageCard source={imagem} />
+			<ImageCard source={{uri: photo}} />
 
 			<ContentCard>
 				<DateProfileCard>

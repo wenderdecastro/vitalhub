@@ -111,7 +111,6 @@ export const Home = ({ navigation }) => {
 	return (
 		<Container>
 			<Header
-				ProfileImage={require('../../assets/perfil.jpg')}
 				navigation={navigation}
 			/>
 
@@ -223,13 +222,6 @@ export const Home = ({ navigation }) => {
 									.medicoClinica
 									.medico
 									.especialidade
-							}
-							imagem={
-								item
-									.medicoClinica
-									.medico
-									.idNavigation
-									.foto
 							}
 							age={
 								profile.role ===

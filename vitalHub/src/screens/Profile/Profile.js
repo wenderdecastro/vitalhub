@@ -253,7 +253,7 @@ export const Profile = ({ navigation, route }) => {
 
 						<ContainerUF>
 							<BoxInput
-								fieldWidht={75}
+								fieldWidht={67}
 								textLabel="Endereço"
 								placeholder={
 									logradouro
@@ -262,7 +262,7 @@ export const Profile = ({ navigation, route }) => {
 							/>
 
 							<BoxInput
-								fieldWidht={20}
+								fieldWidht={25}
 								textLabel="Numero"
 								placeholder={` ${numero}`}
 								fieldHeight={60}
