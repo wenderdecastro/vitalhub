@@ -52,10 +52,5 @@ namespace WebAPI.Repositories
                 .ToList();
         }
 
-
-
     }
-
-    }
-
-
+}

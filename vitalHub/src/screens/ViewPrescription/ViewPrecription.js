@@ -180,33 +180,15 @@ export const ViewPrescription = ({ navigation, route }) => {
 				<ContainerRecord>
 					<BoxInput
 						fieldWidth={80}
-<<<<<<< HEAD
 						textLabel={'Descrição da consulta'}
 						placeholder={descricao}
-=======
-						textLabel={
-							'Descrição da consulta'
-						}
-						placeholder="O paciente possuí uma infecção no
-                ouvido. Necessário repouse de 2 dias
-                e acompanhamento médico constante"
->>>>>>> faeaee499b7ea8c45085aa93538d12a3642ef94a
 						multiline={true}
 						fieldHeight={120}
 					/>
 					<BoxInput
 						fieldWidth={80}
-<<<<<<< HEAD
 						textLabel={'Diagnóstico do paciente'}
 						placeholder={diagnostico}
-=======
-						textLabel={
-							'Diagnóstico do paciente'
-						}
-						placeholder={
-							'Infecção no ouvido'
-						}
->>>>>>> faeaee499b7ea8c45085aa93538d12a3642ef94a
 						multiline={true}
 					/>
 					<BoxInput
@@ -225,10 +207,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 								source={{
 									uri: photoUri,
 								}}
-<<<<<<< HEAD
-=======
-								style={{}}
->>>>>>> faeaee499b7ea8c45085aa93538d12a3642ef94a
 							/>
 						</BoxPhoto>
 					) : (

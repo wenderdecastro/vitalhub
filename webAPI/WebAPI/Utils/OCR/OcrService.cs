@@ -6,12 +6,7 @@ namespace WebAPI.Utils.OCR
 {
     public class OcrService
     {
-<<<<<<< HEAD
         private readonly string _subscriptionKey = "54ff9b20c8324977b524f9424e4865e4";
-=======
-        private readonly string _subscriptionKey = "875388549672457a8514e0bb9165ae6b";
-        private readonly string _endPoint = "https://ocrvitalhub.cognitiveservices.azure.com/";
->>>>>>> faeaee499b7ea8c45085aa93538d12a3642ef94a
 
         private readonly string _endpoint = "https://cvvvitalhubgm15.cognitiveservices.azure.com/";
 

@@ -89,6 +89,11 @@ namespace WebAPI.Repositories
             }
         }
 
+        public List<Clinica> ListarPorCidade(string cidade)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Consulta> ListarPorMedico(Guid IdMedico)
         {
             try
@@ -127,7 +132,7 @@ namespace WebAPI.Repositories
         }
 
 
-
+        
+        }
     }
-}
  

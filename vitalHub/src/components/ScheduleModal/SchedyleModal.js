@@ -59,7 +59,7 @@ export const ScheduleModal = ({
 								onPress={() =>
 									setNivelConsulta(
 										{
-											id: '34065EDC-CB48-4045-82FB-949DAE435DC9',
+											id: 'A85FDEF6-E3D2-4BF0-B5EE-88896399BC49',
 											tipo: 'Rotina',
 										},
 									)
@@ -73,7 +73,7 @@ export const ScheduleModal = ({
 								onPress={() =>
 									setNivelConsulta(
 										{
-											id: '8BB82967-1CA9-4D71-A37C-715E473D00AC',
+											id: 'FA8C170D-CDBC-42B4-92CC-A620B39B47E5',
 											tipo: 'Exame',
 										},
 									)
@@ -87,7 +87,7 @@ export const ScheduleModal = ({
 								onPress={() =>
 									setNivelConsulta(
 										{
-											id: 'ADD341BE-8E85-40F1-BCA3-71C72A1585D3',
+											id: '86571C4B-5522-4474-915A-BBF2661D804C',
 											tipo: 'Urgente',
 										},
 									)

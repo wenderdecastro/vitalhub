@@ -36,7 +36,7 @@ export const SummaryScheduleModal = ({
 			.post('/Consultas/Cadastrar', {
 				...agendamento,
 				pacienteId: profile.jti,
-				situacaoId: '791B5F13-EECA-4229-B751-712E702D8837',
+				situacaoId: 'B15F2BA2-5856-4B00-98A0-266CE5CF9F87',
 			})
 			.then(async (response) => {
 				await setShowModalSummary(false);
@@ -139,7 +139,7 @@ export const SummaryScheduleModal = ({
 
 						<CancelSchedule
 							onPress={() =>
-								agendarConsulta()
+								onPressHandler()
 							}
 						>
 							Cancelar

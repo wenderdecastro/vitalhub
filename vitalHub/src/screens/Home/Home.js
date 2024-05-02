@@ -190,7 +190,6 @@ export const Home = ({ navigation }) => {
 												selectedAppointment,
 											);
 									  }
-<<<<<<< HEAD
 									:() => navigation.navigate(
 										'ViewPrescription', {
 										descricao: item.descricao,
@@ -205,13 +204,6 @@ export const Home = ({ navigation }) => {
 										descricao: item.descricao
 									}
 									)
-=======
-									: () =>
-											navigation.navigate(
-												'ViewPrescription',
-												item,
-											)
->>>>>>> faeaee499b7ea8c45085aa93538d12a3642ef94a
 							}
 							name={
 								profile.role ===
@@ -252,12 +244,12 @@ export const Home = ({ navigation }) => {
 							}
 							reason={
 								item.prioridade
-									.prioridade ===
-								1
+									 ===
+								'86571C4B-5522-4474-915A-BBF2661D804C'
 									? 'Urgência'
-									: prioridade ===
-									  2
-									? 'Consulta'
+									: item.prioridade ===
+									  'FA8C170D-CDBC-42B4-92CC-A620B39B47E5'
+									? 'Exame'
 									: 'Rotina'
 							}
 							hour={item.dataConsulta}

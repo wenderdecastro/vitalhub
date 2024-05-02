@@ -41,7 +41,7 @@ export default function CameraScreen({ navigation, route }) {
 	async function CapturePhoto() {
 		if (cameraRef) {
 			const photo =
-				await cameraRef.current.takePictureAsync();
+				await cameraRef.current.takePictureAsync({quality: 1});
 			setPhoto(photo.uri);
 
 			setOpenModal(true);
