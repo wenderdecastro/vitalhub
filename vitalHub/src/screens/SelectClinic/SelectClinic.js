@@ -9,33 +9,10 @@ import { useEffect, useState } from 'react';
 import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
 import api from '../../service/Service';
 
-const Clinicas = [
-	{
-		id: 1,
-		nome: 'Clínica Natureh',
-		endereco: 'São Paulo, SP',
-		avaliacao: '4.5',
-		funcionamento: 'Seg-Sex',
-	},
-	{
-		id: 2,
-		nome: 'Clinica GuVets',
-		endereco: 'Santo Andre, SP',
-		avaliacao: '4.9',
-		funcionamento: 'Seg-Sex',
-	},
-	{
-		id: 3,
-		nome: 'Clinica Salutis',
-		endereco: 'São Paulo, SP',
-		avaliacao: '4.3',
-		funcionamento: 'Seg-Sex',
-	},
-];
-
-export const SelectClinic = ({ navigation }) => {
+export const SelectClinic = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
 	const [clinicaLista, setClinicaLista] = useState([]);
+	const [clinica, setClinica] = useState({});
 
 	useEffect(() => {
 		listarClinicas();
@@ -46,12 +23,17 @@ export const SelectClinic = ({ navigation }) => {
 		setShowModalSchedule(true);
 	};
 	async function listarClinicas() {
-		await api
-			.get('/Clinica/ListarTodas')
-			.then((response) => {
-				setClinicaLista(response.data);
-			})
-			.catch((error) => console.error(error));
+		try {
+			const response = await api.get(
+				`/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.localizacao}`,
+			);
+			console.log(response);
+			setClinicaLista(response.data);
+		} catch (error) {
+			console.error(error);
+			console.log(error.message);
+			console.log(error.config);
+		}
 	}
 
 	return (
@@ -61,22 +43,32 @@ export const SelectClinic = ({ navigation }) => {
 			<ScrollView>
 				{clinicaLista.map((clinica) => (
 					<CardClinic
+						key={clinica.id}
 						nome={clinica.nomeFantasia}
 						endereco={
 							clinica.endereco
 								.logradouro
 						}
-						// avaliacao={clinica.avaliacao}
-						// funcionamento={
-						// 	clinica.funcionamento
-						// }
+						OnPress={() =>
+							setClinica({
+								clinicaId: clinica.id,
+								clinicaLabel:
+									clinica.nomeFantasia,
+							})
+						}
 					/>
 				))}
 			</ScrollView>
 
 			<Button
 				onPress={() =>
-					navigation.replace('SelectDoctor')
+					navigation.replace('SelectDoctor', {
+						agendamento: {
+							...route.params
+								.agendamento,
+							...clinica,
+						},
+					})
 				}
 			>
 				<ButtonTitle>CONTINUAR</ButtonTitle>

@@ -12,6 +12,6 @@ namespace WebAPI.Interfaces
 
         public Clinica BuscarPorId(Guid id);
 
-        public IList<Clinica> ListarPorCidade(string cidade);
+        public List<Clinica> ListarPorCidade(string cidade);
     }
 }

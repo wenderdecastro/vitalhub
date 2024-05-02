@@ -190,6 +190,7 @@ export const Home = ({ navigation }) => {
 												selectedAppointment,
 											);
 									  }
+<<<<<<< HEAD
 									:() => navigation.navigate(
 										'ViewPrescription', {
 										descricao: item.descricao,
@@ -204,6 +205,13 @@ export const Home = ({ navigation }) => {
 										descricao: item.descricao
 									}
 									)
+=======
+									: () =>
+											navigation.navigate(
+												'ViewPrescription',
+												item,
+											)
+>>>>>>> faeaee499b7ea8c45085aa93538d12a3642ef94a
 							}
 							name={
 								profile.role ===

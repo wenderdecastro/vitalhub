@@ -58,7 +58,7 @@ export const Login = ({ navigation }) => {
 			setTimeout(() => {
 				setLoading(false);
 				navigation.replace('Main');
-			}, 2000);
+			}, 100);
 		} catch (error) {
 			Toast.show({
 				type: 'error',
