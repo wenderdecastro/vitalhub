@@ -1,19 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Elipse } from '../UserPicture/Style';
-import {
-	ButtonCard,
-	ButtonText,
-	ClockCard,
-	ContainerCard,
-	ContentCard,
-	DateProfileCard,
-	ImageCard,
-	ProfileData,
-	ProfileName,
-	TextAge,
-	TextBold,
-	ViewRow,
-} from './Style';
+import {ButtonCard,ButtonText,ClockCard,ContainerCard,ContentCard,DateProfileCard,ImageCard,ProfileData,ProfileName,TextAge,TextBold,ViewRow,} from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
