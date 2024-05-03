@@ -117,9 +117,7 @@ export const Profile = ({ navigation, route }) => {
 	}
 
 	async function updatePatient() {
-		const token = JSON.parse(
-			await AsyncStorage.getItem('token'),
-		).token;
+		const token = JSON.parse(await AsyncStorage.getItem('token'));
 
 		try {
 			{
@@ -127,6 +125,7 @@ export const Profile = ({ navigation, route }) => {
 					? await api.put(
 							'Pacientes',
 							{
+								Id: token.jti,
 								Cpf: cpf,
 								DataNascimento:
 									dtNasc,
@@ -138,7 +137,7 @@ export const Profile = ({ navigation, route }) => {
 							},
 							{
 								headers: {
-									Authorization: `Bearer ${token}`,
+									Authorization: `Bearer ${token.token}`,
 								},
 							},
 					  )

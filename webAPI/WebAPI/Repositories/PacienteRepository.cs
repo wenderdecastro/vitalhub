@@ -38,6 +38,7 @@ namespace WebAPI.Repositories
                 pacienteBuscado.Endereco.Cidade = paciente.Cidade;
 
             ctx.Pacientes.Update(pacienteBuscado);
+            ctx.Enderecos.Update(pacienteBuscado.Endereco);
             ctx.SaveChanges();
 
             return pacienteBuscado;
