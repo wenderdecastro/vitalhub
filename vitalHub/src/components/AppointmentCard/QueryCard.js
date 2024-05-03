@@ -30,6 +30,7 @@ export const AppointmentCard = ({
 	hour,
 	age,
 	profile,
+	image
 }) => {
 	const [photo, setPhoto] = useState()
 
@@ -56,8 +57,8 @@ export const AppointmentCard = ({
 
 
 	return (
-		<ContainerCard onPress={onPressLocal}>
-			<ImageCard source={{uri: photo}} />
+		<ContainerCard onPress={situacao == 'Pendente' ?onPressLocal : null}>
+			<ImageCard source={{uri: image}} />
 
 			<ContentCard>
 				<DateProfileCard>
@@ -92,7 +93,7 @@ export const AppointmentCard = ({
 							}
 						/>
 						<TextBold situacao={situacao}>
-							{hour}
+						{moment(hour).format('MM-DD')}
 						</TextBold>
 					</ClockCard>
 					{situacao == 'Cancelada' ? (

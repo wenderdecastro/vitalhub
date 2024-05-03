@@ -7,8 +7,8 @@ export const UserPicture = styled.Image`
 `;
 
 export const ModalImage = styled.Image`
-	width: 285px;
-	height: 181px;
+	width: 250px;
+	height: 250px;
 	margin-bottom: 20px;
 `;
 

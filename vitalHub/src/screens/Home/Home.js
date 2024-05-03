@@ -147,7 +147,7 @@ export const Home = ({ navigation }) => {
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) =>
 					statusList === item.situacao.situacao &&
-					listaConsultas ? (
+						listaConsultas ? (
 						<AppointmentCard
 							profile={profile}
 							situacao={
@@ -156,40 +156,19 @@ export const Home = ({ navigation }) => {
 							}
 							onPressAppointment={
 								profile.role ===
-								'Paciente'
-									? () => {
-											setSelectedAppointment(
-												item,
-											);
-											setShowModalAppointment(
-												true,
-											);
-											console.log(
-												selectedAppointment,
-											);
-									  }
-									: null
-							}
-							onPressCancel={() =>
-								setShowModalCancel(
-									true,
-								)
-							}
-							onPressLocal={
-								profile.role ===
-								'Paciente'
-									? () => {
-											setSelectedAppointment(
-												item,
-											);
-											setShowModalLocal(
-												true,
-											);
-											console.log(
-												selectedAppointment,
-											);
-									  }
-									:() => navigation.navigate(
+									'Medico'
+									?
+									() => navigation.navigate(
+										'ViewRecord', {
+										nome: item.paciente.idNavigation.nome,
+										email: item.paciente.idNavigation.email,
+										foto: item.paciente.idNavigation.foto,
+										descricao: item.descricao,
+										diagnostico: item.diagnostico,
+										receita: item.receita.medicamento
+									}
+									)
+									: () => navigation.navigate(
 										'ViewPrescription', {
 										descricao: item.descricao,
 										diagnostico: item.diagnostico,
@@ -204,18 +183,44 @@ export const Home = ({ navigation }) => {
 									}
 									)
 							}
+							onPressCancel={() =>
+								setShowModalCancel(
+									true,
+								)
+							}
+							onPressLocal={
+								profile.role ===
+									'Paciente'
+									? () => {
+										setSelectedAppointment(
+											item,
+										);
+										setShowModalLocal(
+											true, {
+											nome: item.medicoClinica.medico.idNavigation.nome,
+											foto: item.medicoClinica.medico.idNavigation.foto,
+											crm: item.medicoClinica.medico.crm,
+											especialidade: item.medicoClinica.medico.especialidade.especialidade1
+										}
+										);
+										console.log(
+											selectedAppointment,
+										);
+									}
+									: null
+							}
 							name={
 								profile.role ===
-								'Paciente'
+									'Medico'
 									? item
-											.paciente
-											.idNavigation
-											.nome
+										.paciente
+										.idNavigation
+										.nome
 									: item
-											.medicoClinica
-											.medico
-											.idNavigation
-											.nome
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
 							}
 							especialidade={
 								item
@@ -225,26 +230,33 @@ export const Home = ({ navigation }) => {
 							}
 							age={
 								profile.role ===
-								'Paciente'
+									'Medico'
 									? item
-											.paciente
-											.dataNascimento
+										.paciente
+										.dataNascimento
 									: item
-											.medicoClinica
-											.medico
-											.crm
+										.medicoClinica
+										.medico
+										.crm
 							}
 							reason={
 								item.prioridade
-									 ===
-								'86571C4B-5522-4474-915A-BBF2661D804C'
+									===
+									'86571C4B-5522-4474-915A-BBF2661D804C'
 									? 'Urgência'
 									: item.prioridade ===
-									  'FA8C170D-CDBC-42B4-92CC-A620B39B47E5'
-									? 'Exame'
-									: 'Rotina'
+										'FA8C170D-CDBC-42B4-92CC-A620B39B47E5'
+										? 'Exame'
+										: 'Rotina'
 							}
 							hour={item.dataConsulta}
+							image={
+								profile.role === 'Paciente'
+									?
+									item.medicoClinica.medico.idNavigation.foto
+									:
+									item.paciente.idNavigation.foto
+							}
 						/>
 					) : (
 						<></>
@@ -252,16 +264,20 @@ export const Home = ({ navigation }) => {
 				}
 			/>
 
-			<MakeAppointment
-				onPress={() => setShowModalSchedule(true)}
-			>
-				<FontAwesome
-					name="stethoscope"
-					size={38}
-					color="white"
-				/>
-			</MakeAppointment>
-
+			{userLogin === 'Paciente' ?
+				<MakeAppointment
+					onPress={() => setShowModalSchedule(true)}
+				>
+					<FontAwesome
+						name="stethoscope"
+						size={38}
+						color="white"
+					/>
+				</MakeAppointment>
+				:
+				null
+			}
+			
 			<CancelModal
 				visible={showModalCancel}
 				setShowModalCancel={setShowModalCancel}
