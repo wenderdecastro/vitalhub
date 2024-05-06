@@ -20,7 +20,7 @@ Notifications.requestPermissionsAsync(
 	}),
 );
 
-export const CancelModal = ({appointmentId = null, visible, setShowModalCancel, ...rest }) => {
+export const CancelModal = ({idConsulta, visible, setShowModalCancel, ...rest }) => {
 	const handleCallNotification = async () => {
 		const { status } = await Notifications.getPermissionsAsync();
 
@@ -39,11 +39,12 @@ export const CancelModal = ({appointmentId = null, visible, setShowModalCancel, 
 		});
 	};
 
+	const id = idConsulta;
+
 	async function CancelarConsulta(){
 		try {
-			
-			console.log(appointmentId);
-			await api.put(`/Consultas/Status?idConsulta=${appointmentId}&status=Cancelada`)
+			console.log(id);
+			await api.put(`/Consultas/Status?idConsulta=${id}&status=Cancelada`)
 		} catch (error) {
 			console.log(error);
 		}

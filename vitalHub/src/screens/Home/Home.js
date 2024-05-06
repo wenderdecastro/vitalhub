@@ -40,6 +40,7 @@ export const Home = ({ navigation }) => {
 
 	const [userLogin, setUserLogin] = useState();
 	const [profile, setProfile] = useState();
+	const [idConsulta, setIdConsulta] = useState()
 
 	async function profileLoad() {
 		const token = await userDecodeToken();
@@ -184,9 +185,10 @@ export const Home = ({ navigation }) => {
 									)
 							}
 							onPressCancel={() =>
+								{setIdConsulta(item.id);
 								setShowModalCancel(
-									true,
-								)
+									true
+								)}
 							}
 							onPressLocal={
 								profile.role ===
@@ -281,7 +283,7 @@ export const Home = ({ navigation }) => {
 			<CancelModal
 				visible={showModalCancel}
 				setShowModalCancel={setShowModalCancel}
-				appointmentId={selectedAppointment ? selectedAppointment.id : null}
+				idConsulta={idConsulta}
 			/>
 			<AppointmentModal
 				visible={showModalAppointment}
