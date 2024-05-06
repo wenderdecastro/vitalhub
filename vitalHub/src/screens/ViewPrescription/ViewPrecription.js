@@ -183,7 +183,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 						textLabel={'Descrição da consulta'}
 						placeholder={descricao}
 						multiline={true}
-						fieldHeight={120}
 					/>
 					<BoxInput
 						fieldWidth={80}
@@ -196,7 +195,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 						textLabel={'Prescrição médica'}
 						placeholder={receita}
 						multiline={true}
-						fieldHeight={120}
+
 					/>
 
 					<TitleBox>Exames médicos</TitleBox>

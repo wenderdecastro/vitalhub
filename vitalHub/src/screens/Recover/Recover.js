@@ -10,7 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import api from '../../service/Service';
 
 export const Recover = ({ navigation }) => {
-	const [email, setEmail] = useState("gustavopasqualettisni@gmail.com")
+	const [email, setEmail] = useState("")
 
 	async function EnviarEmail(){
 		await api.post(`/RecuperarSenha?email=${email}`)
