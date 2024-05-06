@@ -166,7 +166,8 @@ export const Home = ({ navigation }) => {
 										foto: item.paciente.idNavigation.foto,
 										descricao: item.descricao,
 										diagnostico: item.diagnostico,
-										receita: item.receita.medicamento
+										receita: item.receita.medicamento,
+										id: item.id
 									}
 									)
 									: () => navigation.navigate(

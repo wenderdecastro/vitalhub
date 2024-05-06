@@ -13,48 +13,53 @@ export const BoxInput = ({
     onBlur = null,
     multiline,
     keyboardType,
-    insertRecord
+    RecordEdit,
+    placeholderTextColor,
+    borderColor,
+    borderWidth,
 }) => {
     return (
         <FieldContent
             fieldWidht={fieldWidht}
+
         >
             <InputLabel>{textLabel}</InputLabel>
 
-            {insertRecord ? (
-            <>
-            <InputTextModificate
-                editable={editable}
-                placeholder={placeholder}
-                fieldValue={fieldValue}
-                onChangeText={onChangeText}
-                keyType={keyType}
-                maxLenght={maxLenght}
-                onBlur={onBlur}
-                fieldHeight={fieldHeight}
-                multiline={multiline}
-                keyboardType={keyboardType}
-            />
-            </>
+            {RecordEdit ? (
+                <>
+                    <InputTextModificate
+                        editable={editable}
+                        placeholder={placeholder}
+                        fieldValue={fieldValue}
+                        onChangeText={onChangeText}
+                        keyType={keyType}
+                        maxLenght={maxLenght}
+                        onBlur={onBlur}
+                        fieldHeight={fieldHeight}
+                        multiline={multiline}
+                        keyboardType={keyboardType}
+
+                    />
+                </>
             ) : (
-            <>
-            <InputText
-                editable={editable}
-                placeholder={placeholder}
-                fieldValue={fieldValue}
-                onChangeText={onChangeText}
-                keyType={keyType}
-                maxLenght={maxLenght}
-                onBlur={onBlur}
-                fieldHeight={fieldHeight}
-                multiline={multiline}
-                keyboardType={keyboardType}
-                
-            />
-            </>
+                <>
+                    <InputText
+                        editable={editable}
+                        placeholder={placeholder}
+                        fieldValue={fieldValue}
+                        onChangeText={onChangeText}
+                        keyType={keyType}
+                        maxLenght={maxLenght}
+                        onBlur={onBlur}
+                        fieldHeight={fieldHeight}
+                        multiline={multiline}
+                        keyboardType={keyboardType}
+
+                    />
+                </>
             )}
 
-            
+
         </FieldContent>
     )
 
