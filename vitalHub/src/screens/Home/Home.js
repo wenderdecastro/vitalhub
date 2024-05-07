@@ -185,31 +185,49 @@ export const Home = ({ navigation }) => {
 									}
 									)
 							}
-							onPressCancel={() =>
-								{setIdConsulta(item.id);
+							onPressCancel={() => {
+								setIdConsulta(item.id);
 								setShowModalCancel(
 									true
-								)}
+								)
+							}
 							}
 							onPressLocal={
-								profile.role ===
-									'Paciente'
-									? () => {
-										setSelectedAppointment(
-											item,
-										);
-										setShowModalLocal(
-											true, {
-											nome: item.medicoClinica.medico.idNavigation.nome,
-											foto: item.medicoClinica.medico.idNavigation.foto,
-											crm: item.medicoClinica.medico.crm,
-											especialidade: item.medicoClinica.medico.especialidade.especialidade1
+								item.situacao.situacao === 'Pendente' ?
+									profile.role ===
+										'Paciente'
+										? () => {
+											setSelectedAppointment(
+												item,
+											);
+											setShowModalLocal(
+												true, {
+												nome: item.medicoClinica.medico.idNavigation.nome,
+												foto: item.medicoClinica.medico.idNavigation.foto,
+												crm: item.medicoClinica.medico.crm,
+												especialidade: item.medicoClinica.medico.especialidade.especialidade1
+											}
+											);
+											console.log(
+												selectedAppointment,
+											);
 										}
-										);
-										console.log(
-											selectedAppointment,
-										);
-									}
+										: () => {
+											setSelectedAppointment(
+												item,
+											);
+											setShowModalAppointment(
+												true, {
+												nome: item.medicoClinica.medico.idNavigation.nome,
+												foto: item.medicoClinica.medico.idNavigation.foto,
+												crm: item.medicoClinica.medico.crm,
+												especialidade: item.medicoClinica.medico.especialidade.especialidade1
+											}
+											);
+											console.log(
+												selectedAppointment,
+											);
+										}
 									: null
 							}
 							name={
@@ -280,7 +298,7 @@ export const Home = ({ navigation }) => {
 				:
 				null
 			}
-			
+
 			<CancelModal
 				visible={showModalCancel}
 				setShowModalCancel={setShowModalCancel}

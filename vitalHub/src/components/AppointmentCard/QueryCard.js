@@ -19,6 +19,10 @@ export const AppointmentCard = ({
 	profile,
 	image
 }) => {
+	const dataNascimento = moment(age);
+
+	const idade = moment().diff(dataNascimento, 'years');
+
 	const [photo, setPhoto] = useState()
 
 	async function profileLoad() {
@@ -44,7 +48,7 @@ export const AppointmentCard = ({
 
 
 	return (
-		<ContainerCard onPress={situacao == 'Pendente' ?onPressLocal : null}>
+		<ContainerCard onPress={onPressLocal}>
 			<ImageCard source={{uri: image}} />
 
 			<ContentCard>
@@ -53,10 +57,7 @@ export const AppointmentCard = ({
 
 					<ProfileData>
 						<TextAge>
-							{moment(age)
-								.fromNow(true)
-								.charAt(0)}{' '}
-							anos
+							{idade} anos
 						</TextAge>
 						<FontAwesome
 							name="circle"

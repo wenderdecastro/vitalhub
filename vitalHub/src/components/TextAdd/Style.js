@@ -35,7 +35,7 @@ font-family: "Quicksand_500Medium";
 text-align: center;
 width: 90%;
 font-size: 16px;
-margin-top: 20px;
+margin-top: 10px;
 color: #5F5C6B;
 `
 
