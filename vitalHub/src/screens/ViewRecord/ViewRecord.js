@@ -30,7 +30,7 @@ export const ViewRecord = ({ navigation, route }) => {
 		setDiagnostico(route.params.diagnostico)
 		setReceita(route.params.receita)
 		setIdConsulta(route.params.id)
-	})
+	}, [])
 
 	async function onPressSave() {
 		updateRecord()
@@ -56,151 +56,127 @@ export const ViewRecord = ({ navigation, route }) => {
 
 	return (
 		<ContainerScroll>
-			{RecordEdit ? (
-				<>
-					<Container>
-						<ContainerImage>
-							<UserPicture
-								source={{
-									uri: foto
-								}}
-							/>
-						</ContainerImage>
 
+			<Container>
+				<ContainerImage>
+					<UserPicture
+						source={{
+							uri: foto
+						}}
+					/>
+				</ContainerImage>
 
-						<TitleC>{nome}</TitleC>
-						<TextAdd>
-							{email}
-						</TextAdd>
-						
-						<ContainerRecord2>
-							<BoxInput
-								placeholderTextColor={'#49B3BA'}
-								fieldWidth={80}
-								textLabel={'Descrição da consulta'}
-								placeholder={descricao}
-								multiline={true}
-								RecordEdit={RecordEdit}
-								fieldValue={descricao}
-							/>
-							<BoxInput
-								fieldWidth={80}
-								textLabel={'Diagnóstico do paciente'}
-								placeholder={diagnostico}
-								multiline={true}
-								RecordEdit={RecordEdit}
-								fieldValue={diagnostico}
-							/>
-							<BoxInput
-								fieldWidth={80}
-								textLabel={'Prescrição médica'}
-								placeholder={receita}
-								multiline={true}
-								RecordEdit={RecordEdit}
-								fieldValue={receita}
-							/>
-						</ContainerRecord2>
+				<TitleC>{nome}</TitleC>
+				<TextAdd>
+					{email}
+				</TextAdd>
 
-
-						<Button2
-							onPress={() =>
-								setRecordEdit(
-									false,
-								)
+				{RecordEdit ? (
+					<ContainerRecord2>
+						<BoxInput
+							placeholderTextColor={'#49B3BA'}
+							fieldWidth={80}
+							textLabel={'Descrição da consulta'}
+							placeholder={descricao}
+							multiline={true}
+							RecordEdit={RecordEdit}
+							fieldValue={descricao}
+						/>
+						<BoxInput
+							fieldWidth={80}
+							textLabel={'Diagnóstico do paciente'}
+							placeholder={diagnostico}
+							multiline={true}
+							RecordEdit={RecordEdit}
+							fieldValue={diagnostico}
+						/>
+						<BoxInput
+							fieldWidth={80}
+							textLabel={'Prescrição médica'}
+							placeholder={receita}
+							multiline={true}
+							RecordEdit={RecordEdit}
+							fieldValue={receita}
+						/>
+					</ContainerRecord2>
+				) : (
+					<ContainerRecord2>
+						<BoxInput
+							borderWidth={'2px'}
+							borderColor={'transparent'}
+							fieldWidth={80}
+							textLabel={'Descrição da consulta'}
+							placeholder={descricao}
+							multiline={true}
+							editable={true}
+							onChangeText={
+								setDescricao
 							}
-						>
-							<ButtonTitle>
-								EDITAR
-							</ButtonTitle>
-						</Button2>
-
-						<CancelAppointment
-							onPress={() =>
-								navigation.replace(
-									'Main',
-								)
+						/>
+						<BoxInput
+							borderWidth={'2px'}
+							borderColor={'transparent'}
+							fieldWidth={80}
+							textLabel={'Diagnóstico do paciente'}
+							placeholder={diagnostico}
+							multiline={true}
+							editable={true}
+							onChangeText={
+								setDiagnostico
 							}
-						>
-							Voltar
-						</CancelAppointment>
-					</Container>
-				</>
-			) : (
-				<>
-					<Container>
-						<ContainerImage>
-							<UserPicture
-								source={{
-									uri: foto
-								}}
-							/>
-						</ContainerImage>
-
-
-						<TitleC>{nome}</TitleC>
-						<TextAdd>
-							{email}
-						</TextAdd>
-
-						<ContainerRecord2>
-							<BoxInput
-								borderWidth={'2px'}
-								borderColor={'transparent'}
-								fieldWidth={80}
-								textLabel={'Descrição da consulta'}
-								placeholder={descricao}
-								multiline={true}
-								editable={true}
-								onChangeText={
-									setDescricao
-								}
-							/>
-							<BoxInput
-								borderWidth={'2px'}
-								borderColor={'transparent'}
-								fieldWidth={80}
-								textLabel={'Diagnóstico do paciente'}
-								placeholder={diagnostico}
-								multiline={true}
-								editable={true}
-								onChangeText={
-									setDiagnostico
-								}
-							/>
-							<BoxInput
-								borderWidth={'2px'}
-								borderColor={'transparent'}
-								fieldWidth={80}
-								textLabel={'Prescrição médica'}
-								placeholder={receita}
-								multiline={true}
-								editable={true}
-								onChangeText={
-									setReceita
-								}
-							/>
-						</ContainerRecord2>
-
-						<Button2
-							onPress={() => onPressSave()}
-						>
-							<ButtonTitle>
-								SALVAR
-							</ButtonTitle>
-						</Button2>
-
-						<CancelAppointment
-							onPress={() =>
-								navigation.replace(
-									'Main',
-								)
+						/>
+						<BoxInput
+							borderWidth={'2px'}
+							borderColor={'transparent'}
+							fieldWidth={80}
+							textLabel={'Prescrição médica'}
+							placeholder={receita}
+							multiline={true}
+							editable={true}
+							onChangeText={
+								setReceita
 							}
-						>
-							Voltar
-						</CancelAppointment>
-					</Container>
-				</>
-			)}
+						/>
+					</ContainerRecord2>
+
+				)}
+
+				{RecordEdit ? (
+					<Button2
+						onPress={() =>
+							setRecordEdit(
+								false,
+							)
+						}
+					>
+						<ButtonTitle>
+							EDITAR
+						</ButtonTitle>
+					</Button2>
+				) : (
+					<Button2
+						onPress={() =>
+							onPressSave()
+						}
+					>
+						<ButtonTitle>
+							SALVAR
+						</ButtonTitle>
+					</Button2>
+				)}
+
+
+
+				<CancelAppointment
+					onPress={() =>
+						navigation.replace(
+							'Main',
+						)
+					}
+				>
+					Voltar
+				</CancelAppointment>
+			</Container>
 		</ContainerScroll>
 	);
 };
