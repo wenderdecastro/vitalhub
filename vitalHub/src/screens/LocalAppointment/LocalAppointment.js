@@ -26,13 +26,11 @@ export const LocalAppointment = ({ route }) => {
 		setIdClinica(route.params)
 		console.log(route.params);
 		console.log("route");
-			BuscarClinica(route.params)
-		
+		console.log(route.params);
+		BuscarClinica(route.params)
+
 	}, [route.params])
 
-	// useEffect(() => {
-		
-	// }, [])
 
 	async function BuscarClinica(clinica) {
 		try {
@@ -53,7 +51,7 @@ export const LocalAppointment = ({ route }) => {
 		} catch (error) {
 			console.log(error);
 		}
-		
+
 	}
 
 

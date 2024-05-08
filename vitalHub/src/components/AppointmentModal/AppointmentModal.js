@@ -15,6 +15,10 @@ export const AppointmentModal = ({
 	setShowModalAppointment,
 	...rest
 }) => {
+	const dataNascimento = appointmentData ? moment(appointmentData.paciente.dataNascimento) : null;
+
+	const idade = appointmentData ? moment().diff(dataNascimento, 'years') : null;
+
 	onPressHandler = () => {
 		navigation.navigate('InsertRecord', appointmentData);
 		setShowModalAppointment(false);
@@ -31,12 +35,12 @@ export const AppointmentModal = ({
 			<ViewModal>
 				<ContentModal>
 					<ModalImage
-						source={
-							appointmentData
-								.medicoClinica
-								.medico
+						source={{
+							uri: appointmentData
+								.paciente
 								.idNavigation
 								.foto
+						}
 						}
 					/>
 
@@ -49,13 +53,7 @@ export const AppointmentModal = ({
 					</Title>
 
 					<TextModal>
-						{moment(
-							appointmentData.paciente
-								.dataNascimento,
-						)
-							.fromNow(true)
-							.charAt(0)}{' '}
-						anos
+						{idade} anos
 					</TextModal>
 					<TextModal>
 						{

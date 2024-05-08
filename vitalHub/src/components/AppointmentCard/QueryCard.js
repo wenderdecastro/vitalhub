@@ -19,6 +19,12 @@ export const AppointmentCard = ({
 	profile,
 	image
 }) => {
+	const dataNascimento = moment(age);
+
+	const [user,setUser] = useState()
+
+	const idade = moment().diff(dataNascimento, 'years');
+
 	const [photo, setPhoto] = useState()
 
 	async function profileLoad() {
@@ -37,6 +43,9 @@ export const AppointmentCard = ({
 		try {
 			const response = await api.get(`/Usuario/BuscarPorId?id=${id}`)
 			setPhoto(response.data.foto)
+			setUser(response.data.tipoUsuarioId)
+			console.log('isso memo');
+			console.log(response.data);
 		} catch (error) {
 			console.log(error + 'erro buscar usuario');
 		}
@@ -44,7 +53,7 @@ export const AppointmentCard = ({
 
 
 	return (
-		<ContainerCard onPress={situacao == 'Pendente' ?onPressLocal : null}>
+		<ContainerCard onPress={onPressLocal}>
 			<ImageCard source={{uri: image}} />
 
 			<ContentCard>
@@ -52,12 +61,17 @@ export const AppointmentCard = ({
 					<ProfileName>{name}</ProfileName>
 
 					<ProfileData>
+						{user == "3476524f-93bd-4bf1-ba8c-78ba239aee1d" ?
 						<TextAge>
-							{moment(age)
-								.fromNow(true)
-								.charAt(0)}{' '}
-							anos
+							{age}
 						</TextAge>
+						:
+						<TextAge>
+							{idade} anos
+							
+						</TextAge>
+						}
+						
 						<FontAwesome
 							name="circle"
 							size={6}

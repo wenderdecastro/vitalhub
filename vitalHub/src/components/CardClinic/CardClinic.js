@@ -26,8 +26,13 @@ export const CardClinic = ({
 		setClicked(!clicked); // Alterna o estado quando o componente é clicado
 	};
 
+	const handlePress = () => {
+		handleClick(); 
+		OnPress(); 
+	};
+
 	return (
-		<ContainerCardClinic onPress={OnPress} clicked={clicked}>
+		<ContainerCardClinic onPress={handlePress} clicked={clicked}>
 			<Part1>
 				<Title>{nome}</Title>
 				<Assessment>

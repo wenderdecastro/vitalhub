@@ -13,7 +13,8 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const Button2 = styled(Button)`
-	margin-bottom: 40px;
+	margin-top: 20%;
+	margin-bottom: 5%;
 `;
 
 export const ButtonGoogle = styled(Button)`
