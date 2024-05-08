@@ -47,6 +47,7 @@ export const Profile = ({ navigation, route }) => {
 	const [role, setRole] = useState();
 	const [cpf, setCpf] = useState();
 	const [crm, setCrm] = useState();
+	const [rg, setRg] = useState()
 	const [dtNasc, setDtNasc] = useState();
 	const [especialidade, setEspecialidade] = useState();
 	const [foto, setFoto] = useState();
@@ -106,14 +107,15 @@ export const Profile = ({ navigation, route }) => {
 		setNumero(response.data.endereco.numero);
 		setCpf(response.data.cpf);
 		setCrm(response.data.crm);
+		setRg(response.data.rg)
 		setDtNasc(response.data.dataNascimento);
 		setFoto(response.data.idNavigation.foto);
 		tok.role == 'Paciente'
 			? null
 			: setEspecialidade(
-					response.data.especialidade
-						.especialidade1,
-			  );
+				response.data.especialidade
+					.especialidade1,
+			);
 	}
 
 	async function updatePatient() {
@@ -125,41 +127,42 @@ export const Profile = ({ navigation, route }) => {
 			{
 				role == 'Paciente'
 					? await api.put(
-							'Pacientes',
-							{
-								Cpf: cpf,
-								DataNascimento:
-									dtNasc,
-								Cep: cep,
-								Logradouro: logradouro,
-								Cidade: cidade,
-								Numero: numero,
-								Foto: foto,
+						'Pacientes',
+						{
+							Cpf: cpf,
+							DataNascimento:
+								dtNasc,
+							Cep: cep,
+							Logradouro: logradouro,
+							Cidade: cidade,
+							Numero: numero,
+							Foto: foto,
+							Rg: rg
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
 							},
-							{
-								headers: {
-									Authorization: `Bearer ${token}`,
-								},
-							},
-					  )
+						},
+					)
 					: await api.put(
-							'Medicos',
-							{
-								Crm: crm,
-								Especialidade:
-									especialidade,
-								Cep: cep,
-								Logradouro: logradouro,
-								Cidade: cidade,
-								Numero: numero,
-								Foto: foto,
+						'Medicos',
+						{
+							Crm: crm,
+							Especialidade:
+								especialidade,
+							Cep: cep,
+							Logradouro: logradouro,
+							Cidade: cidade,
+							Numero: numero,
+							Foto: foto,
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
 							},
-							{
-								headers: {
-									Authorization: `Bearer ${token}`,
-								},
-							},
-					  );
+						},
+					);
 			}
 
 			setProfileEdit(true);
@@ -234,6 +237,18 @@ export const Profile = ({ navigation, route }) => {
 						{role == 'Paciente' ? (
 							<BoxInput
 								fieldWidht={80}
+								textLabel="RG:"
+								placeholder={rg}
+								fieldHeight={60}
+							/>
+						)
+							:
+							null
+						}
+
+						{role == 'Paciente' ? (
+							<BoxInput
+								fieldWidht={80}
 								textLabel="CPF:"
 								placeholder={
 									cpf
@@ -253,7 +268,7 @@ export const Profile = ({ navigation, route }) => {
 
 						<ContainerUF>
 							<BoxInput
-								fieldWidht={67}
+								fieldWidht={64}
 								textLabel="Endereço"
 								placeholder={
 									logradouro
@@ -262,7 +277,7 @@ export const Profile = ({ navigation, route }) => {
 							/>
 
 							<BoxInput
-								fieldWidht={25}
+								fieldWidht={28}
 								textLabel="Numero"
 								placeholder={` ${numero}`}
 								fieldHeight={60}
@@ -321,6 +336,15 @@ export const Profile = ({ navigation, route }) => {
 					</>
 				) : (
 					<>
+
+						<BoxInput 
+						fieldWidht={80}
+						textLabel="Nome:"
+						fieldHeight={60}
+						editable={true}
+						onChangeText={setNome}
+						/>
+
 						{role == 'Paciente' ? (
 							<BoxInput
 								fieldWidht={80}
@@ -341,6 +365,19 @@ export const Profile = ({ navigation, route }) => {
 								fieldHeight={60}
 							/>
 						)}
+
+						{role == 'Paciente' ? (
+							<BoxInput
+								fieldWidht={80}
+								textLabel="RG:"
+								fieldHeight={60}
+								editable={true}
+								onChangeText={setRg}
+							/>
+						)
+							:
+							null
+						}
 
 						{role == 'Paciente' ? (
 							<BoxInput
@@ -366,7 +403,7 @@ export const Profile = ({ navigation, route }) => {
 
 						<ContainerUF>
 							<BoxInput
-								fieldWidht={75}
+								fieldWidht={64}
 								textLabel="Endereço"
 								fieldHeight={60}
 								editable={true}
@@ -376,7 +413,7 @@ export const Profile = ({ navigation, route }) => {
 							/>
 
 							<BoxInput
-								fieldWidht={20}
+								fieldWidht={28}
 								textLabel="Numero"
 								fieldHeight={60}
 								editable={true}

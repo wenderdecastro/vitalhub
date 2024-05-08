@@ -70,7 +70,7 @@ export const Account = ({ navigation }) => {
 		} catch (error) {
 			console.log(error);
 		}
-		if (novoPerfil) navigation.replace('Profile', novoPerfil);
+		if (novoPerfil) navigation.replace('Login', novoPerfil);
 	}
 	return (
 		<Container>
