@@ -2,7 +2,6 @@
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Utils;
-using WebAPI.Utils.Mail;
 
 namespace WebAPI.Repositories
 {
@@ -100,31 +99,11 @@ namespace WebAPI.Repositories
         {
             try
             {
-                //Guid.TryParse("3476524F-93BD-4BF1-BA8C-78BA239AEE1D", out var guid);
-                usuario.TipoUsuarioId = usuario.TipoUsuarioId;
-                usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
-
+                Guid.TryParse("3476524F-93BD-4BF1-BA8C-78BA239AEE1D", out var guid);
+                usuario.TipoUsuarioId = guid;
                 usuario.Paciente = new Paciente();
                 usuario.Paciente.Endereco = new Endereco();
-                //usuario.Paciente.Id = usuario.Id;
-
-                //    user.Paciente.DataNascimento = pacienteModel.DataNascimento;
-                //    user.Paciente.Rg = pacienteModel.Rg;
-                //    user.Paciente.Cpf = pacienteModel.Cpf;
-
-                //    user.Paciente.Endereco = new Endereco();
-
-                //    user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
-                //    user.Paciente.Endereco.Numero = pacienteModel.Numero;
-                //    user.Paciente.Endereco.Cep = pacienteModel.Cep;
-                //    user.Paciente.Endereco.Cidade = pacienteModel.Cidade;
-
-                //    pacienteRepository.Cadastrar(user);
-
-                
-
-                //    return Ok(user);
-                //}
+                usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
                 ctx.Add(usuario);
 
                 ctx.SaveChanges();

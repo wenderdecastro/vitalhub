@@ -12,10 +12,10 @@ import api from '../../service/Service';
 import Toast from 'react-native-toast-message';
 
 export const Account = ({ navigation }) => {
-	const [nome, setNome] = useState('testedasilva');
-	const [email, setEmail] = useState('contatowenderdecastro@gmail.com');
-	const [senha, setSenha] = useState('12345678');
-	const [confirmarSenha, setConfirmarSenha] = useState('12345678');
+	const [nome, setNome] = useState('');
+	const [email, setEmail] = useState('');
+	const [senha, setSenha] = useState('');
+	const [confirmarSenha, setConfirmarSenha] = useState('');
 
 	const [novoPerfil, setNovoPerfil] = useState();
 
@@ -63,22 +63,14 @@ export const Account = ({ navigation }) => {
 
 		try {
 			await api
-				.post('Usuario', {
-					nome,
-					email,
-					senha,
-					idTipoUsuario:
-						'5FF2DF57-1B92-49D0-A516-F2B1172A0EDC',
-				})
-				.then((response) => {
-					setNovoPerfil(response.data);
-					if (response.status == 201) {
-						navigation.replace('Login');
-					}
-				});
+				.post('Usuario', { nome, email, senha })
+				.then((response) =>
+					setNovoPerfil(response.data),
+				);
 		} catch (error) {
 			console.log(error);
 		}
+		if (novoPerfil) navigation.replace('Login', novoPerfil);
 	}
 	return (
 		<Container>

@@ -14,36 +14,47 @@ namespace WebAPI.Repositories
 
         public Paciente AtualizarPerfil(Guid Id, PacienteViewModel paciente)
         {
-            Paciente pacienteBuscado = ctx.Pacientes.Include(x => x.Endereco).FirstOrDefault(x => x.Id == Id);
+            try
+            {
+                Paciente pacienteBuscado = ctx.Pacientes
+                .Include(x => x.Endereco)
+                .FirstOrDefault(x => x.Id == Id)!;
 
-            if (paciente.DataNascimento != null)
-                pacienteBuscado.DataNascimento = paciente.DataNascimento;
+                //if (paciente.Foto != null)
+                //    pacienteBuscado!.IdNavigation.Foto = paciente.Foto;
 
-            if (paciente.Senha != null)
-                pacienteBuscado.IdNavigation.Senha = paciente.Senha;
+                if (paciente.DataNascimento != null)
+                    pacienteBuscado!.DataNascimento = paciente.DataNascimento;
 
-            if (paciente.Cpf != null)
-                pacienteBuscado.Cpf = paciente.Cpf;
+                if (paciente.Cpf != null)
+                    pacienteBuscado!.Cpf = paciente.Cpf;
 
-            if (paciente.Cep != null)
-                pacienteBuscado.Endereco.Cep = paciente.Cep;
+                if (paciente.Rg != null)
+                    pacienteBuscado.Rg = paciente.Rg;
 
-            if (paciente.Logradouro != null)
-                pacienteBuscado.Endereco.Logradouro = paciente.Logradouro;
 
-            if (paciente.Numero != null)
-                pacienteBuscado.Endereco.Numero = paciente.Numero;
+                if (paciente.Logradouro != null)
+                    pacienteBuscado!.Endereco!.Logradouro = paciente.Logradouro;
 
-            if (paciente.Cidade != null)
-                pacienteBuscado.Endereco.Cidade = paciente.Cidade;
+                if (paciente.Numero != null)
+                    pacienteBuscado!.Endereco!.Numero = paciente.Numero;
 
-            ctx.Pacientes.Update(pacienteBuscado);
-            ctx.Enderecos.Update(pacienteBuscado.Endereco);
-            ctx.SaveChanges();
+                if (paciente.Cep != null)
+                    pacienteBuscado!.Endereco!.Cep = paciente.Cep;
 
-            return pacienteBuscado;
+                if (paciente.Cidade != null)
+                    pacienteBuscado!.Endereco!.Cidade = paciente.Cidade;
+
+                ctx.Pacientes.Update(pacienteBuscado!);
+                ctx.SaveChanges();
+
+                return pacienteBuscado!;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
-
 
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idPaciente)
         {
@@ -80,7 +91,11 @@ namespace WebAPI.Repositories
             try
             {
                 user.Senha = Criptografia.GerarHash(user.Senha!);
-                ctx.Usuarios.Add(user);
+                user.Paciente = new Paciente();
+                user.Paciente.Endereco = new Endereco();
+
+
+                ctx.Add(user);
                 ctx.SaveChanges();
             }
             catch (Exception)
