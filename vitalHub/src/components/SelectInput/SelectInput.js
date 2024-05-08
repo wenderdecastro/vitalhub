@@ -18,7 +18,7 @@ export default function SelectInput({
 	function LoadOptions() {
 		const horasRestantes = moment(dataAtual)
 			.add(24, 'hours')
-			.diff(moment(), 'hours');
+			.diff(moment(new Date()), 'hours');
 
 		const options = Array.from(
 			{ length: horasRestantes },

@@ -15,17 +15,14 @@ export const CardDoctor = ({ nome, especialidade, foto, ButtonFn }) => {
 	};
 
 	const handlePress = () => {
-		handleClick(); 
-		ButtonFn(); 
+		handleClick();
+		ButtonFn();
 	};
 
 	return (
-		<ContainerCardDoctor
-			onPress={handlePress}
-			clicked={clicked}
-		>
+		<ContainerCardDoctor onPress={handlePress} clicked={clicked}>
 			<ContentDoctor>
-				<ImageCardDoctor source={foto} />
+				<ImageCardDoctor source={{ uri: foto }} />
 
 				<DoctorInfo>
 					<Title>{nome}</Title>

@@ -22,13 +22,11 @@ export const ScheduleModal = ({
 	setShowModalSchedule,
 	...rest
 }) => {
-
 	const [clicked, setClicked] = useState(false);
 
 	const handleClick = () => {
 		setClicked(!clicked);
 	};
-
 
 	const [rotinaClicked, setRotinaClicked] = useState(false);
 	const [exameClicked, setExameClicked] = useState(false);
@@ -92,21 +90,36 @@ export const ScheduleModal = ({
 
 						<ContainerButtonsSchedule>
 							<SmallButton
-								onPress={handleRotinaClick} clicked={rotinaClicked}
+								onPress={
+									handleRotinaClick
+								}
+								clicked={
+									rotinaClicked
+								}
 							>
 								<BlueTitle>
 									Rotina
 								</BlueTitle>
 							</SmallButton>
 							<SmallButton
-								onPress={handleExameClick} clicked={exameClicked}
+								onPress={
+									handleExameClick
+								}
+								clicked={
+									exameClicked
+								}
 							>
 								<BlueTitle>
 									Exame
 								</BlueTitle>
 							</SmallButton>
 							<SmallButton
-								onPress={handleUrgenciaClick} clicked={urgenciaClicked}
+								onPress={
+									handleUrgenciaClick
+								}
+								clicked={
+									urgenciaClicked
+								}
 							>
 								<BlueTitle>
 									Urgência

@@ -19,10 +19,22 @@ export const SummaryScheduleModal = ({
 	...rest
 }) => {
 	const [profile, setProfile] = useState(null);
+	const [formattedDate, setFormattedDate] = useState(null);
+	const [agendamentoFinal, setAgendamentoFinal] = useState(null);
 
 	useEffect(() => {
 		profileLoad();
 	}, []);
+
+	// useEffect(() => {
+	// 	if (agendamento) {
+	// 		setFormattedDate(
+	// 			,
+	// 		);
+	// 		console.log(agendamento);
+	// 		setAgendamentoFinal({ ...agendamento });
+	// 	}
+	// }, [agendamento]);
 	async function profileLoad() {
 		const token = await userDecodeToken();
 
@@ -78,6 +90,7 @@ export const SummaryScheduleModal = ({
 							<SubTitle>
 								{moment(
 									agendamento.dataConsulta,
+									'YYYY-MM-DD HH:mm',
 								).format(
 									'DD/MM/YYYY HH:mm',
 								)}

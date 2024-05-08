@@ -8,6 +8,7 @@ import { CancelAppointment } from '../../components/Links/Style';
 import SelectInput from '../../components/SelectInput/SelectInput';
 import { SummaryScheduleModal } from '../../components/SummaryAppointmentModal/SummaryShedule';
 import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
+import moment from 'moment';
 
 export const SelectDate = ({ navigation, route }) => {
 	const [agendamento, setAgendamento] = useState(null);
@@ -18,12 +19,11 @@ export const SelectDate = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
 
 	useEffect(() => {
-		console.log(selectedDate);
 		setAgendamento({
 			...route.params.agendamento,
 			dataConsulta: `${selectedDate} ${selectedTime}`,
 		});
-	}, [selectedDate]);
+	}, [selectedDate, selectedTime]);
 
 	const onPressCancel = () => {
 		setShowModalSchedule(true);
@@ -47,9 +47,11 @@ export const SelectDate = ({ navigation, route }) => {
 			<Button
 				onPress={() => (
 					setAgendamento({
-						...route.params.agendamento,
-						DataConsulta: `${selectedDate} ${selectedTime}`,
+						...agendamento,
+						dataConsulta: `${selectedDate} ${selectedTime}`,
 					}),
+					console.log(agendamento),
+					console.log(moment()),
 					setShowModalSummary(true)
 				)}
 			>
@@ -65,7 +67,6 @@ export const SelectDate = ({ navigation, route }) => {
 				visible={showModalSummary}
 				setShowModalSummary={setShowModalSummary}
 				navigation={navigation}
-				route={route}
 			/>
 
 			<ScheduleModal
