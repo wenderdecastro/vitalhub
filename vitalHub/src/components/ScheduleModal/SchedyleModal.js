@@ -115,6 +115,23 @@ export const ScheduleModal = ({
 				},
 			});
 		}
+		if (agendamento && agendamento.localizacao == '') {
+			console.log('Digite alguma localização');
+			Toast.show({
+				type: 'error',
+				text1: 'Digite alguma localização.',
+				text2: 'Erro',
+				text1Style: {
+					fontSize: 16,
+					fontWeight: 600,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+				text2Style: {
+					fontSize: 16,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+			});
+		}
 	}
 
 	return (

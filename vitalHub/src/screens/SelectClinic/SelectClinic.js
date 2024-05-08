@@ -1,4 +1,4 @@
-import { ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView } from 'react-native';
 import { Button } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CardClinic } from '../../components/CardClinic/CardClinic';
@@ -18,7 +18,27 @@ export const SelectClinic = ({ navigation, route }) => {
 		listarClinicas();
 	}, []);
 
+	useEffect(() => {
+		if (clinicaLista && clinicaLista.length == 0) {
+			Toast.show({
+				type: 'error',
+				text1: 'Nenhuma clinica encontrada para o endereço fornecido.',
+				text2: 'Erro',
+				text1Style: {
+					fontSize: 16,
+					fontWeight: 600,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+				text2Style: {
+					fontSize: 16,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+			});
+		}
+	}, [clinicaLista]);
+
 	const onPressCancel = () => {
+		// navigation.navigate('Main');
 		navigation.navigate('Main');
 		setShowModalSchedule(true);
 	};
@@ -36,41 +56,63 @@ export const SelectClinic = ({ navigation, route }) => {
 		}
 	}
 
+	function handleContinue() {
+		if (!clinica) {
+			console.log('Clínica não selecionada');
+			Toast.show({
+				type: 'error',
+				text1: 'Selecione uma clínica.',
+				text2: 'Erro',
+				text1Style: {
+					fontSize: 16,
+					fontWeight: 600,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+				text2Style: {
+					fontSize: 16,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+			});
+			return;
+		}
+		navigation.replace('SelectDoctor', {
+			agendamento: {
+				...route.params.agendamento,
+				...clinica,
+			},
+		});
+	}
+
 	return (
 		<Container>
 			<TitleB>Selecionar clínica</TitleB>
+			{clinicaLista ? (
+				<ScrollView>
+					{clinicaLista.map((clinica) => (
+						<CardClinic
+							key={clinica.id}
+							nome={
+								clinica.nomeFantasia
+							}
+							endereco={
+								clinica.endereco
+									.logradouro
+							}
+							OnPress={() =>
+								setClinica({
+									clinicaId: clinica.id,
+									clinicaLabel:
+										clinica.nomeFantasia,
+								})
+							}
+						/>
+					))}
+				</ScrollView>
+			) : (
+				<ActivityIndicator />
+			)}
 
-			<ScrollView>
-				{clinicaLista.map((clinica) => (
-					<CardClinic
-						key={clinica.id}
-						nome={clinica.nomeFantasia}
-						endereco={
-							clinica.endereco
-								.logradouro
-						}
-						OnPress={() =>
-							setClinica({
-								clinicaId: clinica.id,
-								clinicaLabel:
-									clinica.nomeFantasia,
-							})
-						}
-					/>
-				))}
-			</ScrollView>
-
-			<Button
-				onPress={() =>
-					navigation.replace('SelectDoctor', {
-						agendamento: {
-							...route.params
-								.agendamento,
-							...clinica,
-						},
-					})
-				}
-			>
+			<Button onPress={() => handleContinue()}>
 				<ButtonTitle>CONTINUAR</ButtonTitle>
 			</Button>
 

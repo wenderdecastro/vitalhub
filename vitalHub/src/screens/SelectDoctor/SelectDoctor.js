@@ -18,7 +18,7 @@ export const SelectDoctor = ({ navigation, route }) => {
 	};
 
 	const [medicosLista, setMedicosLista] = useState([]);
-	const [medico, setMedico] = useState();
+	const [medico, setMedico] = useState(null);
 
 	async function listarMedicos() {
 		await api
@@ -31,6 +31,24 @@ export const SelectDoctor = ({ navigation, route }) => {
 			.catch((error) => console.error(error));
 	}
 	function handleContinue() {
+		if (!medico) {
+			console.log('Médico não selecionado');
+			Toast.show({
+				type: 'error',
+				text1: 'Selecione um médico.',
+				text2: 'Erro',
+				text1Style: {
+					fontSize: 16,
+					fontWeight: 600,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+				text2Style: {
+					fontSize: 16,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+			});
+			return;
+		}
 		navigation.replace('SelectDate', {
 			agendamento: {
 				...route.params.agendamento,
