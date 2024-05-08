@@ -33,7 +33,7 @@ width: 280px;
 export const SmallButton = styled.TouchableOpacity`
 width: 30%;
 border-radius: 5px;
-background-color:  ${(props) => (props.clicked ? '#60BFC5' : 'fff')};
+background-color:  ${(props) => (props.clicked ? '#60BFC5' : '#FFFFFF')};
 border: #60BFC5;
 border-width: 2px;
 align-items: center;
