@@ -15,15 +15,19 @@ export const AppointmentModal = ({
 	setShowModalAppointment,
 	...rest
 }) => {
-	const dataNascimento = appointmentData ? moment(appointmentData.paciente.dataNascimento) : null;
+	const dataNascimento = appointmentData
+		? moment(appointmentData.paciente.dataNascimento)
+		: null;
 
-	const idade = appointmentData ? moment().diff(dataNascimento, 'years') : null;
+	const idade = appointmentData
+		? moment().diff(dataNascimento, 'years')
+		: null;
 
-	onPressHandler = () => {
-		navigation.navigate('InsertRecord', appointmentData);
+	function onPressHandler() {
+		navigation.replace('InsertRecord', appointmentData);
 		setShowModalAppointment(false);
 		console.log('levando para inserir prontuario');
-	};
+	}
 
 	return appointmentData !== null ? (
 		<Modal
@@ -39,9 +43,8 @@ export const AppointmentModal = ({
 							uri: appointmentData
 								.paciente
 								.idNavigation
-								.foto
-						}
-						}
+								.foto,
+						}}
 					/>
 
 					<Title>
@@ -52,9 +55,7 @@ export const AppointmentModal = ({
 						}
 					</Title>
 
-					<TextModal>
-						{idade} anos
-					</TextModal>
+					<TextModal>{idade} anos</TextModal>
 					<TextModal>
 						{
 							appointmentData.paciente
@@ -64,9 +65,7 @@ export const AppointmentModal = ({
 					</TextModal>
 
 					<Button
-						onPress={() => {
-							onPressHandler();
-						}}
+						onPress={() => onPressHandler()}
 					>
 						<ButtonTitle>
 							INSERIR PRONTUÁRIO

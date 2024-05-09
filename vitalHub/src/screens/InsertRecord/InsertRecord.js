@@ -1,28 +1,31 @@
 import { useEffect } from 'react';
 import { BoxInput } from '../../components/BoxInput';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
-import { Container, ContainerImage, ContainerScroll } from '../../components/Container/Style';
+import {
+	Container,
+	ContainerImage,
+	ContainerScroll,
+} from '../../components/Container/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
 import { ButtonEdit } from '../ViewRecord/Style';
 
 export const InsertRecord = ({ navigation, route }) => {
-
-	useEffect(() =>{
+	useEffect(() => {
 		console.log(route.params);
-	})
+	}, []);
 
 	return (
 		<ContainerScroll>
 			<Container>
 				<ContainerImage>
 					<UserPicture
-					source={{
-						uri: 'https://github.com/zAlves31.png',
-					}}
-				/>
+						source={{
+							uri: 'https://github.com/zAlves31.png',
+						}}
+					/>
 				</ContainerImage>
-				
+
 				<BoxInput
 					fieldWidth={80}
 					textLabel="Descrição da consulta"
