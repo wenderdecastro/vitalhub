@@ -1,7 +1,8 @@
-import { Camera, CameraType, FlashMode } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
 import {
+	ActivityIndicator,
 	Image,
 	Modal,
 	StyleSheet,
@@ -9,7 +10,6 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,33 +18,23 @@ import { Button } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 
-
-export default function CameraScreen({ navigation, route }) {
-	const { foto, consultaId, nome, crm, especialidade, diagnostico, descricao, receita } = route.params;
+export default function CameraScreen({ navigation }) {
 	const cameraRef = useRef(null);
 	const [photo, setPhoto] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
-	const [tipoCamera, setTipoCamera] = useState(
-		Camera.Constants.Type.front,
-	);
-	const [flashMode, setFlashMode] = useState(
-		Camera.Constants.FlashMode.off,
-	);
-
-	onPressReturn = () => {
-		route.params.isProfile ?
-			navigation.replace('Profile')
-			:
-			navigation.replace('ViewPrescription')
-	}
+	const [facing, setFacing] = useState('back');
+	const [permission, requestPermission] = useCameraPermissions();
+	const [flash, setFlash] = useState('off');
 
 	async function CapturePhoto() {
 		if (cameraRef) {
 			const photo =
-				await cameraRef.current.takePictureAsync({quality: 1});
+				await cameraRef.current.takePictureAsync();
 			setPhoto(photo.uri);
 
 			setOpenModal(true);
+
+			console.log(photo);
 		}
 	}
 
@@ -52,27 +42,17 @@ export default function CameraScreen({ navigation, route }) {
 		setPhoto(null);
 		setOpenModal(false);
 	}
-	async function SavePhoto() {
-		setOpenModal(false)
-        route.params.isProfile ? navigation.navigate("Profile", { photoUri: photo }) : 
-		navigation.navigate("ViewPrescription", { photoUri: photo, foto: foto, 
-			consultaId: consultaId,
-			nome: nome,
-			crm: crm,
-			especialidade: especialidade,
-			diagnostico: diagnostico,
-			descricao: descricao,
-			receita: receita  
-		})
-        
-	}
-	
 
+	async function SavePhoto() {
+		if (photo) {
+			navigation.navigate('ViewPrescription', {
+				photoUri: photo,
+			});
+		}
+	}
 	useEffect(() => {
 		(async () => {
-			const { status: cameraStatus } =
-				await Camera.requestCameraPermissionsAsync();
-
+			requestPermission();
 			const { status: mediaStatus } =
 				await MediaLibrary.requestPermissionsAsync();
 		})();
@@ -89,29 +69,43 @@ export default function CameraScreen({ navigation, route }) {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
+			aspect: [4, 3],
 			quality: 1,
 		});
 
-		if (!result.canceled) {
-			setPhoto(result.assets[0].uri)
-			console.log(result.assets[0].uri);
-			setOpenModal(true)
+		if (!result.cancelled) {
+			setPhoto(result.uri);
+			setOpenModal(true);
 		}
-
-
 	};
+
+	function toggleCameraFlash() {
+		setFlash((current) => (current === 'off' ? 'on' : 'off'));
+	}
+
+	function toggleCameraFacing() {
+		setFacing((current) => (current === 'back' ? 'front' : 'back'));
+	}
+
+	if (!permission) {
+		// Caso não haja permissão para usar a câmera
+		return <ActivityIndicator />;
+	}
 
 	return (
 		<View style={styles.container}>
-			<Camera
-				ref={cameraRef}
-				type={tipoCamera}
-				flashMode={flashMode}
+			<CameraView
+				// ref={cameraRef}
+				facing={facing}
+				flash={flash}
 				style={styles.camera}
 			>
 				<TouchableOpacity
 					style={styles.btnReturn}
-					onPress={() => onPressReturn()
+					onPress={() =>
+						navigation.replace(
+							'ViewPrescription',
+						)
 					}
 				>
 					<Ionicons
@@ -158,13 +152,8 @@ export default function CameraScreen({ navigation, route }) {
 					<View style={styles.functionsBtn}>
 						<TouchableOpacity
 							style={styles.btnFlip}
-							onPress={() =>
-								setTipoCamera(
-									tipoCamera ==
-										CameraType.front
-										? CameraType.back
-										: CameraType.front,
-								)
+							onPress={
+								toggleCameraFacing
 							}
 						>
 							<FontAwesome6
@@ -191,26 +180,21 @@ export default function CameraScreen({ navigation, route }) {
 
 						<TouchableOpacity
 							style={styles.btnFlash}
-							onPress={() =>
-								setFlashMode(
-									flashMode ==
-										FlashMode.on
-										? FlashMode.off
-										: FlashMode.on,
-								)
+							onPress={
+								toggleCameraFlash
 							}
 						>
 							<Ionicons
 								name={
-									flashMode ===
-										FlashMode.on
+									flash ===
+									'on'
 										? 'flash'
 										: 'flash-off'
 								}
 								size={38}
 								color={
-									flashMode ===
-										FlashMode.on
+									flash ===
+									'on'
 										? 'yellow'
 										: '#49B3BA'
 								}
@@ -238,7 +222,11 @@ export default function CameraScreen({ navigation, route }) {
 								width: '100%',
 								height: 500,
 								borderRadius: 10,
-
+								transform: [
+									{
+										rotate: '180deg',
+									},
+								],
 							}}
 							source={{ uri: photo }}
 						/>
@@ -271,7 +259,7 @@ export default function CameraScreen({ navigation, route }) {
 						</View>
 					</View>
 				</Modal>
-			</Camera>
+			</CameraView>
 
 			<StatusBar style="auto" />
 		</View>
