@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { InputTextModificate } from '../BoxInput/style';
 import Toast from 'react-native-toast-message';
 
+
 export const ScheduleModal = ({
 	navigation,
 	route,
@@ -38,6 +39,8 @@ export const ScheduleModal = ({
 				tipo: 'Rotina',
 			});
 			setPrioridadeSelecionada(true);
+			setExameClicked(false);
+			setUrgenciaClicked(false);
 		} else {
 			setRotinaClicked(false);
 			setNivelConsulta({
@@ -56,6 +59,8 @@ export const ScheduleModal = ({
 				tipo: 'Exame',
 			});
 			setPrioridadeSelecionada(true);
+			setRotinaClicked(false);
+			setUrgenciaClicked(false);
 		} else {
 			setExameClicked(false);
 			setNivelConsulta({
@@ -74,6 +79,8 @@ export const ScheduleModal = ({
 				tipo: 'Urgente',
 			});
 			setPrioridadeSelecionada(true);
+			setRotinaClicked(false);
+			setExameClicked(false);
 		} else {
 			setUrgenciaClicked(false);
 			setNivelConsulta({
@@ -144,8 +151,9 @@ export const ScheduleModal = ({
 				animationOutTiming={0}
 			>
 				<ViewModal>
-					<Toast />
+					<Toast/>
 					<ContentModal>
+					
 						<Title>Agendar consulta</Title>
 
 						<TypeAppointment>

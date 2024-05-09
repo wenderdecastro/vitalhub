@@ -8,6 +8,7 @@ import { CancelAppointment } from '../../components/Links/Style';
 import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
 import { useState, useEffect } from 'react';
 import api from '../../service/Service';
+import Toast from 'react-native-toast-message';
 
 export const SelectDoctor = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);

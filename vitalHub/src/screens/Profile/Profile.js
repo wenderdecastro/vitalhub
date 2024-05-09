@@ -279,7 +279,7 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={28}
 								textLabel="Numero"
-								placeholder={` ${numero}`}
+								placeholder={numero}
 								fieldHeight={60}
 							/>
 						</ContainerUF>

@@ -8,10 +8,11 @@ import { TitleB } from '../../components/Title/Style';
 import { useEffect, useState } from 'react';
 import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
 import api from '../../service/Service';
+import Toast from 'react-native-toast-message';
 
 export const SelectClinic = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
-	const [clinicaLista, setClinicaLista] = useState([]);
+	const [clinicaLista, setClinicaLista] = useState(null);
 	const [clinica, setClinica] = useState({});
 
 	useEffect(() => {
