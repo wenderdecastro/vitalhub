@@ -218,9 +218,9 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={80}
 								textLabel="Data de nascimento:"
-								placeholder={formatarData(
+								placeholder={`${formatarData(
 									dtNasc,
-								)}
+								)}`}
 								fieldHeight={60}
 							/>
 						) : (
@@ -238,7 +238,7 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={80}
 								textLabel="RG:"
-								placeholder={rg}
+								placeholder={`${rg}`}
 								fieldHeight={60}
 							/>
 						)
@@ -251,7 +251,7 @@ export const Profile = ({ navigation, route }) => {
 								fieldWidht={80}
 								textLabel="CPF:"
 								placeholder={
-									cpf
+									`${cpf}`
 								}
 								fieldHeight={60}
 							/>
@@ -260,7 +260,7 @@ export const Profile = ({ navigation, route }) => {
 								fieldWidht={80}
 								textLabel="CRM:"
 								placeholder={
-									crm
+									`${crm}`
 								}
 								fieldHeight={60}
 							/>
@@ -279,7 +279,7 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={28}
 								textLabel="Numero"
-								placeholder={numero}
+								placeholder={`${numero}`}
 								fieldHeight={60}
 							/>
 						</ContainerUF>
@@ -288,8 +288,8 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={46}
 								textLabel="CEP"
-								placeholder={
-									cep
+								placeholder={`${cep}`
+									
 								}
 								fieldHeight={60}
 							/>
