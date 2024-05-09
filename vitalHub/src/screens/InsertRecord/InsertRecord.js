@@ -10,7 +10,7 @@ export const InsertRecord = ({ navigation, route }) => {
 
 	useEffect(() =>{
 		console.log(route.params);
-	})
+	},[])
 
 	return (
 		<ContainerScroll>

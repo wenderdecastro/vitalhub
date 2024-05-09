@@ -37,7 +37,6 @@ export const ViewRecord = ({ navigation, route }) => {
 		setRecordEdit(true)
 	}
 
-
 	async function updateRecord() {
 		try {
 			await api.put('/Consultas/Prontuario',

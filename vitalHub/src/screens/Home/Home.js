@@ -284,6 +284,7 @@ export const Home = ({ navigation }) => {
 					)
 				}
 			/>
+			
 
 			{userLogin === 'Paciente' ?
 				<MakeAppointment
