@@ -33,6 +33,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { userDecodeToken } from '../../utils/Auth';
 import api from '../../service/Service';
+import { ButtonTitle } from '../../components/ButtonTitle/Style';
 
 export const ViewPrescription = ({ navigation, route }) => {
 	const [photoUri, setPhotoUri] = useState();
@@ -47,6 +48,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 	const [descricao, setDescricao] = useState()
 	const [receita, setReceita] = useState()
 	const [role, setRole] = useState()
+	const [RecordEdit, setRecordEdit] = useState(false)
 
 	function onPressPhoto() {
 		setIsPhoto(true)
@@ -200,101 +202,162 @@ export const ViewPrescription = ({ navigation, route }) => {
 					<SubTitle>{crm}</SubTitle>
 				</ContainerSubTitle>
 
-				<ContainerRecord>
-					<BoxInput
-						fieldWidth={80}
-						textLabel={'Descrição da consulta'}
-						placeholder={descricao}
-						multiline={true}
-					/>
-					<BoxInput
-						fieldWidth={80}
-						textLabel={'Diagnóstico do paciente'}
-						placeholder={diagnostico}
-						multiline={true}
-					/>
-					<BoxInput
-						fieldWidth={80}
-						textLabel={'Prescrição médica'}
-						placeholder={receita}
-						multiline={true}
+				{RecordEdit ?
+					<ContainerRecord>
+						<BoxInput
+							editable={true}
+							fieldWidth={80}
+							textLabel={'Descrição da consulta'}
+							placeholder={descricao}
+							multiline={true}
+						/>
+						<BoxInput
+							editable={true}
+							fieldWidth={80}
+							textLabel={'Diagnóstico do paciente'}
+							placeholder={diagnostico}
+							multiline={true}
+						/>
+						<BoxInput
+							editable={true}
+							fieldWidth={80}
+							textLabel={'Prescrição médica'}
+							placeholder={receita}
+							multiline={true}
 
-					/>
+						/>
 
-					{role == "Medico" ?
+						<BoxInput
+							fieldWidth={80}
+							textLabel={'descricao exame'}
+							placeholder={descricaoExame}
+							multiline={true}
+						/>
 
-						<>
-							<BoxInput
-								fieldWidth={80}
-								textLabel={'descricao exame'}
-								placeholder={descricaoExame}
-								multiline={true}
-							/>
-						</>
-						:
-						<>
-							<TitleBox>Exames médicos</TitleBox>
-							{photoUri && isPhoto ? (
-								<BoxPhoto>
-									<PrescriptionImage
-										source={{
-											uri: photoUri,
+
+
+						<Button
+							onPress={() => setRecordEdit(false)}
+						>
+							<ButtonTitle>
+								SALVAR
+							</ButtonTitle>
+						</Button>
+						
+
+
+					</ContainerRecord>
+					:
+					<ContainerRecord>
+						<BoxInput
+							fieldWidth={80}
+							textLabel={'Descrição da consulta'}
+							placeholder={descricao}
+							multiline={true}
+						/>
+						<BoxInput
+							fieldWidth={80}
+							textLabel={'Diagnóstico do paciente'}
+							placeholder={diagnostico}
+							multiline={true}
+						/>
+						<BoxInput
+							fieldWidth={80}
+							textLabel={'Prescrição médica'}
+							placeholder={receita}
+							multiline={true}
+
+						/>
+
+						{role == "Medico" ?
+
+							<>
+								<BoxInput
+									fieldWidth={80}
+									textLabel={'descricao exame'}
+									placeholder={descricaoExame}
+									multiline={true}
+								/>
+							</>
+							:
+							<>
+								<TitleBox>Exames médicos</TitleBox>
+								{photoUri && isPhoto ? (
+									<BoxPhoto>
+										<PrescriptionImage
+											source={{
+												uri: photoUri,
+											}}
+										/>
+									</BoxPhoto>
+								) : (
+									<BoxPrescription>
+										<AntDesign
+											name="upload"
+											size={20}
+											color="#4E4B59"
+										/>
+										<TextBox>
+											Nenhuma foto
+											informada
+										</TextBox>
+									</BoxPrescription>
+								)}
+
+								<ContentUpload>
+									<ButtonUpload
+										onPress={() => {
+											onPressPhoto();
 										}}
-									/>
-								</BoxPhoto>
-							) : (
-								<BoxPrescription>
-									<AntDesign
-										name="upload"
-										size={20}
-										color="#4E4B59"
-									/>
-									<TextBox>
-										Nenhuma foto
-										informada
-									</TextBox>
-								</BoxPrescription>
-							)}
+									>
+										<MaterialCommunityIcons
+											name="camera-plus-outline"
+											size={22}
+											color="white"
+										/>
+										<TextBox2>
+											Enviar
+										</TextBox2>
+									</ButtonUpload>
+									<ButtonCancel
+										onPress={() => {
+											onPressCancel();
+										}}
+									>
+										<TextCancel>
+											Cancelar
+										</TextCancel>
+									</ButtonCancel>
+								</ContentUpload>
 
-							<ContentUpload>
-								<ButtonUpload
-									onPress={() => {
-										onPressPhoto();
-									}}
-								>
-									<MaterialCommunityIcons
-										name="camera-plus-outline"
-										size={22}
-										color="white"
-									/>
-									<TextBox2>
-										Enviar
-									</TextBox2>
-								</ButtonUpload>
-								<ButtonCancel
-									onPress={() => {
-										onPressCancel();
-									}}
-								>
-									<TextCancel>
-										Cancelar
-									</TextCancel>
-								</ButtonCancel>
-							</ContentUpload>
+								<Line />
 
-							<Line />
+								<BoxInput
+									fieldWidth={80}
+									textLabel={'descricao exame'}
+									placeholder={descricaoExame}
+									multiline={true}
+								/>
+							</>
+						}
 
-							<BoxInput
-								fieldWidth={80}
-								textLabel={'descricao exame'}
-								placeholder={descricaoExame}
-								multiline={true}
-							/>
-						</>}
+						{role == "Medico" ?
+							<Button
+								onPress={() => setRecordEdit(true)}
+							>
+								<ButtonTitle>
+									EDITAR
+								</ButtonTitle>
+							</Button>
+							:
+							<></>
+						}
+
+					</ContainerRecord>
+				}
 
 
 
-				</ContainerRecord>
 
 				<CancelAppointment
 					onPress={() =>

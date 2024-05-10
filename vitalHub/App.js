@@ -32,6 +32,7 @@ import { LogBox } from 'react-native';
 import { ViewRecord } from './src/screens/ViewRecord/ViewRecord';
 import CameraScreen from './src/screens/Camera/Camera';
 import Toast from 'react-native-toast-message';
+import { InsertRecord } from './src/components/InsertRecord/InsertRecord';
 
 // LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(['Warning: ...']);
@@ -110,6 +111,14 @@ export default function App() {
 						component={ViewRecord}
 						options={{
 							title: 'ViewRecord',
+						}}
+					/>
+
+					<Stack.Screen
+						name="InsertRecord"
+						component={InsertRecord}
+						options={{
+							title: 'InsertRecord',
 						}}
 					/>
 
