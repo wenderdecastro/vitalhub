@@ -12,6 +12,11 @@ import Toast from 'react-native-toast-message';
 
 export const SelectDoctor = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
+	const [clicked, setClicked] = useState()
+
+	const handleClick = () => {
+		setClicked(!clicked)
+	}
 
 	const onPressCancel = () => {
 		navigation.navigate('Main');
@@ -50,12 +55,30 @@ export const SelectDoctor = ({ navigation, route }) => {
 			});
 			return;
 		}
-		navigation.replace('SelectDate', {
+		{clicked ?
+			navigation.replace('SelectDate', {
 			agendamento: {
 				...route.params.agendamento,
 				...medico,
 			},
+		})
+		:
+		Toast.show({
+			type: 'error',
+			text1: 'Selecione um médico.',
+			text2: 'Erro',
+			text1Style: {
+				fontSize: 16,
+				fontWeight: 600,
+				fontFamily: 'MontserratAlternates_600SemiBold',
+			},
+			text2Style: {
+				fontSize: 16,
+				fontFamily: 'MontserratAlternates_600SemiBold',
+			},
 		});
+		}
+		
 	}
 	useEffect(() => {
 		console.log(route.params.agendamento);
@@ -76,7 +99,7 @@ export const SelectDoctor = ({ navigation, route }) => {
 								.especialidade1
 						}
 						foto={medico.idNavigation.foto}
-						ButtonFn={() =>
+						ButtonFn={() => {
 							setMedico({
 								medicoClinicaId:
 									medico.id,
@@ -84,7 +107,10 @@ export const SelectDoctor = ({ navigation, route }) => {
 									medico
 										.idNavigation
 										.nome,
-							})
+							});
+							handleClick()
+						}
+							
 						}
 					/>
 				))}

@@ -14,6 +14,11 @@ export const SelectClinic = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
 	const [clinicaLista, setClinicaLista] = useState(null);
 	const [clinica, setClinica] = useState({});
+	const [clicked, setClicked] = useState(false)
+
+	const handleClick = () => {
+		setClicked(!clicked); 
+	};
 
 	useEffect(() => {
 		listarClinicas();
@@ -76,12 +81,31 @@ export const SelectClinic = ({ navigation, route }) => {
 			});
 			return;
 		}
-		navigation.replace('SelectDoctor', {
-			agendamento: {
-				...route.params.agendamento,
-				...clinica,
-			},
-		});
+		{
+			clicked ?
+				navigation.replace('SelectDoctor', {
+					agendamento: {
+						...route.params.agendamento,
+						...clinica,
+					},
+				})
+				:
+				Toast.show({
+					type: 'error',
+					text1: 'Selecione uma clínica.',
+					text2: 'Erro',
+					text1Style: {
+						fontSize: 16,
+						fontWeight: 600,
+						fontFamily: 'MontserratAlternates_600SemiBold',
+					},
+					text2Style: {
+						fontSize: 16,
+						fontFamily: 'MontserratAlternates_600SemiBold',
+					},
+				});
+		}
+
 	}
 
 	return (
@@ -99,13 +123,16 @@ export const SelectClinic = ({ navigation, route }) => {
 								clinica.endereco
 									.logradouro
 							}
-							OnPress={() =>
+							OnPress={() => {
 								setClinica({
 									clinicaId: clinica.id,
 									clinicaLabel:
 										clinica.nomeFantasia,
-								})
+								});
+								handleClick()
 							}
+							}
+							clicked={clicked}
 						/>
 					))}
 				</ScrollView>

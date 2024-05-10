@@ -30,8 +30,6 @@ import { ViewPrescription } from './src/screens/ViewPrescription/ViewPrecription
 import { Main } from './src/screens/Main/Main';
 import { LogBox } from 'react-native';
 import { ViewRecord } from './src/screens/ViewRecord/ViewRecord';
-import { InsertRecord } from './src/screens/InsertRecord/InsertRecord';
-import Camera from './src/screens/Camera/Camera';
 import CameraScreen from './src/screens/Camera/Camera';
 import Toast from 'react-native-toast-message';
 
@@ -115,13 +113,6 @@ export default function App() {
 						}}
 					/>
 
-					<Stack.Screen
-						name="InsertRecord"
-						component={InsertRecord}
-						options={{
-							title: 'InsertRecord',
-						}}
-					/>
 
 					<Stack.Screen
 						name="SelectClinic"
