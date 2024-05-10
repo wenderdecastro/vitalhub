@@ -95,7 +95,7 @@ export default function CameraScreen({ navigation }) {
 	return (
 		<View style={styles.container}>
 			<CameraView
-				// ref={cameraRef}
+				ref={cameraRef}
 				facing={facing}
 				flash={flash}
 				style={styles.camera}
