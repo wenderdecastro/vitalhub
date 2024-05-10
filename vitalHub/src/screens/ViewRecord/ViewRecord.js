@@ -34,9 +34,19 @@ export const ViewRecord = ({ navigation, route }) => {
 		setIdConsulta(route.params.id)
 	}, [])
 
+	async function ConsultaRealizada(){
+		try {
+			console.log(idConsulta);
+			await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Realizada`)
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	async function onPressSave() {
 		updateRecord()
-		setRecordEdit(true)
+		ConsultaRealizada()
+		navigation.replace('Main')
 	}
 
 	async function updateRecord() {
@@ -72,7 +82,7 @@ export const ViewRecord = ({ navigation, route }) => {
 					{email}
 				</TextAdd>
 
-				{RecordEdit ? (
+				{/* {RecordEdit ? (
 					<ContainerRecord2>
 						<BoxInput
 							placeholderTextColor={'#49B3BA'}
@@ -101,48 +111,51 @@ export const ViewRecord = ({ navigation, route }) => {
 						/>
 					</ContainerRecord2>
 				) : (
-					<ContainerRecord2>
-						<BoxInput
-							borderWidth={'2px'}
-							borderColor={'transparent'}
-							fieldWidth={80}
-							textLabel={'Descrição da consulta'}
-							placeholder={descricao}
-							multiline={true}
-							editable={true}
-							onChangeText={
-								setDescricao
-							}
-						/>
-						<BoxInput
-							borderWidth={'2px'}
-							borderColor={'transparent'}
-							fieldWidth={80}
-							textLabel={'Diagnóstico do paciente'}
-							placeholder={diagnostico}
-							multiline={true}
-							editable={true}
-							onChangeText={
-								setDiagnostico
-							}
-						/>
-						<BoxInput
-							borderWidth={'2px'}
-							borderColor={'transparent'}
-							fieldWidth={80}
-							textLabel={'Prescrição médica'}
-							placeholder={receita}
-							multiline={true}
-							editable={true}
-							onChangeText={
-								setReceita
-							}
-						/>
-					</ContainerRecord2>
+					
 
-				)}
+				)} */}
+				<ContainerRecord2>
+					<BoxInput
+						RecordEdit={RecordEdit}
+						borderWidth={'2px'}
+						fieldWidth={80}
+						textLabel={'Descrição da consulta'}
+						placeholder={descricao}
+						multiline={true}
+						editable={true}
+						onChangeText={
+							setDescricao
+						}
+					/>
+					<BoxInput
+						RecordEdit={RecordEdit}
+						borderWidth={'2px'}
+						borderColor={'transparent'}
+						fieldWidth={80}
+						textLabel={'Diagnóstico do paciente'}
+						placeholder={diagnostico}
+						multiline={true}
+						editable={true}
+						onChangeText={
+							setDiagnostico
+						}
+					/>
+					<BoxInput
+						RecordEdit={RecordEdit}
+						borderWidth={'2px'}
+						borderColor={'transparent'}
+						fieldWidth={80}
+						textLabel={'Prescrição médica'}
+						placeholder={receita}
+						multiline={true}
+						editable={true}
+						onChangeText={
+							setReceita
+						}
+					/>
+				</ContainerRecord2>
 
-				{RecordEdit ? (
+				{/* {RecordEdit ? (
 					<Button2
 						onPress={() =>
 							setRecordEdit(
@@ -155,16 +168,18 @@ export const ViewRecord = ({ navigation, route }) => {
 						</ButtonTitle>
 					</Button2>
 				) : (
-					<Button2
-						onPress={() =>
-							onPressSave()
-						}
-					>
-						<ButtonTitle>
-							SALVAR
-						</ButtonTitle>
-					</Button2>
-				)}
+					
+				)} */}
+
+				<Button2
+					onPress={() =>
+						onPressSave()
+					}
+				>
+					<ButtonTitle>
+						SALVAR
+					</ButtonTitle>
+				</Button2>
 
 
 

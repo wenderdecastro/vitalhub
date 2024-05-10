@@ -66,7 +66,6 @@ export const Home = ({ navigation }) => {
 						setListaConsultas(
 							response.data,
 						);
-						console.log(response.data);
 					})
 					.catch((error) => {
 						console.log(error);
@@ -85,7 +84,6 @@ export const Home = ({ navigation }) => {
 						setListaConsultas(
 							response.data,
 						);
-						console.log(response);
 					})
 					.catch((error) => {
 						console.log(error);
@@ -208,9 +206,7 @@ export const Home = ({ navigation }) => {
 												especialidade: item.medicoClinica.medico.especialidade.especialidade1
 											}
 											);
-											console.log(
-												selectedAppointment,
-											);
+											
 										}
 										: () => {
 											setSelectedAppointment(
@@ -224,9 +220,7 @@ export const Home = ({ navigation }) => {
 												especialidade: item.medicoClinica.medico.especialidade.especialidade1
 											}
 											);
-											console.log(
-												selectedAppointment,
-											);
+										
 										}
 									: null
 							}
