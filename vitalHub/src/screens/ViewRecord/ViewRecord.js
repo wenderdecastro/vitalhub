@@ -23,6 +23,8 @@ export const ViewRecord = ({ navigation, route }) => {
 	const [idConsulta, setIdConsulta] = useState()
 
 	useEffect(() => {
+		console.log(route.params);
+		console.log(route.params.appointmentData);
 		setNome(route.params.nome)
 		setEmail(route.params.email)
 		setFoto(route.params.foto)

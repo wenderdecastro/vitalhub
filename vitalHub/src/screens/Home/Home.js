@@ -53,9 +53,6 @@ export const Home = ({ navigation }) => {
 	async function ListarConsulta() {
 		try {
 			if (profile.role === 'Paciente') {
-				console.log(
-					`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
-				);
 				await api
 					.get(
 						`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
@@ -160,14 +157,16 @@ export const Home = ({ navigation }) => {
 									'Medico'
 									?
 									() => navigation.navigate(
-										'ViewRecord', {
+										'ViewPrescription', {
 										nome: item.paciente.idNavigation.nome,
 										email: item.paciente.idNavigation.email,
 										foto: item.paciente.idNavigation.foto,
 										descricao: item.descricao,
 										diagnostico: item.diagnostico,
 										receita: item.receita.medicamento,
-										id: item.id
+										consultaId: item.id,
+										role: profile.role
+										
 									}
 									)
 									: () => navigation.navigate(
@@ -181,7 +180,8 @@ export const Home = ({ navigation }) => {
 										especialidade: item.medicoClinica.medico.especialidade.especialidade1,
 										consultaId: item.id,
 										diagnostico: item.diagnostico,
-										descricao: item.descricao
+										descricao: item.descricao,
+										role: profile.role
 									}
 									)
 							}

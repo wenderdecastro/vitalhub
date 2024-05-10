@@ -46,6 +46,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 	const [diagnostico, setDiagnostico] = useState()
 	const [descricao, setDescricao] = useState()
 	const [receita, setReceita] = useState()
+	const [role, setRole] = useState()
 
 	function onPressPhoto() {
 		setIsPhoto(true)
@@ -82,11 +83,30 @@ export const ViewPrescription = ({ navigation, route }) => {
 			.then((response) => {
 				setDescricaoExame(
 					descricaoExame +
-						'\n' +
-						response.data.descricao,
+					'\n' +
+					response.data.descricao,
 				);
 			});
 	}
+
+
+	async function BuscarExame() {
+		try {
+			await api.get(`/Exame/BuscarPorIdConsulta?idConsulta=${consultaId}`)
+				.then((response) => {
+					setDescricaoExame(
+						response.data
+					);
+					console.log(response.data);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		} catch (error) {
+
+		}
+	}
+
 
 	useEffect(() => {
 		if (route.params && route.params.photoUri) {
@@ -94,6 +114,8 @@ export const ViewPrescription = ({ navigation, route }) => {
 
 			InserirExame();
 		}
+		BuscarExame()
+
 	}, [route.params]);
 
 	function onPressCancel() {
@@ -137,6 +159,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 	}
 
 	useEffect(() => {
+		setRole(route.params.role);
 		setFoto(route.params.foto);
 		setConsultaId(route.params.consultaId)
 		setNome(route.params.nome)
@@ -198,64 +221,79 @@ export const ViewPrescription = ({ navigation, route }) => {
 
 					/>
 
-					<TitleBox>Exames médicos</TitleBox>
+					{role == "Medico" ?
 
-					{photoUri && isPhoto ? (
-						<BoxPhoto>
-							<PrescriptionImage
-								source={{
-									uri: photoUri,
-								}}
+						<>
+							<BoxInput
+								fieldWidth={80}
+								textLabel={'descricao exame'}
+								placeholder={descricaoExame}
+								multiline={true}
 							/>
-						</BoxPhoto>
-					) : (
-						<BoxPrescription>
-							<AntDesign
-								name="upload"
-								size={20}
-								color="#4E4B59"
+						</>
+						:
+						<>
+							<TitleBox>Exames médicos</TitleBox>
+							{photoUri && isPhoto ? (
+								<BoxPhoto>
+									<PrescriptionImage
+										source={{
+											uri: photoUri,
+										}}
+									/>
+								</BoxPhoto>
+							) : (
+								<BoxPrescription>
+									<AntDesign
+										name="upload"
+										size={20}
+										color="#4E4B59"
+									/>
+									<TextBox>
+										Nenhuma foto
+										informada
+									</TextBox>
+								</BoxPrescription>
+							)}
+
+							<ContentUpload>
+								<ButtonUpload
+									onPress={() => {
+										onPressPhoto();
+									}}
+								>
+									<MaterialCommunityIcons
+										name="camera-plus-outline"
+										size={22}
+										color="white"
+									/>
+									<TextBox2>
+										Enviar
+									</TextBox2>
+								</ButtonUpload>
+								<ButtonCancel
+									onPress={() => {
+										onPressCancel();
+									}}
+								>
+									<TextCancel>
+										Cancelar
+									</TextCancel>
+								</ButtonCancel>
+							</ContentUpload>
+
+							<Line />
+
+							<BoxInput
+								fieldWidth={80}
+								textLabel={'descricao exame'}
+								placeholder={descricaoExame}
+								multiline={true}
 							/>
-							<TextBox>
-								Nenhuma foto
-								informada
-							</TextBox>
-						</BoxPrescription>
-					)}
+						</>}
 
-					<ContentUpload>
-						<ButtonUpload
-							onPress={() => {
-								onPressPhoto();
-							}}
-						>
-							<MaterialCommunityIcons
-								name="camera-plus-outline"
-								size={22}
-								color="white"
-							/>
-							<TextBox2>
-								Enviar
-							</TextBox2>
-						</ButtonUpload>
-						<ButtonCancel
-							onPress={() => {
-								onPressCancel();
-							}}
-						>
-							<TextCancel>
-								Cancelar
-							</TextCancel>
-						</ButtonCancel>
-					</ContentUpload>
 
-					<Line />
 
-					<BoxInput
-						fieldWidth={80}
-						textLabel={'descricao exame'}
-						placeholder={descricaoExame}
-						multiline={true}
-					/>
 				</ContainerRecord>
 
 				<CancelAppointment

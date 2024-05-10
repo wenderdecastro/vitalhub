@@ -7,6 +7,7 @@ import { ButtonTitle } from '../ButtonTitle/Style';
 import { LinkModal } from '../Links/Style';
 import { ModalImage } from '../UserPicture/Style';
 import moment from 'moment';
+import { useEffect } from 'react';
 
 export const AppointmentModal = ({
 	navigation,
@@ -19,10 +20,20 @@ export const AppointmentModal = ({
 
 	const idade = appointmentData ? moment().diff(dataNascimento, 'years') : null;
 
-	function onPressHandler ()  {
-		navigation.navigate('ViewRecord', appointmentData);
+	const onPressHandler = () => {
+
+		console.log('navegando para ViewRecord');
+		navigation.navigate('ViewRecord', {
+			nome: appointmentData.paciente.idNavigation.nome,
+			email: appointmentData.paciente.idNavigation.email,
+			foto: appointmentData.paciente.idNavigation.foto,
+			descricao: appointmentData.descricao,
+			diagnostico: appointmentData.diagnostico,
+			receita: appointmentData.receita.medicamento,
+			id: appointmentData.id
+		});
 		setShowModalAppointment(false);
-		console.log('levando para inserir prontuario');
+
 	};
 
 	return appointmentData !== null ? (
@@ -40,8 +51,7 @@ export const AppointmentModal = ({
 								.paciente
 								.idNavigation
 								.foto
-						}
-						}
+						}}
 					/>
 
 					<Title>
@@ -64,9 +74,7 @@ export const AppointmentModal = ({
 					</TextModal>
 
 					<Button
-						onPress={() => 
-							onPressHandler()
-						}
+						onPress={() => { onPressHandler() }}
 					>
 						<ButtonTitle>
 							INSERIR PRONTUÁRIO
