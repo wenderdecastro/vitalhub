@@ -269,6 +269,7 @@ export const Profile = ({ navigation, route }) => {
 						<ContainerUF>
 							<BoxInput
 								fieldWidht={64}
+								fieldValue={logradouro}
 								textLabel="Endereço"
 								placeholder={
 									logradouro
@@ -288,14 +289,14 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={46}
 								textLabel="CEP"
-								placeholder={`${cep}`
-									
-								}
+								fieldValue={cep}
+								placeholder={cep}
 								fieldHeight={60}
 							/>
 
 							<BoxInput
 								fieldWidht={46}
+								fieldValue={cidade}
 								textLabel="Cidade"
 								placeholder={
 									cidade
@@ -407,19 +408,17 @@ export const Profile = ({ navigation, route }) => {
 								textLabel="Endereço"
 								fieldHeight={60}
 								editable={true}
-								onChangeText={
-									setLogradouro
-								}
+								fieldValue={logradouro}
+								onChangeText={setLogradouro}
 							/>
 
 							<BoxInput
 								fieldWidht={28}
 								textLabel="Numero"
 								fieldHeight={60}
+								fieldValue={numero}
 								editable={true}
-								onChangeText={
-									setNumero
-								}
+								onChangeText={setNumero}
 							/>
 						</ContainerUF>
 
@@ -429,9 +428,8 @@ export const Profile = ({ navigation, route }) => {
 								textLabel="CEP"
 								editable={true}
 								fieldHeight={60}
-								onChangeText={
-									setCep
-								}
+								fieldValue={cep}
+								onChangeText={setCep}
 							/>
 
 							<BoxInput
@@ -439,9 +437,8 @@ export const Profile = ({ navigation, route }) => {
 								textLabel="Cidade"
 								editable={true}
 								fieldHeight={60}
-								onChangeText={
-									setCidade
-								}
+								fieldValue={cidade}
+								onChangeText={setCidade}
 							/>
 						</ContainerUF>
 

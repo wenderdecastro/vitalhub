@@ -58,8 +58,6 @@ export const ViewRecord = ({ navigation, route }) => {
 					descricao: descricao,
 					diagnostico: diagnostico
 				})
-			console.log('a');
-			console.log(idConsulta);
 		} catch (error) {
 			console.log(error + 'erro ao atualizar prontuario');
 		}
@@ -82,38 +80,6 @@ export const ViewRecord = ({ navigation, route }) => {
 					{email}
 				</TextAdd>
 
-				{/* {RecordEdit ? (
-					<ContainerRecord2>
-						<BoxInput
-							placeholderTextColor={'#49B3BA'}
-							fieldWidth={80}
-							textLabel={'Descrição da consulta'}
-							placeholder={descricao}
-							multiline={true}
-							RecordEdit={RecordEdit}
-							fieldValue={descricao}
-						/>
-						<BoxInput
-							fieldWidth={80}
-							textLabel={'Diagnóstico do paciente'}
-							placeholder={diagnostico}
-							multiline={true}
-							RecordEdit={RecordEdit}
-							fieldValue={diagnostico}
-						/>
-						<BoxInput
-							fieldWidth={80}
-							textLabel={'Prescrição médica'}
-							placeholder={receita}
-							multiline={true}
-							RecordEdit={RecordEdit}
-							fieldValue={receita}
-						/>
-					</ContainerRecord2>
-				) : (
-					
-
-				)} */}
 				<ContainerRecord2>
 					<BoxInput
 						RecordEdit={RecordEdit}
@@ -154,22 +120,6 @@ export const ViewRecord = ({ navigation, route }) => {
 						}
 					/>
 				</ContainerRecord2>
-
-				{/* {RecordEdit ? (
-					<Button2
-						onPress={() =>
-							setRecordEdit(
-								false,
-							)
-						}
-					>
-						<ButtonTitle>
-							EDITAR
-						</ButtonTitle>
-					</Button2>
-				) : (
-					
-				)} */}
 
 				<Button2
 					onPress={() =>

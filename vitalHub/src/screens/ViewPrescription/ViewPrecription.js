@@ -34,6 +34,7 @@ import { useEffect, useState } from 'react';
 import { userDecodeToken } from '../../utils/Auth';
 import api from '../../service/Service';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
+import { ContainerRecord2 } from '../ViewRecord/Style';
 
 export const ViewPrescription = ({ navigation, route }) => {
 	const [photoUri, setPhotoUri] = useState();
@@ -64,61 +65,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 		}
 		);
 	}
-	async function InserirExame() {
-		const formData = new FormData();
-		console.log(consulta);
-		console.log('consulta');
-
-		formData.append('ConsultaId', route.params.consultaid);
-		formData.append('Imagem', {
-			uri: route.params.photoUri,
-			name: `image.${route.params.photoUri.split('.').pop()}`,
-			type: `image/${route.params.photoUri.split('.').pop()}`,
-		});
-
-		await api
-			.post('/Exame/Cadastrar', formData, {
-				headers: {
-					'Content-Type': 'mulipart/form-data',
-				},
-			})
-			.then((response) => {
-				setDescricaoExame(
-					descricaoExame +
-					'\n' +
-					response.data.descricao,
-				);
-			});
-	}
-
-
-	async function BuscarExame() {
-		try {
-			await api.get(`/Exame/BuscarPorIdConsulta?idConsulta=${consultaId}`)
-				.then((response) => {
-					setDescricaoExame(
-						response.data
-					);
-					console.log(response.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		} catch (error) {
-
-		}
-	}
-
-
-	useEffect(() => {
-		if (route.params && route.params.photoUri) {
-			setPhotoUri(route.params.photoUri);
-
-			InserirExame();
-		}
-		BuscarExame()
-
-	}, [route.params]);
 
 	function onPressCancel() {
 		if (photoUri != '') {
@@ -128,27 +74,25 @@ export const ViewPrescription = ({ navigation, route }) => {
 		}
 	}
 
-	async function InserirExame() {
-		const formData = new FormData();
-		formData.append('ConsultaId', consultaId);
-		formData.append('Imagem', {
-			uri: photoUri,
-			name: `image.${photoUri.split('.').pop()}`,
-			type: `image/${photoUri.split('.').pop()}`,
-		});
+	async function updateRecord() {
+		try {
+			await api.put('/Consultas/Prontuario',
+				{
+					consultaId: consultaId,
+					medicamento: receita,
+					descricao: descricao,
+					diagnostico: diagnostico
+				})
+			console.log('a');
+		} catch (error) {
+			console.log(error + 'erro ao atualizar prontuario');
+		}
+	}
 
-		await api
-			.post('/Exame/Cadastrar', formData, {
-				headers: {
-					'Content-Type': 'mulipart/form-data',
-				},
-			})
-			.then((response) => {
-				setDescricaoExame(
-					descricaoExame + "\n" + response.data.descricao
-				);
-				console.log(descricaoExame);
-			});
+	async function onPressSaveEdit() {
+		updateRecord()
+		setRecordEdit(false)
+		console.log('b');
 	}
 
 	async function GetExame() {
@@ -159,6 +103,44 @@ export const ViewPrescription = ({ navigation, route }) => {
 			console.log(error);
 		}
 	}
+
+	async function InserirExame() {
+
+		const formData = new FormData();
+		console.log(consultaId);
+		formData.append('ConsultaId', consultaId);
+		formData.append('Imagem', {
+			uri: photoUri,
+			name: `image.${photoUri.split('.').pop()}`,
+			type: `image/${photoUri.split('.').pop()}`,
+		});
+
+		console.log('chamou');
+		await api.post(`/Exame/Cadastrar`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data"
+			}
+		})
+			.then((response) => {
+				setDescricaoExame(
+					descricaoExame + "\n" + response.data.descricao
+				);
+				console.log(descricaoExame);
+				console.log(response);
+			})
+			.catch((error) => {
+				alert("Erro ao inserir o exame", error);
+				console.log(error);
+			})
+	}
+
+	useEffect(() => {
+        if (photoUri) {
+			console.log('chamando');
+            InserirExame()
+			
+        }
+    }, [photoUri])
 
 	useEffect(() => {
 		setRole(route.params.role);
@@ -174,11 +156,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 	}, [route.params]);
 
 
-	useEffect(() => {
-		if (photoUri != null) {
-			InserirExame();
-		}
-	}, [photoUri])
 
 	useEffect(() => {
 		if (consultaId) {
@@ -203,143 +180,147 @@ export const ViewPrescription = ({ navigation, route }) => {
 				</ContainerSubTitle>
 
 				{RecordEdit ?
-					<ContainerRecord>
-						<BoxInput
-							editable={true}
-							fieldWidth={80}
-							textLabel={'Descrição da consulta'}
-							placeholder={descricao}
-							multiline={true}
-						/>
-						<BoxInput
-							editable={true}
-							fieldWidth={80}
-							textLabel={'Diagnóstico do paciente'}
-							placeholder={diagnostico}
-							multiline={true}
-						/>
-						<BoxInput
-							editable={true}
-							fieldWidth={80}
-							textLabel={'Prescrição médica'}
-							placeholder={receita}
-							multiline={true}
+					<>
+						<ContainerRecord2>
+							<BoxInput
+								editable={true}
+								onChangeText={setDescricao}
+								fieldWidth={80}
+								textLabel={'Descrição da consulta'}
+								placeholder={descricao}
+								multiline={true}
 
-						/>
+							/>
+							<BoxInput
+								editable={true}
+								fieldWidth={80}
+								textLabel={'Diagnóstico do paciente'}
+								placeholder={diagnostico}
+								multiline={true}
+								onChangeText={setDiagnostico}
+							/>
+							<BoxInput
+								editable={true}
+								fieldWidth={80}
+								textLabel={'Prescrição médica'}
+								placeholder={receita}
+								multiline={true}
+								onChangeText={setReceita}
+							/>
 
-						<BoxInput
-							fieldWidth={80}
-							textLabel={'descricao exame'}
-							placeholder={descricaoExame}
-							multiline={true}
-						/>
+							<BoxInput
+								fieldWidth={80}
+								textLabel={'descricao exame'}
+								placeholder={descricaoExame}
+								multiline={true}
+							/>
 
-
+						</ContainerRecord2>
 
 						<Button
-							onPress={() => setRecordEdit(false)}
+							onPress={() => onPressSaveEdit()}
 						>
 							<ButtonTitle>
 								SALVAR
 							</ButtonTitle>
 						</Button>
-						
-
-
-					</ContainerRecord>
+					</>
 					:
-					<ContainerRecord>
-						<BoxInput
-							fieldWidth={80}
-							textLabel={'Descrição da consulta'}
-							placeholder={descricao}
-							multiline={true}
-						/>
-						<BoxInput
-							fieldWidth={80}
-							textLabel={'Diagnóstico do paciente'}
-							placeholder={diagnostico}
-							multiline={true}
-						/>
-						<BoxInput
-							fieldWidth={80}
-							textLabel={'Prescrição médica'}
-							placeholder={receita}
-							multiline={true}
+					<>
+						<ContainerRecord2>
+							<BoxInput
+								fieldWidth={80}
+								textLabel={'Descrição da consulta'}
+								placeholder={descricao}
+								multiline={true}
+							/>
+							<BoxInput
+								fieldWidth={80}
+								textLabel={'Diagnóstico do paciente'}
+								placeholder={diagnostico}
+								multiline={true}
+							/>
+							<BoxInput
+								fieldWidth={80}
+								textLabel={'Prescrição médica'}
+								placeholder={receita}
+								multiline={true}
 
-						/>
+							/>
 
-						{role == "Medico" ?
+							{role == "Medico" ?
 
-							<>
-								<BoxInput
-									fieldWidth={80}
-									textLabel={'descricao exame'}
-									placeholder={descricaoExame}
-									multiline={true}
-								/>
-							</>
-							:
-							<>
-								<TitleBox>Exames médicos</TitleBox>
-								{photoUri && isPhoto ? (
-									<BoxPhoto>
-										<PrescriptionImage
-											source={{
-												uri: photoUri,
+								<>
+									<BoxInput
+										fieldWidth={80}
+										textLabel={'descricao exame'}
+										placeholder={descricaoExame}
+										multiline={true}
+									/>
+								</>
+								:
+								<>
+									<TitleBox>Exames médicos</TitleBox>
+									{photoUri && isPhoto ? (
+										<BoxPhoto>
+											<PrescriptionImage
+												source={{
+													uri: photoUri,
+												}}
+											/>
+										</BoxPhoto>
+									) : (
+										<BoxPrescription>
+											<AntDesign
+												name="upload"
+												size={20}
+												color="#4E4B59"
+											/>
+											<TextBox>
+												Nenhuma foto
+												informada
+											</TextBox>
+										</BoxPrescription>
+									)}
+
+									<ContentUpload>
+										<ButtonUpload
+											onPress={() => {
+												onPressPhoto();
 											}}
-										/>
-									</BoxPhoto>
-								) : (
-									<BoxPrescription>
-										<AntDesign
-											name="upload"
-											size={20}
-											color="#4E4B59"
-										/>
-										<TextBox>
-											Nenhuma foto
-											informada
-										</TextBox>
-									</BoxPrescription>
-								)}
+										>
+											<MaterialCommunityIcons
+												name="camera-plus-outline"
+												size={22}
+												color="white"
+											/>
+											<TextBox2>
+												Enviar
+											</TextBox2>
+										</ButtonUpload>
+										<ButtonCancel
+											onPress={() => {
+												onPressCancel();
+											}}
+										>
+											<TextCancel>
+												Cancelar
+											</TextCancel>
+										</ButtonCancel>
+									</ContentUpload>
 
-								<ContentUpload>
-									<ButtonUpload
-										onPress={() => {
-											onPressPhoto();
-										}}
-									>
-										<MaterialCommunityIcons
-											name="camera-plus-outline"
-											size={22}
-											color="white"
-										/>
-										<TextBox2>
-											Enviar
-										</TextBox2>
-									</ButtonUpload>
-									<ButtonCancel
-										onPress={() => {
-											onPressCancel();
-										}}
-									>
-										<TextCancel>
-											Cancelar
-										</TextCancel>
-									</ButtonCancel>
-								</ContentUpload>
+									<Line />
 
-								<Line />
+									<BoxInput
+										fieldWidth={80}
+										textLabel={'descricao exame'}
+										placeholder={descricaoExame}
+										multiline={true}
+									/>
+								</>
+							}
 
-								<BoxInput
-									fieldWidth={80}
-									textLabel={'descricao exame'}
-									placeholder={descricaoExame}
-									multiline={true}
-								/>
-							</>
-						}
+						</ContainerRecord2>
 
 						{role == "Medico" ?
 							<Button
@@ -353,11 +334,8 @@ export const ViewPrescription = ({ navigation, route }) => {
 							<></>
 						}
 
-					</ContainerRecord>
+					</>
 				}
-
-
-
 
 				<CancelAppointment
 					onPress={() =>

@@ -18,13 +18,14 @@ import { Button } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 
-export default function CameraScreen({ navigation }) {
+export default function CameraScreen({ navigation, route }) {
 	const cameraRef = useRef(null);
 	const [photo, setPhoto] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
 	const [facing, setFacing] = useState('back');
 	const [permission, requestPermission] = useCameraPermissions();
 	const [flash, setFlash] = useState('off');
+	const [isProfile, setIsProfile] = useState()
 
 	async function CapturePhoto() {
 		if (cameraRef) {
@@ -44,11 +45,18 @@ export default function CameraScreen({ navigation }) {
 	}
 
 	async function SavePhoto() {
+		setIsProfile(route.params.isProfile)
 		if (photo) {
-			navigation.navigate('ViewPrescription', {
-				photoUri: photo,
-			});
+			isProfile ?
+				navigation.navigate('Profile', {
+					photoUri: photo
+				})
+				:
+				navigation.navigate('ViewPrescription', {
+					photoUri: photo,
+				});
 		}
+		setOpenModal(false)
 	}
 	useEffect(() => {
 		(async () => {
@@ -73,7 +81,7 @@ export default function CameraScreen({ navigation }) {
 			quality: 1,
 		});
 
-		if (!result.cancelled) {
+		if (!result.canceled) {
 			setPhoto(result.uri);
 			setOpenModal(true);
 		}
@@ -103,9 +111,12 @@ export default function CameraScreen({ navigation }) {
 				<TouchableOpacity
 					style={styles.btnReturn}
 					onPress={() =>
-						navigation.replace(
-							'ViewPrescription',
-						)
+						isProfile ?
+							navigation.replace('Profile')
+							:
+							navigation.replace(
+								'ViewPrescription',
+							)
 					}
 				>
 					<Ionicons
@@ -187,14 +198,14 @@ export default function CameraScreen({ navigation }) {
 							<Ionicons
 								name={
 									flash ===
-									'on'
+										'on'
 										? 'flash'
 										: 'flash-off'
 								}
 								size={38}
 								color={
 									flash ===
-									'on'
+										'on'
 										? 'yellow'
 										: '#49B3BA'
 								}
@@ -222,11 +233,7 @@ export default function CameraScreen({ navigation }) {
 								width: '100%',
 								height: 500,
 								borderRadius: 10,
-								transform: [
-									{
-										rotate: '180deg',
-									},
-								],
+
 							}}
 							source={{ uri: photo }}
 						/>
