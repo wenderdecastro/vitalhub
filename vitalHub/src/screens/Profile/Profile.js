@@ -4,6 +4,7 @@ import {
 	ContainerProfile,
 	ContainerScroll,
 	ContainerUF,
+	ContainerUF2,
 } from '../../components/Container/Style';
 import { TextAdd } from '../../components/TextAdd/Style';
 import { Title, TitleC } from '../../components/Title/Style';
@@ -285,7 +286,7 @@ export const Profile = ({ navigation, route }) => {
 							/>
 						</ContainerUF>
 
-						<ContainerUF>
+						<ContainerUF2>
 							<BoxInput
 								fieldWidht={46}
 								textLabel="CEP"
@@ -303,7 +304,7 @@ export const Profile = ({ navigation, route }) => {
 								}
 								fieldHeight={60}
 							/>
-						</ContainerUF>
+						</ContainerUF2>
 
 						<Button2
 							onPress={() =>
@@ -422,7 +423,7 @@ export const Profile = ({ navigation, route }) => {
 							/>
 						</ContainerUF>
 
-						<ContainerUF>
+						<ContainerUF2>
 							<BoxInput
 								fieldWidht={46}
 								textLabel="CEP"
@@ -440,7 +441,7 @@ export const Profile = ({ navigation, route }) => {
 								fieldValue={cidade}
 								onChangeText={setCidade}
 							/>
-						</ContainerUF>
+						</ContainerUF2>
 
 						<Button
 							onPress={() =>

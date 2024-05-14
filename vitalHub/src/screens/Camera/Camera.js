@@ -25,7 +25,6 @@ export default function CameraScreen({ navigation, route }) {
 	const [facing, setFacing] = useState('back');
 	const [permission, requestPermission] = useCameraPermissions();
 	const [flash, setFlash] = useState('off');
-	const [isProfile, setIsProfile] = useState()
 
 	async function CapturePhoto() {
 		if (cameraRef) {
@@ -45,14 +44,14 @@ export default function CameraScreen({ navigation, route }) {
 	}
 
 	async function SavePhoto() {
-		setIsProfile(route.params.isProfile)
 		if (photo) {
-			isProfile ?
+			route.params.isProfile ?
 				navigation.navigate('Profile', {
 					photoUri: photo
 				})
 				:
 				navigation.navigate('ViewPrescription', {
+					...route.params.prescription,
 					photoUri: photo,
 				});
 		}
@@ -82,7 +81,7 @@ export default function CameraScreen({ navigation, route }) {
 		});
 
 		if (!result.canceled) {
-			setPhoto(result.uri);
+			setPhoto(result.assets[0].uri);
 			setOpenModal(true);
 		}
 	};
@@ -111,11 +110,11 @@ export default function CameraScreen({ navigation, route }) {
 				<TouchableOpacity
 					style={styles.btnReturn}
 					onPress={() =>
-						isProfile ?
+						route.params.isProfile ?
 							navigation.replace('Profile')
 							:
 							navigation.replace(
-								'ViewPrescription',
+								'ViewPrescription',{...route.params.prescription,}
 							)
 					}
 				>

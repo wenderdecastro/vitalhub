@@ -54,14 +54,9 @@ export const ViewPrescription = ({ navigation, route }) => {
 	function onPressPhoto() {
 		setIsPhoto(true)
 		navigation.navigate('CameraScreen', {
-			foto: foto,
-			consultaId: consultaId,
-			nome: nome,
-			crm: crm,
-			especialidade: especialidade,
-			diagnostico: diagnostico,
-			descricao: descricao,
-			receita: receita
+			prescription :{
+				...route.params
+			}
 		}
 		);
 	}
@@ -83,7 +78,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 					descricao: descricao,
 					diagnostico: diagnostico
 				})
-			console.log('a');
 		} catch (error) {
 			console.log(error + 'erro ao atualizar prontuario');
 		}
@@ -92,7 +86,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 	async function onPressSaveEdit() {
 		updateRecord()
 		setRecordEdit(false)
-		console.log('b');
 	}
 
 	async function GetExame() {
@@ -107,7 +100,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 	async function InserirExame() {
 
 		const formData = new FormData();
-		console.log(consultaId);
 		formData.append('ConsultaId', consultaId);
 		formData.append('Imagem', {
 			uri: photoUri,
@@ -115,7 +107,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 			type: `image/${photoUri.split('.').pop()}`,
 		});
 
-		console.log('chamou');
 		await api.post(`/Exame/Cadastrar`, formData, {
 			headers: {
 				"Content-Type": "multipart/form-data"
@@ -126,7 +117,6 @@ export const ViewPrescription = ({ navigation, route }) => {
 					descricaoExame + "\n" + response.data.descricao
 				);
 				console.log(descricaoExame);
-				console.log(response);
 			})
 			.catch((error) => {
 				alert("Erro ao inserir o exame", error);
@@ -136,9 +126,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 
 	useEffect(() => {
         if (photoUri) {
-			console.log('chamando');
-            InserirExame()
-			
+            InserirExame()	
         }
     }, [photoUri])
 

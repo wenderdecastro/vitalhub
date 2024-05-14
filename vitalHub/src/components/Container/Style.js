@@ -40,6 +40,13 @@ export const ContainerUF = styled.View`
 	align-items: center;
 `;
 
+export const ContainerUF2 = styled.View`
+	width: 80%;
+	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
+`;
+
 export const ContainerHeader = styled(LinearGradient).attrs({
 	colors: ['#60BFC5', '#496BBA'],
 	start: { x: -0.05, y: 1.08 },
