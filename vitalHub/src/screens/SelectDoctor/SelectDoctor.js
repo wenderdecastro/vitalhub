@@ -1,5 +1,5 @@
 import { ScrollView } from 'react-native';
-import { Button } from '../../components/Button/Style';
+import { Button, ButtonSelect } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CardDoctor } from '../../components/CardDoctor/CardDoctor';
 import { Container } from '../../components/Container/Style';
@@ -9,14 +9,10 @@ import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
 import { useState, useEffect } from 'react';
 import api from '../../service/Service';
 import Toast from 'react-native-toast-message';
+import { ListComponent } from '../../components/List/List';
 
 export const SelectDoctor = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
-	const [clicked, setClicked] = useState()
-
-	const handleClick = () => {
-		setClicked(!clicked)
-	}
 
 	const onPressCancel = () => {
 		navigation.navigate('Main');
@@ -54,34 +50,34 @@ export const SelectDoctor = ({ navigation, route }) => {
 				},
 			});
 			return;
-		}
-		{clicked ?
+		} else {
+
 			navigation.replace('SelectDate', {
-			agendamento: {
-				...route.params.agendamento,
-				...medico,
-			},
-		})
-		:
-		Toast.show({
-			type: 'error',
-			text1: 'Selecione um médico.',
-			text2: 'Erro',
-			text1Style: {
-				fontSize: 16,
-				fontWeight: 600,
-				fontFamily: 'MontserratAlternates_600SemiBold',
-			},
-			text2Style: {
-				fontSize: 16,
-				fontFamily: 'MontserratAlternates_600SemiBold',
-			},
-		});
+				agendamento: {
+					...route.params.agendamento,
+					...medico,
+				},
+			})
+
+			// Toast.show({
+			// 	type: 'error',
+			// 	text1: 'Selecione um médico.',
+			// 	text2: 'Erro',
+			// 	text1Style: {
+			// 		fontSize: 16,
+			// 		fontWeight: 600,
+			// 		fontFamily: 'MontserratAlternates_600SemiBold',
+			// 	},
+			// 	text2Style: {
+			// 		fontSize: 16,
+			// 		fontFamily: 'MontserratAlternates_600SemiBold',
+			// 	},
+			// });
 		}
-		
+
 	}
 	useEffect(() => {
-		console.log(route.params.agendamento);
+		console.log(route.params);
 		listarMedicos();
 	}, []);
 
@@ -90,30 +86,33 @@ export const SelectDoctor = ({ navigation, route }) => {
 			<TitleB>Selecionar médico</TitleB>
 
 			<ScrollView>
-				{medicosLista.map((medico) => (
-					<CardDoctor
-						key={medico.id}
-						nome={medico.idNavigation.nome}
-						especialidade={
-							medico.especialidade
-								.especialidade1
-						}
-						foto={medico.idNavigation.foto}
-						ButtonFn={() => {
+				{<ListComponent
+					data={medicosLista}
+					renderItem={({ item }) => (
+						<ButtonSelect onPress={() => {
 							setMedico({
 								medicoClinicaId:
-									medico.id,
+									item.id,
 								medicoLabel:
-									medico
+									item
 										.idNavigation
 										.nome,
 							});
-							handleClick()
-						}
-							
-						}
-					/>
-				))}
+						}}
+						>
+							<CardDoctor
+								key={item.id}
+								nome={item.idNavigation.nome}
+								especialidade={
+									item.especialidade
+										.especialidade1
+								}
+								foto={item.idNavigation.foto}
+								isSelected={medico ? item.id == medico.medicoClinicaId : false}
+							/>
+						</ButtonSelect>
+					)}
+				/>}
 			</ScrollView>
 
 			<Button onPress={() => handleContinue()}>

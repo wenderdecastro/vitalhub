@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userDecodeToken } from '../../utils/Auth';
 import api from '../../service/Service';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
 
 export const Profile = ({ navigation, route }) => {
 	const [ProfileEdit, setProfileEdit] = useState(true);
@@ -182,11 +183,13 @@ export const Profile = ({ navigation, route }) => {
 		}
 	}, [idUser, route.params]);
 
-	function formatarData(data) {
-		if (!data) return '';
-		const dataFormatada = new Date(data);
-		return dataFormatada.toLocaleDateString('pt-BR');
-	}
+	function formatarData(data, isValid) {
+        if (isValid == false) {
+            return moment(data).format('YYYY-MM-DD');
+        }
+        return moment(data).format('DD/MM/YYYY');
+    }
+    
 
 	return (
 		<ContainerScroll>
@@ -239,7 +242,7 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={80}
 								textLabel="RG:"
-								placeholder={`${rg}`}
+								placeholder={rg}
 								fieldHeight={60}
 							/>
 						)
@@ -252,7 +255,7 @@ export const Profile = ({ navigation, route }) => {
 								fieldWidht={80}
 								textLabel="CPF:"
 								placeholder={
-									`${cpf}`
+									cpf
 								}
 								fieldHeight={60}
 							/>
@@ -281,7 +284,8 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={28}
 								textLabel="Numero"
-								placeholder={`${numero}`}
+								fieldValue={numero}
+								placeholder={numero ? `${numero}` : null}
 								fieldHeight={60}
 							/>
 						</ContainerUF>

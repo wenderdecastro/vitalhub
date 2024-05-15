@@ -1,4 +1,4 @@
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker} from 'react-native-maps';
 import { BoxInput } from '../../components/BoxInput';
 import {
 	Container,
@@ -9,43 +9,42 @@ import { SubTitle, Title } from '../../components/Title/Style';
 import { ContainerAddress, ContainerLocal, LocalImage } from './Style';
 import { StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
-import api from '../../service/Service';
+import api from "../../service/Service"
 
 export const LocalAppointment = ({ route }) => {
-	const [clinica, setClinica] = useState('');
-	const [idClinica, setIdClinica] = useState('');
-	const [logradouro, setLogradouro] = useState('');
-	const [numero, setNumero] = useState('');
-	const [cidade, setCidade] = useState('');
-	const [nome, setNome] = useState('');
-	const [latitude, setLatitude] = useState('');
-	const [longitude, setLongitude] = useState('');
+
+	const [clinica, setClinica] = useState('')
+	const [idClinica, setIdClinica] = useState('')
+	const [logradouro, setLogradouro] = useState('')
+	const [numero, setNumero] = useState('')
+	const [cidade, setCidade] = useState('')
+	const [nome, setNome] = useState('')
+	const [latitude, setLatitude] = useState('')
+	const [longitude, setLongitude] = useState('')
 
 	useEffect(() => {
-		console.log(route.params);
-		if (route.params) {
-			BuscarClinica(route.params);
-		}
-	}, [route.params]);
+		setIdClinica(route.params)
+		BuscarClinica()
 
-	async function BuscarClinica(clinica) {
+	}, [route.params])
+
+
+	async function BuscarClinica() {
 		try {
-			console.log('id da clinica:');
-			console.log(clinica);
-			const response = await api.get(
-				`/Clinica/BuscarPorId?id=${clinica}`,
-			);
+			console.log("id da clinica:");
+			console.log(route.params);
+			const response = await api.get(`/Clinica/BuscarPorId?id=${route.params}`)
 			console.log(response.data);
-			setClinica(response.data);
-			setLatitude(response.data.endereco.longitude);
-			setLongitude(response.data.endereco.latitude);
+			setClinica(response.data)
+			setLatitude(response.data.endereco.longitude)
+			setLongitude(response.data.endereco.latitude)
 			console.log(latitude);
 			console.log(longitude);
 
-			setLogradouro(response.data.endereco.logradouro);
-			setNumero(response.data.endereco.numero.toString());
-			setCidade(response.data.endereco.cidade);
-			setNome(response.data.nomeFantasia);
+			setLogradouro(response.data.endereco.logradouro)
+			setNumero(response.data.endereco.numero.toString())
+			setCidade(response.data.endereco.cidade)
+			setNome(response.data.nomeFantasia)
 		} catch (error) {
 			console.log(error);
 		}
@@ -57,7 +56,6 @@ export const LocalAppointment = ({ route }) => {
 				<MapView
 					style={styles.map}
 					customMapStyle={grayMapStyle}
-					provider={PROVIDER_GOOGLE}
 					initialRegion={{
 						latitude: latitude,
 						longitude: longitude,
@@ -72,6 +70,9 @@ export const LocalAppointment = ({ route }) => {
 							latitudeDelta: 0.005,
 							longitudeDelta: 0.005,
 						}}
+						title=""
+						description=""
+						pinColor={'red'}
 					/>
 				</MapView>
 			</ContentLocal>

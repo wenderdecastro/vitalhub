@@ -7,20 +7,10 @@ import {
 	ImageCardDoctor,
 } from './Style';
 
-export const CardDoctor = ({ nome, especialidade, foto, ButtonFn }) => {
-	const [clicked, setClicked] = useState(false);
-
-	const handleClick = () => {
-		setClicked(!clicked);
-	};
-
-	const handlePress = () => {
-		handleClick();
-		ButtonFn();
-	};
+export const CardDoctor = ({ nome, especialidade, foto, isSelected }) => {
 
 	return (
-		<ContainerCardDoctor onPress={handlePress} clicked={clicked}>
+		<ContainerCardDoctor isSelected={isSelected}>
 			<ContentDoctor>
 				<ImageCardDoctor source={{ uri: foto }} />
 

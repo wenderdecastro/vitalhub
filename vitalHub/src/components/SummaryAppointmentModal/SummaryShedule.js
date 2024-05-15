@@ -19,8 +19,6 @@ export const SummaryScheduleModal = ({
 	...rest
 }) => {
 	const [profile, setProfile] = useState(null);
-	const [formattedDate, setFormattedDate] = useState(null);
-	const [agendamentoFinal, setAgendamentoFinal] = useState(null);
 
 	useEffect(() => {
 		profileLoad();

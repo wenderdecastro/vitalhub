@@ -87,3 +87,9 @@ export const ButtonCamera = styled.TouchableOpacity`
 	right: 15px;
 	position: absolute;
 `
+
+export const ButtonSelect = styled.TouchableOpacity`
+align-self: center;
+height: 120px;
+margin-top: 10px;
+`

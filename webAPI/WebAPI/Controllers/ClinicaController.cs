@@ -56,6 +56,13 @@ namespace WebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("ListarClinicasEndereco")]
+        public IActionResult GetEndereco()
+        {
+            return Ok(clinicaRepository.ListarEnderecosClinicas());
+        }
+
     }
 }
 

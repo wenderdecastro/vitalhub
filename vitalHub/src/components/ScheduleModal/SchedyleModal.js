@@ -15,6 +15,7 @@ import {
 import { useState } from 'react';
 import { InputTextModificate } from '../BoxInput/style';
 import Toast from 'react-native-toast-message';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 
 export const ScheduleModal = ({
@@ -22,6 +23,7 @@ export const ScheduleModal = ({
 	route,
 	visible,
 	setShowModalSchedule,
+	city,
 	...rest
 }) => {
 	const [clicked, setClicked] = useState(false);
@@ -141,6 +143,17 @@ export const ScheduleModal = ({
 		}
 	}
 
+	function dePara(retornoApi) {
+		if (city != null) {
+			let arrayOptions = [];
+			retornoApi.forEach((e) => {
+				arrayOptions.push({ value: e.endereco.cidade });
+			});
+
+			return arrayOptions;
+		}
+	}
+
 	return (
 		<>
 			<Modal
@@ -151,9 +164,9 @@ export const ScheduleModal = ({
 				animationOutTiming={0}
 			>
 				<ViewModal>
-					<Toast/>
+					<Toast />
 					<ContentModal>
-					
+
 						<Title>Agendar consulta</Title>
 
 						<TypeAppointment>
@@ -206,28 +219,24 @@ export const ScheduleModal = ({
 								localização
 								desejada
 							</LabelSchedule>
-							<InputTextModificate
-								value={
-									agendamento
-										? agendamento.localizacao
-										: null
-								}
-								onChangeText={(
-									txt,
-								) =>
-									setAgendamento(
-										{
-											...agendamento,
-											prioridadeId:
-												nivelConsulta.id,
-											prioridadeLabel:
-												nivelConsulta.tipo,
-											localizacao:
-												txt,
-										},
-									)
-								}
-							></InputTextModificate>
+							<SelectList
+								boxStyles={{ width: "100%", height: 70, alignItems: "center", marginTop: 5, borderColor: '#60BFC5', borderWidth: 2 }}
+								fontFamily="Quicksand_500Medium"
+								searchPlaceholder="Pesquise"
+								placeholder="Selecione uma cidade"
+								maxHeight={100}
+								dropdownStyles={{ borderWidth: 2, borderColor: '#60BFC5' }}
+								dropdownTextStyles={{ fontSize: 18, color: '#34898F' }}
+								inputStyles={{ fontSize: 18, color: '#34898F' }}
+								setSelected={(txt) => setAgendamento({
+									...agendamento,
+									localizacao: txt
+								})}
+								notFoundText='Nenhum dado encontrado'
+								data={dePara(city)}
+								save="endereco.cidade"
+
+							/>
 						</TypeAppointment>
 
 						<Button

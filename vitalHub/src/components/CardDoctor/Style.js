@@ -1,14 +1,14 @@
 import styled from 'styled-components/native';
 
-export const ContainerCardDoctor = styled.TouchableOpacity`
-	width: 300px;
-	height: 90px;
-	background-color: #fff;
-	margin: 0 auto;
-	margin-bottom: 20px;
-	border-width: 2px;
-	border-color: ${(props) => (props.clicked ? '#496BBA' : '#fff')};
-	box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.08);
+export const ContainerCardDoctor = styled.View`
+flex-direction: row;
+width: 320px;
+height: 100px;
+margin-top: 20px;
+border-radius: 7px;
+background-color:#fff ;
+box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.08);
+border: ${props => props.isSelected ? '3px solid #496BBA' : 'none'};
 `;
 
 export const ImageCardDoctor = styled.Image`

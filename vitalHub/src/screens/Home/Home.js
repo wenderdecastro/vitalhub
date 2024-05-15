@@ -38,6 +38,8 @@ export const Home = ({ navigation }) => {
 
 	const [showModalLocal, setShowModalLocal] = useState(false);
 
+	const [city, setCity] = useState(null);
+
 	const [userLogin, setUserLogin] = useState();
 	const [profile, setProfile] = useState();
 	const [idConsulta, setIdConsulta] = useState()
@@ -49,6 +51,15 @@ export const Home = ({ navigation }) => {
 
 		setDataConsulta(moment().format('YYYY-MM-DD'));
 	}
+
+	async function GetCity() {
+        try {
+          response = await api.get(`Clinica/ListarClinicasEndereco`)
+          setCity(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
 	async function ListarConsulta() {
 		try {
@@ -96,6 +107,7 @@ export const Home = ({ navigation }) => {
 
 	useEffect(() => {
 		profileLoad();
+		GetCity()
 	}, []);
 
 	useEffect(() => {
@@ -312,6 +324,7 @@ export const Home = ({ navigation }) => {
 				visible={showModalSchedule}
 				navigation={navigation}
 				setShowModalSchedule={setShowModalSchedule}
+				city={city}
 			/>
 			<LocalModal
 				visible={showModalLocal}
