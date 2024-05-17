@@ -1,7 +1,8 @@
-import { Camera, CameraType, FlashMode } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
 import {
+	ActivityIndicator,
 	Image,
 	Modal,
 	StyleSheet,
@@ -9,7 +10,6 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,16 +18,13 @@ import { Button } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CancelAppointment } from '../../components/Links/Style';
 
-export default function CameraScreen({ navigation }) {
+export default function CameraScreen({ navigation, route }) {
 	const cameraRef = useRef(null);
 	const [photo, setPhoto] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
-	const [tipoCamera, setTipoCamera] = useState(
-		Camera.Constants.Type.front,
-	);
-	const [flashMode, setFlashMode] = useState(
-		Camera.Constants.FlashMode.off,
-	);
+	const [facing, setFacing] = useState('back');
+	const [permission, requestPermission] = useCameraPermissions();
+	const [flash, setFlash] = useState('off');
 
 	async function CapturePhoto() {
 		if (cameraRef) {
@@ -48,17 +45,21 @@ export default function CameraScreen({ navigation }) {
 
 	async function SavePhoto() {
 		if (photo) {
-			navigation.navigate('ViewPrescription', {
-				photoUri: photo,
-			});
+			route.params.isProfile ?
+				navigation.navigate('Profile', {
+					photoUri: photo
+				})
+				:
+				navigation.navigate('ViewPrescription', {
+					...route.params.prescription,
+					photoUri: photo,
+				});
 		}
+		setOpenModal(false)
 	}
-
 	useEffect(() => {
 		(async () => {
-			const { status: cameraStatus } =
-				await Camera.requestCameraPermissionsAsync();
-
+			requestPermission();
 			const { status: mediaStatus } =
 				await MediaLibrary.requestPermissionsAsync();
 		})();
@@ -79,26 +80,42 @@ export default function CameraScreen({ navigation }) {
 			quality: 1,
 		});
 
-		if (!result.cancelled) {
-			setPhoto(result.uri);
+		if (!result.canceled) {
+			setPhoto(result.assets[0].uri);
 			setOpenModal(true);
 		}
 	};
 
+	function toggleCameraFlash() {
+		setFlash((current) => (current === 'off' ? 'on' : 'off'));
+	}
+
+	function toggleCameraFacing() {
+		setFacing((current) => (current === 'back' ? 'front' : 'back'));
+	}
+
+	if (!permission) {
+		// Caso não haja permissão para usar a câmera
+		return <ActivityIndicator />;
+	}
+
 	return (
 		<View style={styles.container}>
-			<Camera
+			<CameraView
 				ref={cameraRef}
-				type={tipoCamera}
-				flashMode={flashMode}
+				facing={facing}
+				flash={flash}
 				style={styles.camera}
 			>
 				<TouchableOpacity
 					style={styles.btnReturn}
 					onPress={() =>
-						navigation.replace(
-							'ViewPrescription',
-						)
+						route.params.isProfile ?
+							navigation.replace('Profile')
+							:
+							navigation.replace(
+								'ViewPrescription',{...route.params.prescription,}
+							)
 					}
 				>
 					<Ionicons
@@ -145,13 +162,8 @@ export default function CameraScreen({ navigation }) {
 					<View style={styles.functionsBtn}>
 						<TouchableOpacity
 							style={styles.btnFlip}
-							onPress={() =>
-								setTipoCamera(
-									tipoCamera ==
-										CameraType.front
-										? CameraType.back
-										: CameraType.front,
-								)
+							onPress={
+								toggleCameraFacing
 							}
 						>
 							<FontAwesome6
@@ -178,26 +190,21 @@ export default function CameraScreen({ navigation }) {
 
 						<TouchableOpacity
 							style={styles.btnFlash}
-							onPress={() =>
-								setFlashMode(
-									flashMode ==
-										FlashMode.on
-										? FlashMode.off
-										: FlashMode.on,
-								)
+							onPress={
+								toggleCameraFlash
 							}
 						>
 							<Ionicons
 								name={
-									flashMode ===
-									FlashMode.on
+									flash ===
+										'on'
 										? 'flash'
 										: 'flash-off'
 								}
 								size={38}
 								color={
-									flashMode ===
-									FlashMode.on
+									flash ===
+										'on'
 										? 'yellow'
 										: '#49B3BA'
 								}
@@ -225,11 +232,7 @@ export default function CameraScreen({ navigation }) {
 								width: '100%',
 								height: 500,
 								borderRadius: 10,
-								transform: [
-									{
-										rotate: '180deg',
-									},
-								],
+
 							}}
 							source={{ uri: photo }}
 						/>
@@ -262,7 +265,7 @@ export default function CameraScreen({ navigation }) {
 						</View>
 					</View>
 				</Modal>
-			</Camera>
+			</CameraView>
 
 			<StatusBar style="auto" />
 		</View>

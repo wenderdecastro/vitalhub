@@ -19,9 +19,10 @@ import { LocalModal } from '../../components/LocalModal/LocalModal';
 import { userDecodeToken } from '../../utils/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../service/Service';
+import moment from 'moment';
 
 export const Home = ({ navigation }) => {
-	const [dataConsulta, setDataConsulta] = useState();
+	const [dataConsulta, setDataConsulta] = useState('');
 
 	const [statusList, setStatusList] = useState('Pendente');
 
@@ -37,31 +38,38 @@ export const Home = ({ navigation }) => {
 
 	const [showModalLocal, setShowModalLocal] = useState(false);
 
+	const [city, setCity] = useState(null);
+
 	const [userLogin, setUserLogin] = useState();
 	const [profile, setProfile] = useState();
+	const [idConsulta, setIdConsulta] = useState()
 
 	async function profileLoad() {
 		const token = await userDecodeToken();
-
-		console.log(token);
 		setProfile(token);
 		setUserLogin(token.role);
+
+		setDataConsulta(moment().format('YYYY-MM-DD'));
 	}
+
+	async function GetCity() {
+        try {
+          response = await api.get(`Clinica/ListarClinicasEndereco`)
+          setCity(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
 	async function ListarConsulta() {
 		try {
-			const token = JSON.parse(
-				await AsyncStorage.getItem('token'),
-			).token;
-			console.log(token);
-			console.log(profile.jti);
-			if (token) {
+			if (profile.role === 'Paciente') {
 				await api
 					.get(
 						`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
 						{
 							headers: {
-								Authorization: `Bearer ${token}`,
+								Authorization: `Bearer ${profile.token}`,
 							},
 						},
 					)
@@ -69,15 +77,28 @@ export const Home = ({ navigation }) => {
 						setListaConsultas(
 							response.data,
 						);
-						console.log(response.data);
 					})
 					.catch((error) => {
 						console.log(error);
 					});
 			} else {
-				console.log(
-					'Token de autorizacao nao encontrado',
-				);
+				await api
+					.get(
+						`/Medicos/BuscarPorData?data=${dataConsulta}&id=${profile.jti}`,
+						{
+							headers: {
+								Authorization: `Bearer ${profile.token}`,
+							},
+						},
+					)
+					.then((response) => {
+						setListaConsultas(
+							response.data,
+						);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
 			}
 		} catch (error) {
 			console.log(error);
@@ -85,8 +106,8 @@ export const Home = ({ navigation }) => {
 	}
 
 	useEffect(() => {
-		ListarConsulta();
 		profileLoad();
+		GetCity()
 	}, []);
 
 	useEffect(() => {
@@ -95,13 +116,9 @@ export const Home = ({ navigation }) => {
 		}
 	}, [dataConsulta]);
 
-	return userLogin == 'Medico' ? (
+	return (
 		<Container>
-			<StatusBar />
-
 			<Header
-				name={'Dr Claudio'}
-				ProfileImage={require('../../assets/medico1.jpg')}
 				navigation={navigation}
 			/>
 
@@ -136,487 +153,178 @@ export const Home = ({ navigation }) => {
 			<ListComponent
 				data={listaConsultas}
 				keyExtractor={(item) => item.id}
-				renderItem={({ item }) => {
-					if (
-						statusList === 'Pendente' &&
-						item.situacao === 'Pendente'
-					) {
-						return (
-							<AppointmentCard
-								usuarioConsulta={
-									profile
-								}
-								role={userLogin}
-								dados={item}
-								situacao={
-									item
-										.situacao
-										.situacao
-								}
-								onPressCancel={() =>
-									setShowModalCancel(
-										true,
+				renderItem={({ item }) =>
+					statusList === item.situacao.situacao &&
+						listaConsultas ? (
+						<AppointmentCard
+							profile={profile}
+							situacao={
+								item.situacao
+									.situacao
+							}
+							onPressAppointment={
+								profile.role ===
+									'Medico'
+									?
+									() => navigation.navigate(
+										'ViewPrescription', {
+										nome: item.paciente.idNavigation.nome,
+										email: item.paciente.idNavigation.email,
+										foto: item.paciente.idNavigation.foto,
+										descricao: item.descricao,
+										diagnostico: item.diagnostico,
+										receita: item.receita.medicamento,
+										consultaId: item.id,
+										role: profile.role
+										
+									}
 									)
-								}
-								// name={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.nome
-								// }
-								// especialidade={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.especialidade
-								// 		.especialidade1
-								// }
-								// imagem={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.foto
-								// }
-								// crm={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.crm
-								// }
-								// age={
-								// 	item
-								// 		.paciente
-								// 		.dataNascimento
-								// }
-								// reason={
-								// 	item
-								// 		.prioridade
-								// 		.prioridade
-								// }
-								// hour={
-								// 	item.dataConsulta
-								// }
-							/>
-						);
-					}
-					if (
-						statusList === 'Realizada' &&
-						item.situacao === 'Realizada'
-					) {
-						return (
-							<AppointmentCard
-								usuarioConsulta={
-									profile
-								}
-								role={userLogin}
-								dados={item}
-								situacao={
-									item
-										.situacao
-										.situacao
-								}
-								onPressLocal={() => {
-									setSelectedAppointment(
-										item,
-									);
-									setShowModalAppointment(
-										true,
-									);
-								}}
-								onPressAppointment={() =>
-									navigation.navigate(
-										'ViewPrescription',
+									: () => navigation.navigate(
+										'ViewPrescription', {
+										descricao: item.descricao,
+										diagnostico: item.diagnostico,
+										receita: item.receita.medicamento,
+										nome: item.medicoClinica.medico.idNavigation.nome,
+										foto: item.medicoClinica.medico.idNavigation.foto,
+										crm: item.medicoClinica.medico.crm,
+										especialidade: item.medicoClinica.medico.especialidade.especialidade1,
+										consultaId: item.id,
+										diagnostico: item.diagnostico,
+										descricao: item.descricao,
+										role: profile.role
+									}
 									)
-								}
-								// name={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.nome
-								// }
-								// especialidade={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.especialidade
-								// 		.especialidade1
-								// }
-								// imagem={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.foto
-								// }
-								// crm={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.crm
-								// }
-								// age={
-								// 	item
-								// 		.paciente
-								// 		.dataNascimento
-								// }
-								// reason={
-								// 	item
-								// 		.prioridade
-								// 		.prioridade
-								// }
-								// hour={
-								// 	item.dataConsulta
-								// }
-							/>
-						);
-					}
-					if (
-						statusList === 'Cancelada' &&
-						item.situacao.situacao ===
-							'Cancelada'
-					) {
-						return (
-							<AppointmentCard
-								usuarioConsulta={
-									profile
-								}
-								role={userLogin}
-								dados={item}
-								situacao={
-									item
-										.situacao
-										.situacao
-								}
-								// name={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.nome
-								// }
-								// especialidade={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.especialidade
-								// 		.especialidade1
-								// }
-								// imagem={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.foto
-								// }
-								// crm={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.crm
-								// }
-								// age={
-								// 	item
-								// 		.paciente
-								// 		.dataNascimento
-								// }
-								// reason={
-								// 	item
-								// 		.prioridade
-								// 		.prioridade
-								// }
-								// hour={
-								// 	item.dataConsulta
-								// }
-							/>
-						);
-					}
-				}}
-			/>
-
-			<CancelModal
-				visible={showModalCancel}
-				setShowModalCancel={setShowModalCancel}
-			/>
-			<AppointmentModal
-				visible={showModalAppointment}
-				setShowModalAppointment={
-					setShowModalAppointment
+							}
+							onPressCancel={() => {
+								setIdConsulta(item.id);
+								setShowModalCancel(
+									true
+								)
+							}
+							}
+							onPressLocal={
+								item.situacao.situacao === 'Pendente' ?
+									profile.role ===
+										'Paciente'
+										? () => {
+											setSelectedAppointment(
+												item,
+											);
+											setShowModalLocal(
+												true, {
+												nome: item.medicoClinica.medico.idNavigation.nome,
+												foto: item.medicoClinica.medico.idNavigation.foto,
+												crm: item.medicoClinica.medico.crm,
+												especialidade: item.medicoClinica.medico.especialidade.especialidade1
+											}
+											);
+											
+										}
+										: () => {
+											setSelectedAppointment(
+												item,
+											);
+											setShowModalAppointment(
+												true, {
+												nome: item.medicoClinica.medico.idNavigation.nome,
+												foto: item.medicoClinica.medico.idNavigation.foto,
+												crm: item.medicoClinica.medico.crm,
+												especialidade: item.medicoClinica.medico.especialidade.especialidade1
+											}
+											);
+										
+										}
+									: null
+							}
+							name={
+								profile.role ===
+									'Medico'
+									? item
+										.paciente
+										.idNavigation
+										.nome
+									: item
+										.medicoClinica
+										.medico
+										.idNavigation
+										.nome
+							}
+							especialidade={
+								item
+									.medicoClinica
+									.medico
+									.especialidade
+							}
+							age={
+								profile.role ===
+									'Medico'
+									? item
+										.paciente
+										.dataNascimento
+									: item
+										.medicoClinica
+										.medico
+										.crm
+							}
+							reason={
+								item.prioridade
+									===
+									'86571C4B-5522-4474-915A-BBF2661D804C'
+									? 'Urgência'
+									: item.prioridade ===
+										'FA8C170D-CDBC-42B4-92CC-A620B39B47E5'
+										? 'Exame'
+										: 'Rotina'
+							}
+							hour={item.dataConsulta}
+							image={
+								profile.role === 'Paciente'
+									?
+									item.medicoClinica.medico.idNavigation.foto
+									:
+									item.paciente.idNavigation.foto
+							}
+						/>
+					) : (
+						<></>
+					)
 				}
-				appointmentData={selectedAppointment}
-				navigation={navigation}
 			/>
-		</Container>
-	) : (
-		<Container>
-			<Header
-				name={'Gustavo'}
-				ProfileImage={require('../../assets/perfil.jpg')}
-				navigation={navigation}
-			/>
+			
 
-			<CalendarHome setDataConsulta={setDataConsulta} />
-
-			<ContainerAppointment>
-				<ButtonTabs
-					textButton={'Pendentes'}
-					clickButton={statusList === 'Pendente'}
-					onPress={() =>
-						setStatusList('Pendente')
-					}
-				/>
-
-				<ButtonTabs
-					textButton={'Realizadas'}
-					clickButton={statusList === 'Realizada'}
-					onPress={() =>
-						setStatusList('Realizada')
-					}
-				/>
-
-				<ButtonTabs
-					textButton={'Canceladas'}
-					clickButton={statusList === 'Cancelada'}
-					onPress={() =>
-						setStatusList('Cancelada')
-					}
-				/>
-			</ContainerAppointment>
-
-			<ListComponent
-				data={listaConsultas}
-				keyExtractor={(item) => item.id}
-				renderItem={({ item }) => {
-					if (
-						statusList === 'Pendente' &&
-						item.situacao.situacao ===
-							'Pendente'
-					) {
-						return (
-							<AppointmentCard
-								usuarioConsulta={
-									profile
-								}
-								role={userLogin}
-								dados={item}
-								situacao={
-									item
-										.situacao
-										.situacao
-								}
-								onPressAppointment={() =>
-									setShowModalAppointment(
-										true,
-									)
-								}
-								onPressCancel={() =>
-									setShowModalCancel(
-										true,
-									)
-								}
-								onPressLocal={() => {
-									setShowModalLocal(
-										true,
-									);
-									setSelectedAppointment(
-										item,
-									);
-								}}
-								// name={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.nome
-								// }
-								// especialidade={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.especialidade
-								// 		.especialidade1
-								// }
-								// imagem={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.foto
-								// }
-								// crm={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.crm
-								// }
-								// age={
-								// 	item
-								// 		.paciente
-								// 		.dataNascimento
-								// }
-								// reason={
-								// 	item
-								// 		.prioridade
-								// 		.prioridade
-								// }
-								// hour={
-								// 	item.dataConsulta
-								// }
-							/>
-						);
-					}
-					if (
-						statusList === 'Realizada' &&
-						item.situacao === 'Realizada'
-					) {
-						return (
-							<AppointmentCard
-								usuarioConsulta={
-									profile
-								}
-								role={userLogin}
-								dados={item}
-								situacao={
-									item
-										.situacao
-										.situacao
-								}
-								onPressLocal={() =>
-									navigation.navigate(
-										'ViewRecord',
-									)
-								}
-								// name={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.nome
-								// }
-								// especialidade={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.especialidade
-								// 		.especialidade1
-								// }
-								// imagem={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.foto
-								// }
-								// crm={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.crm
-								// }
-								// age={
-								// 	item
-								// 		.paciente
-								// 		.dataNascimento
-								// }
-								// reason={
-								// 	item
-								// 		.prioridade
-								// 		.prioridade
-								// }
-								// hour={
-								// 	item.dataConsulta
-								// }
-							/>
-						);
-					}
-					if (
-						statusList === 'Cancelada' &&
-						item.situacao === 'Cancelada'
-					) {
-						return (
-							<AppointmentCard
-								usuarioConsulta={
-									profile
-								}
-								role={userLogin}
-								dados={item}
-								situacao={
-									item
-										.situacao
-										.situacao
-								}
-								// name={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.nome
-								// }
-								// especialidade={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.especialidade
-								// 		.especialidade1
-								// }
-								// imagem={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.idNavigation
-								// 		.foto
-								// }
-								// crm={
-								// 	item
-								// 		.medicoClinica
-								// 		.medico
-								// 		.crm
-								// }
-								// age={
-								// 	item
-								// 		.paciente
-								// 		.dataNascimento
-								// }
-								// reason={
-								// 	item
-								// 		.prioridade
-								// 		.prioridade
-								// }
-								// hour={
-								// 	item.dataConsulta
-								// }
-							/>
-						);
-					}
-				}}
-			/>
-
-			<MakeAppointment
-				onPress={() => setShowModalSchedule(true)}
-			>
-				<FontAwesome
-					name="stethoscope"
-					size={38}
-					color="white"
-				/>
-			</MakeAppointment>
+			{userLogin === 'Paciente' ?
+				<MakeAppointment
+					onPress={() => setShowModalSchedule(true)}
+				>
+					<FontAwesome
+						name="stethoscope"
+						size={38}
+						color="white"
+					/>
+				</MakeAppointment>
+				:
+				null
+			}
 
 			<CancelModal
 				visible={showModalCancel}
 				setShowModalCancel={setShowModalCancel}
+				idConsulta={idConsulta}
 			/>
 			<AppointmentModal
 				visible={showModalAppointment}
+				navigation={navigation}
+				appointmentData={selectedAppointment}
 				setShowModalAppointment={
 					setShowModalAppointment
 				}
 			/>
 			<ScheduleModal
+				// data={selectedAppointment}
 				visible={showModalSchedule}
 				navigation={navigation}
 				setShowModalSchedule={setShowModalSchedule}
+				city={city}
 			/>
 			<LocalModal
 				visible={showModalLocal}

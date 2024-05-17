@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Login } from './src/screens/Login/Login';
+import 'react-native-reanimated'
 
 const Stack = createNativeStackNavigator();
 
@@ -29,13 +30,12 @@ import { ViewPrescription } from './src/screens/ViewPrescription/ViewPrecription
 import { Main } from './src/screens/Main/Main';
 import { LogBox } from 'react-native';
 import { ViewRecord } from './src/screens/ViewRecord/ViewRecord';
-import { InsertRecord } from './src/screens/InsertRecord/InsertRecord';
-import Camera from './src/screens/Camera/Camera';
 import CameraScreen from './src/screens/Camera/Camera';
 import Toast from 'react-native-toast-message';
+import { InsertRecord } from './src/components/InsertRecord/InsertRecord';
 
-// LogBox.ignoreAllLogs();
-LogBox.ignoreLogs(['Warning: ...']);
+ LogBox.ignoreAllLogs();
+//LogBox.ignoreLogs(['Warning: ...']);
 
 export default function App() {
 	const [fontsLoaded, fontsError] = useFonts({
@@ -47,7 +47,7 @@ export default function App() {
 		Quicksand_400Regular,
 	});
 
-	if (!fontsLoaded || !fontsError) {
+	if (!fontsLoaded && !fontsError) {
 		return null;
 	}
 
@@ -121,6 +121,7 @@ export default function App() {
 							title: 'InsertRecord',
 						}}
 					/>
+
 
 					<Stack.Screen
 						name="SelectClinic"

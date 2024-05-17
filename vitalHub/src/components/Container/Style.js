@@ -40,6 +40,13 @@ export const ContainerUF = styled.View`
 	align-items: center;
 `;
 
+export const ContainerUF2 = styled.View`
+	width: 80%;
+	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
+`;
+
 export const ContainerHeader = styled(LinearGradient).attrs({
 	colors: ['#60BFC5', '#496BBA'],
 	start: { x: -0.05, y: 1.08 },
@@ -82,3 +89,17 @@ export const ContentInfo = styled.View`
 	border-radius: 20px;
 	background-color: white;
 `;
+
+export const ContainerImage = styled.View`
+	width: 100%;
+	height: 320px;
+	margin-bottom: 20px;
+	position: relative;
+	align-items: center;
+	justify-content: flex-start;
+`;
+
+export const ContainerRecord = styled.View`
+width: 80%;
+height: 100%;
+`

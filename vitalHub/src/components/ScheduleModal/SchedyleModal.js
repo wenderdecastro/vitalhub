@@ -1,55 +1,266 @@
-import { Modal } from "react-native"
-import { Button } from "../Button/Style"
-import { ButtonTitle } from "../ButtonTitle/Style"
-import { ContentModal, ViewModal } from "../CancelModal/style"
-import { LinkModal } from "../Links/Style"
-import { Title } from "../Title/Style"
-import { BlueTitle, ContainerButtonsSchedule, LabelSchedule, SmallButton, TypeAppointment, TypeButton } from "./Style"
+import { Modal } from 'react-native';
+import { Button } from '../Button/Style';
+import { ButtonTitle } from '../ButtonTitle/Style';
+import { ContentModal, ViewModal } from '../CancelModal/style';
+import { LinkModal } from '../Links/Style';
+import { Title } from '../Title/Style';
+import {
+	BlueTitle,
+	ContainerButtonsSchedule,
+	LabelSchedule,
+	SmallButton,
+	TypeAppointment,
+	TypeButton,
+} from './Style';
+import { useState } from 'react';
+import { InputTextModificate } from '../BoxInput/style';
+import Toast from 'react-native-toast-message';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 
-export const ScheduleModal = ({ navigation, visible, setShowModalSchedule, ...rest }) => {
+export const ScheduleModal = ({
+	navigation,
+	route,
+	visible,
+	setShowModalSchedule,
+	city,
+	...rest
+}) => {
+	const [clicked, setClicked] = useState(false);
 
-    async function onPressHandler() {
-        await setShowModalSchedule(false)
-        navigation.replace("SelectClinic");
-        
-    };
+	const [rotinaClicked, setRotinaClicked] = useState(false);
+	const [exameClicked, setExameClicked] = useState(false);
+	const [urgenciaClicked, setUrgenciaClicked] = useState(false);
+	const [prioridadeSelecionada, setPrioridadeSelecionada] = useState();
 
-    return (
-        <Modal {...rest} visible={visible} transparent={true} animationType="fade" animationOutTiming={0}>
-            <ViewModal>
-                <ContentModal>
-                    <Title>Agendar consulta</Title>
+	const handleRotinaClick = () => {
+		if (!rotinaClicked) {
+			setRotinaClicked(true);
+			setNivelConsulta({
+				id: 'A85FDEF6-E3D2-4BF0-B5EE-88896399BC49',
+				tipo: 'Rotina',
+			});
+			setPrioridadeSelecionada(true);
+			setExameClicked(false);
+			setUrgenciaClicked(false);
+		} else {
+			setRotinaClicked(false);
+			setNivelConsulta({
+				id: '',
+				tipo: '',
+			});
+			setPrioridadeSelecionada(false);
+		}
+	};
 
-                    <TypeAppointment>
+	const handleExameClick = () => {
+		if (!exameClicked) {
+			setExameClicked(true);
+			setNivelConsulta({
+				id: 'FA8C170D-CDBC-42B4-92CC-A620B39B47E5',
+				tipo: 'Exame',
+			});
+			setPrioridadeSelecionada(true);
+			setRotinaClicked(false);
+			setUrgenciaClicked(false);
+		} else {
+			setExameClicked(false);
+			setNivelConsulta({
+				id: '',
+				tipo: '',
+			});
+			setPrioridadeSelecionada(false);
+		}
+	};
 
-                        <LabelSchedule>Qual o nível da consulta</LabelSchedule>
+	const handleUrgenciaClick = () => {
+		if (!urgenciaClicked) {
+			setUrgenciaClicked(true);
+			setNivelConsulta({
+				id: '86571C4B-5522-4474-915A-BBF2661D804C',
+				tipo: 'Urgente',
+			});
+			setPrioridadeSelecionada(true);
+			setRotinaClicked(false);
+			setExameClicked(false);
+		} else {
+			setUrgenciaClicked(false);
+			setNivelConsulta({
+				id: '',
+				tipo: '',
+			});
+			setPrioridadeSelecionada(false);
+		}
+	};
 
-                        <ContainerButtonsSchedule>
-                            <SmallButton><BlueTitle>Rotina</BlueTitle></SmallButton>
-                            <SmallButton><BlueTitle>Exame</BlueTitle></SmallButton>
-                            <SmallButton><BlueTitle>Urgência</BlueTitle></SmallButton>
-                        </ContainerButtonsSchedule>
+	const [nivelConsulta, setNivelConsulta] = useState({
+		id: '34065EDC-CB48-4045-82FB-949DAE435DC9',
+		tipo: 'Rotina',
+	});
+	const [agendamento, setAgendamento] = useState({});
 
-                        <LabelSchedule>Informe a localização desejada</LabelSchedule>
-                        <TypeButton>
-                            <BlueTitle>Informe a localização</BlueTitle>
-                        </TypeButton>
-                        
+	async function onPressHandler() {
+		console.log(agendamento);
+		console.log(agendamento.localizacao);
+		if (prioridadeSelecionada) {
+			await setShowModalSchedule(false);
+			navigation.replace('SelectClinic', {
+				agendamento: agendamento,
+			});
+		} else {
+			console.log('Selecione um nivel de prioridade');
+			Toast.show({
+				type: 'error',
+				text1: 'Selecione um nivel de prioridade.',
+				text2: 'Erro',
+				text1Style: {
+					fontSize: 16,
+					fontWeight: 600,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+				text2Style: {
+					fontSize: 16,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+			});
+		}
+		if (agendamento && agendamento.localizacao == '') {
+			console.log('Digite alguma localização');
+			Toast.show({
+				type: 'error',
+				text1: 'Digite alguma localização.',
+				text2: 'Erro',
+				text1Style: {
+					fontSize: 16,
+					fontWeight: 600,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+				text2Style: {
+					fontSize: 16,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+			});
+		}
+	}
 
-                    </TypeAppointment>
+	function dePara(retornoApi) {
+		if (city != null) {
+			let arrayOptions = [];
+			retornoApi.forEach((e) => {
+				arrayOptions.push({ value: e.endereco.cidade });
+			});
 
-                    <Button onPress={() => {onPressHandler()}}>
-                        <ButtonTitle>
-                            CONTINUAR
-                        </ButtonTitle>
-                    </Button>
+			return arrayOptions;
+		}
+	}
 
-                    <LinkModal onPress={() => setShowModalSchedule(false)}>
-                        Cancelar
-                    </LinkModal>
-                </ContentModal>
-            </ViewModal>
-        </Modal>
-    )
-}
+	return (
+		<>
+			<Modal
+				{...rest}
+				visible={visible}
+				transparent={true}
+				animationType="fade"
+				animationOutTiming={0}
+			>
+				<ViewModal>
+					<Toast />
+					<ContentModal>
+
+						<Title>Agendar consulta</Title>
+
+						<TypeAppointment>
+							<LabelSchedule>
+								Qual o nível da
+								consulta
+							</LabelSchedule>
+
+							<ContainerButtonsSchedule>
+								<SmallButton
+									onPress={
+										handleRotinaClick
+									}
+									clicked={
+										rotinaClicked
+									}
+								>
+									<BlueTitle>
+										Rotina
+									</BlueTitle>
+								</SmallButton>
+								<SmallButton
+									onPress={
+										handleExameClick
+									}
+									clicked={
+										exameClicked
+									}
+								>
+									<BlueTitle>
+										Exame
+									</BlueTitle>
+								</SmallButton>
+								<SmallButton
+									onPress={
+										handleUrgenciaClick
+									}
+									clicked={
+										urgenciaClicked
+									}
+								>
+									<BlueTitle>
+										Urgência
+									</BlueTitle>
+								</SmallButton>
+							</ContainerButtonsSchedule>
+
+							<LabelSchedule>
+								Informe a
+								localização
+								desejada
+							</LabelSchedule>
+							<SelectList
+								boxStyles={{ width: "100%", height: 70, alignItems: "center", marginTop: 5, borderColor: '#60BFC5', borderWidth: 2 }}
+								fontFamily="Quicksand_500Medium"
+								searchPlaceholder="Pesquise"
+								placeholder="Selecione uma cidade"
+								maxHeight={100}
+								dropdownStyles={{ borderWidth: 2, borderColor: '#60BFC5' }}
+								dropdownTextStyles={{ fontSize: 18, color: '#34898F' }}
+								inputStyles={{ fontSize: 18, color: '#34898F' }}
+								setSelected={(txt) => setAgendamento({
+									...agendamento,
+									localizacao: txt
+								})}
+								notFoundText='Nenhum dado encontrado'
+								data={dePara(city)}
+								save="endereco.cidade"
+
+							/>
+						</TypeAppointment>
+
+						<Button
+							onPress={() => {
+								onPressHandler();
+							}}
+						>
+							<ButtonTitle>
+								CONTINUAR
+							</ButtonTitle>
+						</Button>
+
+						<LinkModal
+							onPress={() =>
+								setShowModalSchedule(
+									false,
+								)
+							}
+						>
+							Cancelar
+						</LinkModal>
+					</ContentModal>
+				</ViewModal>
+			</Modal>
+		</>
+	);
+};

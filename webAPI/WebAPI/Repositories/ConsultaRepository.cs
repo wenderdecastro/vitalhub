@@ -20,6 +20,7 @@ namespace WebAPI.Repositories
                     .Include(x => x.Exames)
                     .Include(x => x.MedicoClinica!.Medico!.Especialidade)
                     .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
+
                     .Include(x => x.Paciente!.IdNavigation)
                     .Include(x => x.Prioridade)
                     .Include(x => x.Situacao)
@@ -56,7 +57,11 @@ namespace WebAPI.Repositories
                 }
                 else
                 {
-                    ctx.Add(consulta.Receita);
+                    //ctx.Add(consulta.Receita);
+                    buscada.Receita = new Receita()
+                    {
+                        Medicamento = consulta.Receita.Medicamento
+                    };
                 }
 
                 ctx.Update(buscada);
@@ -86,6 +91,11 @@ namespace WebAPI.Repositories
             {
                 throw;
             }
+        }
+
+        public List<Clinica> ListarPorCidade(string cidade)
+        {
+            throw new NotImplementedException();
         }
 
         public List<Consulta> ListarPorMedico(Guid IdMedico)
@@ -126,20 +136,7 @@ namespace WebAPI.Repositories
         }
 
 
-        public List<Clinica> ListarPorCidade(string cidade)
-        {
-            return ctx.Clinicas
-                .Select(c => new Clinica
-                {
-                    Id = c.Id,
-                    NomeFantasia = c.NomeFantasia,
-                    Endereco = c.Endereco
-                })
-
-               .Where(c => c.Endereco!.Cidade == cidade)
-                .ToList();
-        }
-
+        
         }
     }
  

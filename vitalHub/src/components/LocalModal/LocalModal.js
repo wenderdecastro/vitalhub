@@ -20,7 +20,7 @@ export const LocalModal = ({
 	};
 
 	onPressContinue = () => {
-		navigation.navigate('LocalAppointment', appointmentData);
+		navigation.navigate('LocalAppointment', appointmentData.medicoClinica.clinicaId);
 		setShowModalLocal(false);
 	};
 
@@ -34,12 +34,13 @@ export const LocalModal = ({
 			<ViewModal>
 				<ContentModal>
 					<ModalImage
-						source={
-							appointmentData
+						source={{
+							uri: appointmentData
 								.medicoClinica
 								.medico
 								.idNavigation
 								.foto
+						}
 						}
 					/>
 

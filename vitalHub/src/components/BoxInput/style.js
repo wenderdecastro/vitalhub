@@ -31,12 +31,11 @@ export const InputTextModificate = styled.TextInput.attrs((props) => ({
 }))`
 	width: 100%;
 	height: ${(props) => `${props.fieldHeight}px`};
-	border: #49b3ba;
+	border: #49B3BA;
 	border-width: 2px;
 	border-radius: 7px;
 	background-color: #fff;
-	color: #34898f;
+	color: #49B3BA;
 	font-family: 'MontserratAlternates_600SemiBold';
-	font-size: 16px;
-	padding: 30px;
+	padding: 20px;
 `;

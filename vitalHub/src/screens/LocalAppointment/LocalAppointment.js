@@ -1,4 +1,4 @@
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker} from 'react-native-maps';
 import { BoxInput } from '../../components/BoxInput';
 import {
 	Container,
@@ -8,57 +8,97 @@ import {
 import { SubTitle, Title } from '../../components/Title/Style';
 import { ContainerAddress, ContainerLocal, LocalImage } from './Style';
 import { StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import api from "../../service/Service"
 
-export const LocalAppointment = () => {
+export const LocalAppointment = ({ route }) => {
+
+	const [clinica, setClinica] = useState('')
+	const [idClinica, setIdClinica] = useState('')
+	const [logradouro, setLogradouro] = useState('')
+	const [numero, setNumero] = useState('')
+	const [cidade, setCidade] = useState('')
+	const [nome, setNome] = useState('')
+	const [latitude, setLatitude] = useState('')
+	const [longitude, setLongitude] = useState('')
+
+	useEffect(() => {
+		setIdClinica(route.params)
+		BuscarClinica()
+
+	}, [route.params])
+
+
+	async function BuscarClinica() {
+		try {
+			console.log("id da clinica:");
+			console.log(route.params);
+			const response = await api.get(`/Clinica/BuscarPorId?id=${route.params}`)
+			console.log(response.data);
+			setClinica(response.data)
+			setLatitude(response.data.endereco.longitude)
+			setLongitude(response.data.endereco.latitude)
+			console.log(latitude);
+			console.log(longitude);
+
+			setLogradouro(response.data.endereco.logradouro)
+			setNumero(response.data.endereco.numero.toString())
+			setCidade(response.data.endereco.cidade)
+			setNome(response.data.nomeFantasia)
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	return (
 		<Container>
 			<ContentLocal>
 				<MapView
 					style={styles.map}
 					customMapStyle={grayMapStyle}
-					provider={PROVIDER_GOOGLE}
 					initialRegion={{
-						latitude: -23.615,
-						longitude: -46.5707,
+						latitude: -23.6670,
+						longitude: -46.5230,
 						latitudeDelta: 0.005,
 						longitudeDelta: 0.005,
 					}}
+
 				>
 					<Marker
 						coordinate={{
-							latitude: -23.615,
-							longitude: -46.5707,
+							latitude: -23.6670,
+							longitude: -46.5230,
 							latitudeDelta: 0.005,
 							longitudeDelta: 0.005,
 						}}
-						title="Destino"
-						description="Rua Roseira"
+						title=""
+						description=""
 						pinColor={'red'}
 					/>
 				</MapView>
 			</ContentLocal>
 			<ContentInfo>
 				<ContainerLocal>
-					<Title>Clínica Natureh</Title>
-					<SubTitle>São Paulo, SP</SubTitle>
+					<Title>{nome}</Title>
+					<SubTitle>{cidade}</SubTitle>
 				</ContainerLocal>
 
 				<BoxInput
-					fieldWidth={80}
+					fieldWidht={80}
 					textLabel="Endereco"
-					placeholder="Rua Vicenso Silva, 987"
+					placeholder={logradouro}
 				/>
 				<ContainerAddress>
 					<BoxInput
-						fieldWidth={35}
+						fieldWidht={35}
 						textLabel="Número"
-						placeholder="578"
+						placeholder={numero}
 					/>
 
 					<BoxInput
-						fieldWidth={35}
+						fieldWidht={35}
 						textLabel="Bairro"
-						placeholder="Moema-SP"
+						placeholder="Palmares"
 					/>
 				</ContainerAddress>
 			</ContentInfo>

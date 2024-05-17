@@ -7,6 +7,7 @@ import { ButtonTitle } from '../ButtonTitle/Style';
 import { LinkModal } from '../Links/Style';
 import { ModalImage } from '../UserPicture/Style';
 import moment from 'moment';
+import { useEffect } from 'react';
 
 export const AppointmentModal = ({
 	navigation,
@@ -15,8 +16,25 @@ export const AppointmentModal = ({
 	setShowModalAppointment,
 	...rest
 }) => {
-	onPressHandler = () => {
-		navigation.navigate('InsertRecord');
+	const dataNascimento = appointmentData
+		? moment(appointmentData.paciente.dataNascimento)
+		: null;
+
+	const idade = appointmentData
+		? moment().diff(dataNascimento, 'years')
+		: null;
+
+	const onPressHandler = () => {
+		console.log('navegando para ViewRecord');
+		navigation.navigate('ViewRecord', {
+			nome: appointmentData.paciente.idNavigation.nome,
+			email: appointmentData.paciente.idNavigation.email,
+			foto: appointmentData.paciente.idNavigation.foto,
+			descricao: appointmentData.descricao,
+			diagnostico: appointmentData.diagnostico,
+			receita: appointmentData.receita.medicamento,
+			id: appointmentData.id,
+		});
 		setShowModalAppointment(false);
 	};
 
@@ -30,13 +48,12 @@ export const AppointmentModal = ({
 			<ViewModal>
 				<ContentModal>
 					<ModalImage
-						source={
-							appointmentData
-								.medicoClinica
-								.medico
+						source={{
+							uri: appointmentData
+								.paciente
 								.idNavigation
-								.foto
-						}
+								.foto,
+						}}
 					/>
 
 					<Title>
@@ -47,15 +64,7 @@ export const AppointmentModal = ({
 						}
 					</Title>
 
-					<TextModal>
-						{moment(
-							appointmentData.paciente
-								.dataNascimento,
-						)
-							.fromNow(true)
-							.charAt(0)}{' '}
-						anos
-					</TextModal>
+					<TextModal>{idade} anos</TextModal>
 					<TextModal>
 						{
 							appointmentData.paciente

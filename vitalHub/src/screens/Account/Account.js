@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import { Logo } from '../../components/Logo/Style';
 import { Title } from '../../components/Title/Style';
 import { Container, ContentAccount } from '../../components/Container/Style';
@@ -16,11 +16,16 @@ export const Account = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [senha, setSenha] = useState('');
 	const [confirmarSenha, setConfirmarSenha] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const [novoPerfil, setNovoPerfil] = useState();
 
 	async function Login() {
+		setLoading(true);
+
 		if (
+			!email.includes('@') ||
+			!email.includes('.') ||
 			senha.length < 8 ||
 			senha === '' ||
 			email.length < 3 ||
@@ -41,6 +46,9 @@ export const Account = ({ navigation }) => {
 					fontFamily: 'MontserratAlternates_600SemiBold',
 				},
 			});
+			setLoading(false);
+
+			return;
 		}
 
 		if (senha != confirmarSenha) {
@@ -58,6 +66,8 @@ export const Account = ({ navigation }) => {
 					fontFamily: 'MontserratAlternates_600SemiBold',
 				},
 			});
+			setLoading(false);
+
 			return;
 		}
 
@@ -70,7 +80,9 @@ export const Account = ({ navigation }) => {
 		} catch (error) {
 			console.log(error);
 		}
-		if (novoPerfil) navigation.replace('Profile', novoPerfil);
+		setLoading(false);
+
+		if (novoPerfil) navigation.replace('Login', novoPerfil);
 	}
 	return (
 		<Container>
@@ -91,7 +103,7 @@ export const Account = ({ navigation }) => {
 			<Input
 				value={email}
 				onChangeText={(text) => setEmail(text)}
-				placeholder="Usuário ou E-mail"
+				placeholder="E-mail"
 			/>
 
 			<Input
@@ -107,7 +119,13 @@ export const Account = ({ navigation }) => {
 			/>
 
 			<Button onPress={() => Login()}>
-				<ButtonTitle>CADASTRAR</ButtonTitle>
+				<ButtonTitle>
+					{loading ? (
+						<ActivityIndicator color="#fff" />
+					) : (
+						'CADASTRAR'
+					)}
+				</ButtonTitle>
 			</Button>
 
 			<ContentAccount>

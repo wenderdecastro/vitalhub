@@ -4,20 +4,27 @@ import {
 	ContainerProfile,
 	ContainerScroll,
 	ContainerUF,
+	ContainerUF2,
 } from '../../components/Container/Style';
 import { TextAdd } from '../../components/TextAdd/Style';
 import { Title, TitleC } from '../../components/Title/Style';
 import { UserPicture } from '../../components/UserPicture/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
-import { Button, Button2, CloseButton } from '../../components/Button/Style';
+import {
+	Button,
+	Button2,
+	ButtonCamera,
+	CloseButton,
+} from '../../components/Button/Style';
 import { useEffect, useState } from 'react';
 import { CancelAppointment } from '../../components/Links/Style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userDecodeToken } from '../../utils/Auth';
 import api from '../../service/Service';
-import { Text } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
 
-export const Profile = ({ navigation }) => {
+export const Profile = ({ navigation, route }) => {
 	const [ProfileEdit, setProfileEdit] = useState(true);
 
 	async function logout() {
@@ -29,46 +36,141 @@ export const Profile = ({ navigation }) => {
 		}
 	}
 
+	const [token, setToken] = useState();
+
 	const [nome, setNome] = useState();
 	const [email, setEmail] = useState();
 	const [idUser, setIdUser] = useState();
 	const [userData, setUserData] = useState();
 	const [cep, setCep] = useState();
 	const [logradouro, setLogradouro] = useState();
+	const [cidade, setCidade] = useState();
+	const [numero, setNumero] = useState();
 	const [role, setRole] = useState();
 	const [cpf, setCpf] = useState();
 	const [crm, setCrm] = useState();
+	const [rg, setRg] = useState()
 	const [dtNasc, setDtNasc] = useState();
 	const [especialidade, setEspecialidade] = useState();
+	const [foto, setFoto] = useState();
 
 	async function profileLoad() {
 		const token = await userDecodeToken();
-
-		console.log(token);
 
 		setNome(token.name);
 		setEmail(token.email);
 		setRole(token.role);
 		setIdUser(token.jti);
 
-		await getUser();
+		await getUser(token);
 	}
 
-	async function getUser() {
+	async function AlterarFotoDePerfil() {
+		const formData = new FormData();
+		formData.append('Arquivo', {
+			uri: route.params.photoUri,
+			name: `image.jpg`,
+			type: `image/jpg`,
+		});
+		console.log(idUser);
+
+		await api
+			.put(
+				`/Usuario/AlterarFotoPerfil?id=${idUser}`,
+				formData,
+				{
+					headers: {
+						'Content-Type':
+							'multipart/form-data',
+					},
+				},
+			)
+			.then(() => {
+				setFoto(route.params.photoUri);
+				console.log(route.params.photoUri);
+			})
+			.catch((error) => {
+				console.log('erro no atualizarFotoPerfil()');
+				console.log(error);
+			});
+	}
+
+	async function getUser(tok) {
 		const response = await api.get(
-			role == 'Paciente'
-				? `/Pacientes/BuscarPorId/${idUser}`
-				: `/Medicos/BuscarPorId/${idUser}`,
+			tok.role == 'Paciente'
+				? `/Pacientes/BuscarPorId/${tok.jti}`
+				: `/Medicos/BuscarPorId/${tok.jti}`,
 		);
 		setUserData(response.data);
-		console.log(response.data);
 
 		setLogradouro(response.data.endereco.logradouro);
 		setCep(response.data.endereco.cep);
+		setCidade(response.data.endereco.cidade);
+		setNumero(response.data.endereco.numero);
 		setCpf(response.data.cpf);
 		setCrm(response.data.crm);
+		setRg(response.data.rg)
 		setDtNasc(response.data.dataNascimento);
-		setEspecialidade(response.data.especialidade.especialidade1);
+		setFoto(response.data.idNavigation.foto);
+		tok.role == 'Paciente'
+			? null
+			: setEspecialidade(
+				response.data.especialidade
+					.especialidade1,
+			);
+	}
+
+	async function updatePatient() {
+		const token = JSON.parse(
+			await AsyncStorage.getItem('token'),
+		).token;
+
+		try {
+			{
+				role == 'Paciente'
+					? await api.put(
+						'Pacientes',
+						{
+							Cpf: cpf,
+							DataNascimento:
+								dtNasc,
+							Cep: cep,
+							Logradouro: logradouro,
+							Cidade: cidade,
+							Numero: numero,
+							Foto: foto,
+							Rg: rg
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
+						},
+					)
+					: await api.put(
+						'Medicos',
+						{
+							Crm: crm,
+							Especialidade:
+								especialidade,
+							Cep: cep,
+							Logradouro: logradouro,
+							Cidade: cidade,
+							Numero: numero,
+							Foto: foto,
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
+						},
+					);
+			}
+
+			setProfileEdit(true);
+		} catch (error) {
+			console.log(error + ' erro para atualizar paciente');
+		}
 	}
 
 	useEffect(() => {
@@ -76,43 +178,59 @@ export const Profile = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		if (idUser) {
-			getUser();
+		if (route.params != null && idUser != null) {
+			AlterarFotoDePerfil();
 		}
-	}, [idUser]);
+	}, [idUser, route.params]);
 
-	function formatarData(data) {
-		if (!data) return '';
-		const dataFormatada = new Date(data);
-		return dataFormatada.toLocaleDateString('pt-BR');
-	}
+	function formatarData(data, isValid) {
+        if (isValid == false) {
+            return moment(data).format('YYYY-MM-DD');
+        }
+        return moment(data).format('DD/MM/YYYY');
+    }
+    
 
 	return (
 		<ContainerScroll>
-			{ProfileEdit ? (
-				<>
-					<ContainerImage>
-						<UserPicture
-							source={require('../../assets/perfil.jpg')}
-						/>
-					</ContainerImage>
+			<ContainerImage>
+				{/* <UserPicture source={{ uri: photoUri }} /> */}
+				<UserPicture source={{ uri: foto }} />
+				<ButtonCamera
+					onPress={() =>
+						navigation.navigate(
+							'CameraScreen',
+							{ isProfile: true },
+						)
+					}
+				>
+					<MaterialCommunityIcons
+						name="camera-plus"
+						size={30}
+						color="white"
+					/>
+				</ButtonCamera>
+			</ContainerImage>
 
-					<ContainerProfile>
-						<TitleC>{nome}</TitleC>
-						<TextAdd>{email}</TextAdd>
+			<ContainerProfile>
+				<TitleC>{nome}</TitleC>
+				<TextAdd>{email}</TextAdd>
 
+				{ProfileEdit ? (
+					<>
 						{role == 'Paciente' ? (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
 								textLabel="Data de nascimento:"
-								placeholder={formatarData(
-									dtNasc,
-								)}
+								placeholder={
+									dtNasc ?
+								formatarData(dtNasc,)
+							: null}
 								fieldHeight={60}
 							/>
 						) : (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
 								textLabel="Especialidade:"
 								placeholder={
 									especialidade
@@ -123,7 +241,19 @@ export const Profile = ({ navigation }) => {
 
 						{role == 'Paciente' ? (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
+								textLabel="RG:"
+								placeholder={rg}
+								fieldHeight={60}
+							/>
+						)
+							:
+							null
+						}
+
+						{role == 'Paciente' ? (
+							<BoxInput
+								fieldWidht={80}
 								textLabel="CPF:"
 								placeholder={
 									cpf
@@ -132,32 +262,54 @@ export const Profile = ({ navigation }) => {
 							/>
 						) : (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
 								textLabel="CRM:"
 								placeholder={
-									crm
+									`${crm}`
 								}
 								fieldHeight={60}
 							/>
 						)}
 
-						<BoxInput
-							fieldWidth={80}
-							textLabel="Endereço"
-							placeholder={logradouro}
-							fieldHeight={60}
-						/>
-
 						<ContainerUF>
 							<BoxInput
-								fieldWidth={100}
-								textLabel="CEP"
+								fieldWidht={64}
+								fieldValue={logradouro}
+								textLabel="Endereço"
 								placeholder={
-									cep
+									logradouro
 								}
 								fieldHeight={60}
 							/>
+
+							<BoxInput
+								fieldWidht={28}
+								textLabel="Numero"
+								fieldValue={numero}
+								placeholder={numero ? `${numero}` : null}
+								fieldHeight={60}
+							/>
 						</ContainerUF>
+
+						<ContainerUF2>
+							<BoxInput
+								fieldWidht={46}
+								textLabel="CEP"
+								fieldValue={cep}
+								placeholder={cep}
+								fieldHeight={60}
+							/>
+
+							<BoxInput
+								fieldWidht={46}
+								fieldValue={cidade}
+								textLabel="Cidade"
+								placeholder={
+									cidade
+								}
+								fieldHeight={60}
+							/>
+						</ContainerUF2>
 
 						<Button2
 							onPress={() =>
@@ -188,70 +340,109 @@ export const Profile = ({ navigation }) => {
 						>
 							Voltar
 						</CancelAppointment>
-					</ContainerProfile>
-				</>
-			) : (
-				<>
-					<UserPicture
-						source={require('../../assets/perfil.jpg')}
-					/>
-					<ContainerProfile>
-						<TitleC>{nome}</TitleC>
-						<TextAdd>{email}</TextAdd>
+					</>
+				) : (
+					<>
 
 						{role == 'Paciente' ? (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
 								textLabel="Data de nascimento:"
 								fieldHeight={60}
 								editable={true}
+								onChangeText={
+									setDtNasc
+								}
 							/>
 						) : (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
 								textLabel="Especialidade:"
-								editable={true}
+								placeholder={
+									especialidade
+								}
 								fieldHeight={60}
 							/>
 						)}
 
 						{role == 'Paciente' ? (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
+								textLabel="RG:"
+								fieldHeight={60}
+								editable={true}
+								onChangeText={setRg}
+							/>
+						)
+							:
+							null
+						}
+
+						{role == 'Paciente' ? (
+							<BoxInput
+								fieldWidht={80}
 								textLabel="CPF:"
 								editable={true}
 								fieldHeight={60}
+								onChangeText={
+									setCpf
+								}
 							/>
 						) : (
 							<BoxInput
-								fieldWidth={80}
+								fieldWidht={80}
 								textLabel="CRM:"
 								editable={true}
 								fieldHeight={60}
+								onChangeText={
+									setCrm
+								}
 							/>
 						)}
 
-						<BoxInput
-							fieldWidth={80}
-							textLabel="Endereço"
-							editable={true}
-							fieldHeight={60}
-						/>
-
 						<ContainerUF>
 							<BoxInput
-								fieldWidth={100}
-								textLabel="CEP"
-								editable={true}
+								fieldWidht={64}
+								textLabel="Endereço"
 								fieldHeight={60}
+								editable={true}
+								fieldValue={logradouro}
+								onChangeText={setLogradouro}
+							/>
+
+							<BoxInput
+								fieldWidht={28}
+								textLabel="Numero"
+								fieldHeight={60}
+								fieldValue={numero}
+								editable={true}
+								onChangeText={setNumero}
 							/>
 						</ContainerUF>
 
+						<ContainerUF2>
+							<BoxInput
+								fieldWidht={46}
+								textLabel="CEP"
+								editable={true}
+								fieldHeight={60}
+								fieldValue={cep}
+								onChangeText={setCep}
+							/>
+
+							<BoxInput
+								fieldWidht={46}
+								textLabel="Cidade"
+								editable={true}
+								fieldHeight={60}
+								fieldValue={cidade}
+								onChangeText={setCidade}
+							/>
+						</ContainerUF2>
+
 						<Button
 							onPress={() =>
-								setProfileEdit(
-									true,
-								)
+								updatePatient()
 							}
 						>
 							<ButtonTitle>
@@ -268,9 +459,9 @@ export const Profile = ({ navigation }) => {
 						>
 							Voltar
 						</CancelAppointment>
-					</ContainerProfile>
-				</>
-			)}
+					</>
+				)}
+			</ContainerProfile>
 		</ContainerScroll>
 	);
 };

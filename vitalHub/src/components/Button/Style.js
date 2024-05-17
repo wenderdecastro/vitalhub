@@ -13,7 +13,8 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const Button2 = styled(Button)`
-	margin-bottom: 40px;
+	margin-top: 20%;
+	margin-bottom: 5%;
 `;
 
 export const ButtonGoogle = styled(Button)`
@@ -76,15 +77,19 @@ export const CloseButton = styled.TouchableOpacity`
 	border-radius: 5px;
 `;
 
-export const ButtonCamera = styled.TouchableOpacity.attrs({
-	activeOpacity: 0.8,
-})`
+export const ButtonCamera = styled.TouchableOpacity`
 	padding: 12px;
 	border-radius: 10px;
 	background-color: #496bba;
 	border: 1px solid #fbfbfb;
 
-	bottom: -20px;
+	bottom: -5px;
 	right: 15px;
 	position: absolute;
-`;
+`
+
+export const ButtonSelect = styled.TouchableOpacity`
+align-self: center;
+height: 120px;
+margin-top: 10px;
+`

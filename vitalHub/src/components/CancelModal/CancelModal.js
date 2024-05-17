@@ -6,6 +6,7 @@ import { Title } from '../Title/Style';
 import { TextAdd, TextModal } from '../TextAdd/Style';
 import { LinkModal } from '../Links/Style';
 import * as Notifications from 'expo-notifications';
+import api from '../../service/Service';
 
 Notifications.requestPermissionsAsync(
 	Notifications.setNotificationHandler({
@@ -19,7 +20,7 @@ Notifications.requestPermissionsAsync(
 	}),
 );
 
-export const CancelModal = ({ visible, setShowModalCancel, ...rest }) => {
+export const CancelModal = ({idConsulta, visible, setShowModalCancel, ...rest }) => {
 	const handleCallNotification = async () => {
 		const { status } = await Notifications.getPermissionsAsync();
 
@@ -38,9 +39,21 @@ export const CancelModal = ({ visible, setShowModalCancel, ...rest }) => {
 		});
 	};
 
+	const id = idConsulta;
+
+	async function CancelarConsulta(){
+		try {
+			console.log(id);
+			await api.put(`/Consultas/Status?idConsulta=${id}&status=Cancelada`)
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	const onPressHandler = () => {
 		setShowModalCancel(false);
 		handleCallNotification();
+		CancelarConsulta()
 	};
 
 	return (

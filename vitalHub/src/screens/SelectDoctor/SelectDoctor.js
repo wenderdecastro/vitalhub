@@ -1,5 +1,5 @@
 import { ScrollView } from 'react-native';
-import { Button } from '../../components/Button/Style';
+import { Button, ButtonSelect } from '../../components/Button/Style';
 import { ButtonTitle } from '../../components/ButtonTitle/Style';
 import { CardDoctor } from '../../components/CardDoctor/CardDoctor';
 import { Container } from '../../components/Container/Style';
@@ -8,35 +8,10 @@ import { CancelAppointment } from '../../components/Links/Style';
 import { ScheduleModal } from '../../components/ScheduleModal/SchedyleModal';
 import { useState, useEffect } from 'react';
 import api from '../../service/Service';
+import Toast from 'react-native-toast-message';
+import { ListComponent } from '../../components/List/List';
 
-const Medicos = [
-	{
-		id: 1,
-		nome: 'DrClaudio',
-		especialidade: 'Clinico Geral',
-		foto: require('../../assets/medico1.jpg'),
-	},
-	{
-		id: 2,
-		nome: 'DrCesar',
-		especialidade: 'Ortopedista',
-		foto: require('../../assets/medico2.jpg'),
-	},
-	{
-		id: 3,
-		nome: 'DrMarcio',
-		especialidade: 'Cardiologista',
-		foto: require('../../assets/medico3.webp'),
-	},
-	{
-		id: 4,
-		nome: 'DrAndre',
-		especialidade: 'Clinico Geral',
-		foto: require('../../assets/medico4.jpg'),
-	},
-];
-
-export const SelectDoctor = ({ navigation }) => {
+export const SelectDoctor = ({ navigation, route }) => {
 	const [showModalSchedule, setShowModalSchedule] = useState(false);
 
 	const onPressCancel = () => {
@@ -45,17 +20,64 @@ export const SelectDoctor = ({ navigation }) => {
 	};
 
 	const [medicosLista, setMedicosLista] = useState([]);
+	const [medico, setMedico] = useState(null);
 
 	async function listarMedicos() {
 		await api
-			.get('/Medicos')
+			.get(
+				`/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`,
+			)
 			.then((response) => {
 				setMedicosLista(response.data);
 			})
 			.catch((error) => console.error(error));
 	}
+	function handleContinue() {
+		if (!medico) {
+			console.log('Médico não selecionado');
+			Toast.show({
+				type: 'error',
+				text1: 'Selecione um médico.',
+				text2: 'Erro',
+				text1Style: {
+					fontSize: 16,
+					fontWeight: 600,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+				text2Style: {
+					fontSize: 16,
+					fontFamily: 'MontserratAlternates_600SemiBold',
+				},
+			});
+			return;
+		} else {
 
+			navigation.replace('SelectDate', {
+				agendamento: {
+					...route.params.agendamento,
+					...medico,
+				},
+			})
+
+			// Toast.show({
+			// 	type: 'error',
+			// 	text1: 'Selecione um médico.',
+			// 	text2: 'Erro',
+			// 	text1Style: {
+			// 		fontSize: 16,
+			// 		fontWeight: 600,
+			// 		fontFamily: 'MontserratAlternates_600SemiBold',
+			// 	},
+			// 	text2Style: {
+			// 		fontSize: 16,
+			// 		fontFamily: 'MontserratAlternates_600SemiBold',
+			// 	},
+			// });
+		}
+
+	}
 	useEffect(() => {
+		console.log(route.params);
 		listarMedicos();
 	}, []);
 
@@ -64,22 +86,36 @@ export const SelectDoctor = ({ navigation }) => {
 			<TitleB>Selecionar médico</TitleB>
 
 			<ScrollView>
-				{medicosLista.map((medico) => (
-					// console.log(medico),
-					<CardDoctor
-						nome={medico.idNavigation.nome}
-						especialidade={
-							medico.especialidade
-								.especialidade1
-						}
-						foto={medico.idNavigation.foto}
-					/>
-				))}
+				{<ListComponent
+					data={medicosLista}
+					renderItem={({ item }) => (
+						<ButtonSelect onPress={() => {
+							setMedico({
+								medicoClinicaId:
+									item.id,
+								medicoLabel:
+									item
+										.idNavigation
+										.nome,
+							});
+						}}
+						>
+							<CardDoctor
+								key={item.id}
+								nome={item.idNavigation.nome}
+								especialidade={
+									item.especialidade
+										.especialidade1
+								}
+								foto={item.idNavigation.foto}
+								isSelected={medico ? item.id == medico.medicoClinicaId : false}
+							/>
+						</ButtonSelect>
+					)}
+				/>}
 			</ScrollView>
 
-			<Button
-				onPress={() => navigation.replace('SelectDate')}
-			>
+			<Button onPress={() => handleContinue()}>
 				<ButtonTitle>CONTINUAR</ButtonTitle>
 			</Button>
 

@@ -19,11 +19,11 @@ import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 export const Login = ({ navigation }) => {
-	const [email, setEmail] = useState('string');
-	const [senha, setSenha] = useState('string');
+	const [email, setEmail] = useState('');
+	const [senha, setSenha] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	async function validadeLogin() {
+	async function LoginFunc() {
 		if (email === '' || senha === '') {
 			Toast.show({
 				type: 'error',
@@ -49,19 +49,16 @@ export const Login = ({ navigation }) => {
 			console.log(response);
 
 			setLoading(true);
-			console.log(response);
-			console.log(response.status);
-			console.log(response.data);
 
-			await AsyncStorage.setItem('token', response.data);
+			await AsyncStorage.setItem(
+				'token',
+				JSON.stringify(response.data),
+			);
 
 			setTimeout(() => {
 				setLoading(false);
 				navigation.replace('Main');
-			}, 2000);
-
-			console.log(email);
-			console.log(senha);
+			}, 100);
 		} catch (error) {
 			Toast.show({
 				type: 'error',
@@ -108,10 +105,7 @@ export const Login = ({ navigation }) => {
 				Esqueceu sua senha?
 			</LinkMedium>
 
-			<Button
-				onPress={() => validadeLogin()}
-				disabled={loading}
-			>
+			<Button onPress={() => LoginFunc()} disabled={loading}>
 				<ButtonTitle>
 					{loading ? (
 						<ActivityIndicator color="#fff" />
@@ -121,7 +115,7 @@ export const Login = ({ navigation }) => {
 				</ButtonTitle>
 			</Button>
 
-			<ButtonGoogle>
+			{/* <ButtonGoogle>
 				<LogoGoogle>
 					<AntDesign
 						name="google"
@@ -132,7 +126,7 @@ export const Login = ({ navigation }) => {
 				<ButtonTitleGoogle>
 					ENTRAR COM GOOGLE
 				</ButtonTitleGoogle>
-			</ButtonGoogle>
+			</ButtonGoogle> */}
 
 			<ContentAccount>
 				<TextAccount>Não tem conta? </TextAccount>
