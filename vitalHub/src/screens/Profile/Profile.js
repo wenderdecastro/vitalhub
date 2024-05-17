@@ -222,9 +222,10 @@ export const Profile = ({ navigation, route }) => {
 							<BoxInput
 								fieldWidht={80}
 								textLabel="Data de nascimento:"
-								placeholder={`${formatarData(
-									dtNasc,
-								)}`}
+								placeholder={
+									dtNasc ?
+								formatarData(dtNasc,)
+							: null}
 								fieldHeight={60}
 							/>
 						) : (
@@ -342,14 +343,6 @@ export const Profile = ({ navigation, route }) => {
 					</>
 				) : (
 					<>
-
-						<BoxInput 
-						fieldWidht={80}
-						textLabel="Nome:"
-						fieldHeight={60}
-						editable={true}
-						onChangeText={setNome}
-						/>
 
 						{role == 'Paciente' ? (
 							<BoxInput

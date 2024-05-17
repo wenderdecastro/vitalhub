@@ -302,7 +302,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 									<BoxInput
 										fieldWidth={80}
 										textLabel={'descricao exame'}
-										placeholder={descricaoExame}
+										placeholder={descricaoExame ? descricaoExame : `exame`}
 										multiline={true}
 									/>
 								</>

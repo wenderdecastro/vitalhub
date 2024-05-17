@@ -34,8 +34,8 @@ import CameraScreen from './src/screens/Camera/Camera';
 import Toast from 'react-native-toast-message';
 import { InsertRecord } from './src/components/InsertRecord/InsertRecord';
 
-// LogBox.ignoreAllLogs();
-LogBox.ignoreLogs(['Warning: ...']);
+ LogBox.ignoreAllLogs();
+//LogBox.ignoreLogs(['Warning: ...']);
 
 export default function App() {
 	const [fontsLoaded, fontsError] = useFonts({

@@ -57,16 +57,17 @@ export const LocalAppointment = ({ route }) => {
 					style={styles.map}
 					customMapStyle={grayMapStyle}
 					initialRegion={{
-						latitude: latitude,
-						longitude: longitude,
+						latitude: -23.6670,
+						longitude: -46.5230,
 						latitudeDelta: 0.005,
 						longitudeDelta: 0.005,
 					}}
+
 				>
 					<Marker
 						coordinate={{
-							latitude: latitude,
-							longitude: longitude,
+							latitude: -23.6670,
+							longitude: -46.5230,
 							latitudeDelta: 0.005,
 							longitudeDelta: 0.005,
 						}}

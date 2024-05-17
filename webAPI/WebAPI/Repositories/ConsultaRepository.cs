@@ -57,7 +57,11 @@ namespace WebAPI.Repositories
                 }
                 else
                 {
-                    ctx.Add(consulta.Receita);
+                    //ctx.Add(consulta.Receita);
+                    buscada.Receita = new Receita()
+                    {
+                        Medicamento = consulta.Receita.Medicamento
+                    };
                 }
 
                 ctx.Update(buscada);
